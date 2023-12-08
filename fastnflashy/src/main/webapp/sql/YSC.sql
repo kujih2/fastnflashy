@@ -12,4 +12,5 @@ crerate table Board(
 	mem_num number not null,
 	constraint Board_pk primary key (board_num),
 	constraint Board_fk foreign key (mem_num) references member (mem_num)
+	
 );
