@@ -9,6 +9,7 @@ team_category number not null, --경기 종목(축구:0,야구:1,배구:2,농구
  team_photo varchar2(30),--팀의 마크(사진)
  team_odds number default 0--팀의 승률
 );
+
 --경기 일정
 create table match_schedule(
  schedule_num number not null primary key, --경기 번호
