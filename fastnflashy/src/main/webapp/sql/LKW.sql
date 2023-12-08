@@ -21,3 +21,4 @@ create table booked_info(
 	constraint booked_info_fk1 foreign key (seat_id) references booked_seat (seat_id),
 	constraint booked_info_fk2 foreign key (user_num) references member (user_num)
 );
+
