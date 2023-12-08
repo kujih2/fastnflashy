@@ -14,3 +14,4 @@ crerate table Board(
 	constraint Board_fk foreign key (mem_num) references member (mem_num)
 	
 );
+
