@@ -21,6 +21,7 @@ public class LoginAction implements Action{
 		MemberVO vo = dao.checkMember(id);
 		boolean check = false;
 		
+		
 		if(vo!=null) {
 			//비밀번호 일치 여부 체크
 			check = vo.isCheckedPassword(passwd);

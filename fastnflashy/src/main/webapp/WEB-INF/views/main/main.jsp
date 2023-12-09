@@ -17,6 +17,7 @@
 		${user_id}<br>
 		${user_auth}<br>
 		${user_num}<br>
+		
 	</div>
 </div>
 

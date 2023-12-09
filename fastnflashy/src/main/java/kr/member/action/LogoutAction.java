@@ -13,6 +13,7 @@ public class LogoutAction implements Action{
 		session.invalidate();
 		
 		
+		
 		return "redirect:/main/main.do";
 	}
 

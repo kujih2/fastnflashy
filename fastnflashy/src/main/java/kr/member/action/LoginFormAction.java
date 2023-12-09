@@ -11,6 +11,7 @@ public class LoginFormAction implements Action{
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		
+		
 		return "/WEB-INF/views/member/loginForm.jsp";
 	}
 

@@ -6,6 +6,7 @@ create table member(
 );
 create sequence member_seq;
 
+
 create table member_detail(
 	mem_num number not null,
 	mem_name varchar2(30) not null,

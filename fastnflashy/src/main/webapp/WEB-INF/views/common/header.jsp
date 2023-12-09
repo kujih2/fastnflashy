@@ -7,6 +7,7 @@
 </div>
 <div id="main_nav">
 	<ul>
+	
 		<li>
 			<a href="${pageContext.request.contextPath}/member/adminList.do">매거진</a>
 		</li>

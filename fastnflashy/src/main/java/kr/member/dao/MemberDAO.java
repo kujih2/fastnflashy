@@ -23,6 +23,7 @@ public class MemberDAO {
 		MemberVO member = null;
 		String sql = null;
 		
+		
 		try {
 			conn = DBUtil.getConnection();
 			sql = "SELECT * FROM member LEFT OUTER JOIN member_detail USING(mem_num) WHERE mem_id=?";

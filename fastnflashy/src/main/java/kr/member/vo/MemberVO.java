@@ -30,6 +30,7 @@ public class MemberVO {
 	
 	
 	
+	
 	public int getMem_num() {
 		return mem_num;
 	}
