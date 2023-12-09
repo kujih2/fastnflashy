@@ -7,6 +7,7 @@ create table booked_seat(
 	constraint booked_seat_fk foreign key (schedule_num) references match_schedule (schedule_num),
 	constraint booked_seat_pk primary key (seat_id)
 );
+
 create table booked_info(
 	booked_num number not null,
 	booked_package number,

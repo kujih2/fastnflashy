@@ -13,9 +13,13 @@
 <div class="page-main">
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	<div class="content-main">
-		<h4>최신 상품</h4>
+		<h4>메인</h4>
+		${user_id}<br>
+		${user_auth}<br>
+		${user_num}<br>
 	</div>
 </div>
+
 </body>
 </html>
 

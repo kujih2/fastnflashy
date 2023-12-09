@@ -8,21 +8,27 @@
 <div id="main_nav">
 	<ul>
 		<li>
-			<a href="${pageContext.request.contextPath}/item/itemList.do">상품목록</a>
+			<a href="${pageContext.request.contextPath}/member/adminList.do">매거진</a>
 		</li>
 		<li>
-			<a href="${pageContext.request.contextPath}/board/list.do">게시판</a>
+			<a href="${pageContext.request.contextPath}/item/adminList.do">게시판</a>
+		</li>
+		<li>
+			<a href="${pageContext.request.contextPath}/item/adminList.do">경기일정</a>
+		</li>
+		<li>
+			<a href="${pageContext.request.contextPath}/item/adminList.do">예매</a>
+		</li>
+		<li>
+			<a href="${pageContext.request.contextPath}/item/adminList.do">이벤트</a>
+		</li>
+		<li>
+			<a href="${pageContext.request.contextPath}/item/adminList.do">고객센터</a>
 		</li>
 		<c:if test="${!empty user_num && user_auth == 9}">
-		<li>
-			<a href="${pageContext.request.contextPath}/member/adminList.do">회원관리</a>
-		</li>
-		<li>
-			<a href="${pageContext.request.contextPath}/item/adminList.do">상품관리</a>
-		</li>
+		
 		</c:if>
 		<c:if test="${!empty user_num}">
-		<li><a href="${pageContext.request.contextPath}/cart/list.do">장바구니</a></li>
 		<li><a href="${pageContext.request.contextPath}/member/myPage.do">MY페이지</a></li>
 		</c:if>
 		<c:if test="${!empty user_num && !empty user_photo}">
