@@ -57,7 +57,7 @@ a:hover{
 }
 #main_nav{
 	padding:2px 10px 20px 10px;
-	height:20px;
+	height:45px;
 	background-color:rgb(255, 0, 0);
 }
 #main_nav ul{
@@ -67,7 +67,7 @@ a:hover{
 }
 #main_nav ul li{
 	display:inline-block;
-	width:100px;
+	width:80px;
 	text-align:center;
 	vertical-align:middle;
 	padding-top:8px;
