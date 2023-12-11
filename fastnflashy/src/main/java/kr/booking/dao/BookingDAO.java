@@ -50,6 +50,25 @@ public class BookingDAO {
 		}
 	return list;
 	}
-	
+	//경기 등록하기
+	public void registerSaleOfMatch(int schedule_num) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			conn = DBUtil.getConnection();
+			sql = "UPDATE match_schedule SET schedule_regmatch=1 WHERE schedule_num=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, schedule_num);
+			pstmt.executeUpdate();
+			
+			
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+	}
 	
 }
