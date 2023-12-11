@@ -11,11 +11,7 @@ public class ScheduleAction implements Action{
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		request.setCharacterEncoding("utf-8");
-		int team_category=Integer.parseInt(request.getParameter("category"));
-		ScheduleDAO dao = ScheduleDAO.getInstance();
-		dao.selectSchedule(team_category);
-		
+
 		return "/WEB-INF/views/match/schedule.jsp";
 	}
 
