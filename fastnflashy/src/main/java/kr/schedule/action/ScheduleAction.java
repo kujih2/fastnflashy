@@ -17,6 +17,7 @@ public class ScheduleAction implements Action{
 		dao.selectSchedule(team_category);
 		
 		return "/WEB-INF/views/match/schedule.jsp";
+		
 	}
 
 }
