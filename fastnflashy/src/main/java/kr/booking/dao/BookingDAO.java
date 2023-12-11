@@ -27,7 +27,7 @@ public class BookingDAO {
 		
 		try {
 			conn = DBUtil.getConnection();
-			sql = "SELECT * FROM match_schedule WHERE schedule_status = 2";
+			sql = "SELECT * FROM match_schedule WHERE schedule_status = 2 AND schedule_regmatch = 0";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			list = new ArrayList<ScheduleVO>();
