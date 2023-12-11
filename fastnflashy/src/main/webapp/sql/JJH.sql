@@ -20,6 +20,7 @@ create table match_schedule(
  schedule_status number not null, --경기현황 (0:종료,1:진행중,2:예정,3:취소)
  schedule_team1 number not null, --경기하는 팀번호 1
  schedule_team2 number not null --경기하는 팀번호 2
+ schedule_regmatch number default 0 -- 경기 예매 등록 여부 0 :아님, 1 등록
 );
 create sequence schedule_seq;
 --경기 결과
