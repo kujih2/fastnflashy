@@ -17,7 +17,7 @@ create table match_schedule(
  team_category number not null, --경기 종목(축구:0,야구:1,배구:2,농구:3)
  schedule_start varchar2(30) not null, --경기 시작일(년/월/일/시/분)
  schedule_end varchar2(30) not null, --경기 종료일(년/월/일/시/분)
- schedule_status number not null, --경기현황 (0:종료,1:진행중,2:예정)
+ schedule_status number not null, --경기현황 (0:종료,1:진행중,2:예정,3:취소)
  schedule_team1 number not null, --경기하는 팀번호 1
  schedule_team2 number not null --경기하는 팀번호 2
 );
@@ -28,7 +28,7 @@ create table match_result(
  schedule_num number not null, --경기 번호
  result_team1Score number not null, --팀1의 점수
  result_team2Score number  not null, --팀2의 점수
- result_match number not null, --경기 결과
+ result_match number not null, --경기 결과(0:team1 승리,1:team2 승리, 2:무승부)
  constraint match_result_fk 
                 foreign key (schedule_num) references match_schedule (schedule_num)
 );
