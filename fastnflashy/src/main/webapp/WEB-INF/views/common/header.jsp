@@ -18,7 +18,7 @@
 			<a href="${pageContext.request.contextPath}/item/adminList.do">경기일정</a>
 		</li>
 		<li>
-			<a href="${pageContext.request.contextPath}/item/adminList.do">예매</a>
+			<a href="${pageContext.request.contextPath}/booking/list.do">예매</a>
 		</li>
 		<li>
 			<a href="${pageContext.request.contextPath}/item/adminList.do">이벤트</a>

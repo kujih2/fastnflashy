@@ -58,7 +58,7 @@ a:hover{
 #main_nav{
 	padding:2px 10px 20px 10px;
 	height:20px;
-	background-color:#C1BFBF;
+	background-color:rgb(255, 0, 0);
 }
 #main_nav ul{
 	list-style:none;
@@ -353,6 +353,16 @@ form[id="cart_order"]{
 }
 
 
+/*예매 등록
+------------------------------*/
+.team{
+	display:inline-block;
+}
+
+#booking_register_form input[id="team1"],
+#booking_register_form input[id="team2"]{
+	width:84px;
+}
 
 
 
