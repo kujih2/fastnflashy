@@ -6,7 +6,7 @@
 <div id="main_nav">
 	<ul>
 		<li>
-			fast&amp;<br>flashy
+			fast&amp;flashy
 		</li>
 		<li>
 			<a href="${pageContext.request.contextPath}/member/adminList.do">매거진</a>
@@ -15,7 +15,7 @@
 			<a href="${pageContext.request.contextPath}/item/adminList.do">게시판</a>
 		</li>
 		<li>
-			<a href="${pageContext.request.contextPath}/item/adminList.do">경기일정</a>
+			<a href="${pageContext.request.contextPath}/match/schedule.do">경기일정</a>
 		</li>
 		<li>
 			<a href="${pageContext.request.contextPath}/booking/list.do">예매</a>
