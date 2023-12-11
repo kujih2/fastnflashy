@@ -12,7 +12,7 @@
 	<div class="page-main">
 		<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 		<div class="content-main">
-		<h2>경기 등록하기</h2>
+		<h2>경기 등록하기</h2> 
 		<input type="button" value="등록가능 경기목록 불러오기">
 		<form id="booking_register_form" action="registerBooking.do" method="post">
 		<ul>
