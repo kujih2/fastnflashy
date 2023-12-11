@@ -3,8 +3,10 @@ package kr.booking.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
+import kr.schedule.vo.ScheduleVO;
 import kr.util.DBUtil;
 
 public class BookingDAO {
@@ -16,23 +18,30 @@ public class BookingDAO {
 	private BookingDAO() {}
 	
 	//등록가능한 경기 목록 불러오기
-	public List<MatchVO> getListMatch() throws Exception{
+	public List<ScheduleVO> getListMatch() throws Exception{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		List<MatchVO> list = null;
+		List<ScheduleVO> list = null;
 		String sql = null;
 		
 		try {
 			conn = DBUtil.getConnection();
-			sql = "SELECT * FROM match_schedule WHERE TO_DATE(schedule_start, 'YYYY-MM-DD HH24:MI') > SYSDATE";
+			sql = "SELECT * FROM match_schedule WHERE schedule_status = 2";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
-			list = new ArrayList<MatchVO>();
+			list = new ArrayList<ScheduleVO>();
 			while(rs.next()) {
-				MatchVO match = new MatchVO();
-				match
+				ScheduleVO schedule = new ScheduleVO();
+				schedule.setSchedule_num(rs.getInt("schedule_num"));
+				schedule.setTeam_category(rs.getInt("team_category"));
+				schedule.setSchedule_start(rs.getString("schedule_start"));
+				schedule.setSchedule_end(rs.getString("schedule_end"));
+				schedule.setSchedule_status(rs.getInt("schedule_status"));
+				schedule.setSchedule_team1(rs.getInt("schedule_team1"));
+				schedule.setSchedule_team2(rs.getInt("schedule_team2"));
 				
+				list.add(schedule);
 			}
 		}catch(Exception e) {
 			throw new Exception(e);

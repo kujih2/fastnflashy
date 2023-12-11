@@ -363,6 +363,11 @@ form[id="cart_order"]{
 #booking_register_form input[id="team2"]{
 	width:84px;
 }
+.single-match:hover{
+	cursor:pointer;
+	background-color:#ff8d85;
+}
+
 
 
 
