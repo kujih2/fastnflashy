@@ -12,7 +12,7 @@
 <div class="page-main">
 	<jsp:include page="/WEB-INF/views/common/header.jsp">
 	<div class="list-space align-right">
-		<input type="button" value="칼럼작성"
+		<input type="button" value="칼럼글작성"
 				onclick="location.href='columnForm.do'"
 			<c:if test="${!empty user_num && user_num == 2}"></c:if>
 		>

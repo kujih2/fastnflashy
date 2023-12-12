@@ -12,7 +12,7 @@ public class MagazinVO {
 	private Date mg_modify_date; //칼럼 수정일
 	private String mg_filename; //파일 이름
 	private String mg_ip; //아이피
-	private int mem_num; //회원 고유번호
+	private int mem_num; //회원 고유 번호
 	
 	
 	public int getMg_board_num() {

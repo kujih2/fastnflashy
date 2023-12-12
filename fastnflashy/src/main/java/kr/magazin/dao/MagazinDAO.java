@@ -11,7 +11,7 @@ public class MagazinDAO {
 	private MagazinDAO() {}
 	
 	//칼럼니스트 - 칼럼 등록
-	//전체 레코드수/검색 레코드수
+	//전체 레코드수/검색 레코드 수
 	//전체글/검색 글 목록
 	//글상세
 	//조회수 증가
