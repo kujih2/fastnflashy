@@ -27,7 +27,7 @@ $(function(){
 					output += '<tr class="single-match">';
 					output += '<td>' + item.schedule_num + '</td>';
 					output += '<td>' + item.schedule_team1 + '</td>';
-					output += '<td></td>';
+					output += '<td>VS</td>';
 					output += '<td>' + item.schedule_team2 + '</td>';
 					output += '<td>'+ item.team_category+'</td>';
 					output += '<td>'+ item.schedule_start+'</td>';
@@ -40,7 +40,20 @@ $(function(){
 				alert('네트워크 오류 발생');
 			}
 		})
+		
+		
 	});//end of click
+	
+	$(document).on('click', '.single-match', function() {
+		initForm();
+		$('#schedule').val($(this).find('td:nth-child(6)').text());
+		$('#stadium').val($(this).find('td:nth-child(5)').text());
+		$('#sport_category').val($(this).find('td:nth-child(5)').text());
+		$('#team1').val($(this).find('td:nth-child(2)').text());
+		$('#team2').val($(this).find('td:nth-child(4)').text());
+		$('#schedule_num').val($(this).find('td:nth-child(1)').text());
+	});
+	
 	function initForm(){
 		$('#loaded_matchlist').text('');
 	}
@@ -57,6 +70,7 @@ $(function(){
 		<div id="loaded_matchlist">
 		</div>
 		<form id="booking_register_form" action="registerBooking.do" method="post">
+		<input type="hidden" name="schedule_num" id="schedule_num" value="">
 		<ul>
 			<li>
 			<label for="schedule">경기일정</label>

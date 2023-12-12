@@ -2,6 +2,7 @@ package kr.schedule.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import kr.schedule.vo.ScheduleVO;
 import kr.util.DBUtil;
@@ -24,7 +25,7 @@ public class ScheduleDAO {
 			//커넥션풀로부터 커넥션 할당
 			conn = DBUtil.getConnection();
 			//SQL문 작성
-			sql="INSERT INTO MATCH_SCHEDULE "
+			sql="INSERT INTO MATCH_SCHEDULE (schedule_num,team_category,schedule_start,schedule_end,schedule_status,schedule_team1,schedule_team2)"
 				+ "VALUES(schedule_seq.nextval,?,?,?,?,?,?)";
 			//PreparedStatement 객체 생성
 			pstmt = conn.prepareStatement(sql);
@@ -45,6 +46,26 @@ public class ScheduleDAO {
 	}
 	//경기일정 수정
 	//경기일정 조회
+	public void selectSchedule(int team_category) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int cnt = 0;
+		String sub_sql = "";
+		
+		
+		try {
+			//커넥션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			//SQL문 작성
+			
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+	}
 	//경기결과 삽입
 	
 }

@@ -29,12 +29,19 @@ public class InsertScheduleAction implements Action{
 		schedule.setTeam_category(Integer.parseInt(request.getParameter("team_category")));
 		schedule.setSchedule_start(request.getParameter("schedule_start"));
 		schedule.setSchedule_end(request.getParameter("schedule_end"));
-		schedule.setSchedule_status(Integer.parseInt(request.getParameter("schedule_category")));
+		schedule.setSchedule_status(Integer.parseInt(request.getParameter("schedule_status")));
 		schedule.setSchedule_team1(Integer.parseInt(request.getParameter("schedule_team1")));
 		schedule.setSchedule_team2(Integer.parseInt(request.getParameter("schedule_team2")));
 		
 		ScheduleDAO dao = ScheduleDAO.getInstance();
-		return null;
+		dao.insertSchedule(schedule);
+		
+				//Refresh 정보를 응답 헤더에 추가
+				response.addHeader("Refresh", "2;url=insertScheduleForm.do");
+				request.setAttribute("accessMsg", "성공적으로 등록되었습니다.");
+				request.setAttribute("accessUrl", "insertScheduleForm.do");
+				
+				return "/WEB-INF/views/common/notice.jsp";
 	}
 
 }

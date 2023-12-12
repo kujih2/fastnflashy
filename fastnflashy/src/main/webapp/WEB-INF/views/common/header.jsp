@@ -15,7 +15,7 @@
 			<a href="${pageContext.request.contextPath}/item/adminList.do">게시판</a>
 		</li>
 		<li>
-			<a href="${pageContext.request.contextPath}/match/schedule.do">경기일정</a>
+			<a href="${pageContext.request.contextPath}/match/schedule.do?category=9">경기일정</a>
 		</li>
 		<li>
 			<a href="${pageContext.request.contextPath}/booking/list.do">예매</a>
@@ -51,6 +51,7 @@
 	</ul>
 </div>
 <!-- header 끝 -->
+
 
 
 
