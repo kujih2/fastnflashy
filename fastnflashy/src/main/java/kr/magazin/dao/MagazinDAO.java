@@ -57,5 +57,6 @@ public class MagazinDAO {
 	//댓글 상세
 	//댓글 수정
 	//댓글 삭제
+	//댓글 좋아요, 싫어요
 	
 }

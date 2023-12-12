@@ -15,7 +15,7 @@
 		<div class="list-space align-right">
 		<c:if test="${!empty user_num && user_auth == 2}">
 			<input type="button" value="칼럼작성"
-				onclick="location.href='magazinForm.do'">
+				onclick="location.href='magazinWriteForm.do'">
 		</c:if>		
 		</div>
 	</div>
