@@ -1,6 +1,6 @@
  --메거진 보드
 create table magazin_board (
- mg_board_num number not null, -- 칼럼 게시글 고유 번호
+ mg_board_num number not null, -- 칼럼 게시글 고유번호
  mg_title varchar2(150) not null,
  sports_category number(9) not null, -- 축구:0,야구:1,배구:2,농구:3
  mg_content clob not null,
