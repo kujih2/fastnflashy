@@ -6,8 +6,13 @@ public class ScheduleVO {
 	private String schedule_start;   //경기 시작일
 	private String schedule_end;	 //경기 종료일
 	private int schedule_status;	 //경기 현황(0:종료,1:진행중,2:예정,3:취소)
-	private int schedule_team1;		 //경기 팀 1	
-	private int schedule_team2;		 //경기 팀 2
+	private int schedule_team1;		 //경기 팀 1	식별번호
+	private int schedule_team2;		 //경기 팀 2	식별번호
+	
+	private String team1_name;		 //경기팀 1 이름
+	private String team2_name;		 //경기팀 2 이름
+	private String team1_photo;		 //경기팀 1 사진
+	private String team2_photo;		 //경기팀 2 사진
 	
 	private int result_num;			//경기 결과 식별번호
 	private int result_team1Score;	//팀1의 점수
@@ -55,6 +60,30 @@ public class ScheduleVO {
 	}
 	public void setSchedule_team2(int schedule_team2) {
 		this.schedule_team2 = schedule_team2;
+	}
+	public String getTeam1_name() {
+		return team1_name;
+	}
+	public void setTeam1_name(String team1_name) {
+		this.team1_name = team1_name;
+	}
+	public String getTeam2_name() {
+		return team2_name;
+	}
+	public void setTeam2_name(String team2_name) {
+		this.team2_name = team2_name;
+	}
+	public String getTeam1_photo() {
+		return team1_photo;
+	}
+	public void setTeam1_photo(String team1_photo) {
+		this.team1_photo = team1_photo;
+	}
+	public String getTeam2_photo() {
+		return team2_photo;
+	}
+	public void setTeam2_photo(String team2_photo) {
+		this.team2_photo = team2_photo;
 	}
 	public int getResult_num() {
 		return result_num;
