@@ -63,7 +63,13 @@ public class StringUtil {
 		
 		return new_date;
 	}
-	
+	public static String ScheduleTimeFormat(String date) {
+		String new_date = "";
+		new_date += date.substring(8,10) + ":";
+		new_date += date.substring(10,12);
+		
+		return new_date;
+	}
 }
 
 

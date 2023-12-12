@@ -7,8 +7,43 @@
 <meta charset="UTF-8">
 <title>경기 일정</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
-
+$(function() {
+    //input을 datepicker로 선언
+    $("#datepicker").datepicker({
+        dateFormat: 'yy-mm-dd' //달력 날짜 형태
+        ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+        ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+        ,changeYear: true //option값 년 선택 가능
+        ,changeMonth: true //option값  월 선택 가능                
+        ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+        ,buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
+        ,buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
+        ,buttonText: "선택" //버튼 호버 텍스트              
+        ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+        ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+        ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+        ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+        ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+        ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+        ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+        
+    });                    
+    
+    //초기값을 오늘 날짜로 설정해줘야 합니다.
+    $('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)  
+    
+    
+    //이벤트 연결
+    $('.category').click(function(){
+    	location.href='schedule.do?category='+$(this).attr('data-num')+'&date='+$('#datepicker').val();
+    });
+    
+});
 </script>
 </head>
 <body>
@@ -22,12 +57,204 @@
 		   </c:if>
 	   </div>
 	   <div class="align-center">
-		   		<input type="button" name="category" class="category" value="전체" onclick="location.href='schedule.do?category=9'">
-		   		<input type="button" name="category" class="category" value="축구" onclick="location.href='schedule.do?category=0'">
-		   		<input type="button" name="category" class="category" value="야구" onclick="location.href='schedule.do?category=1'">
-		   		<input type="button" name="category" class="category" value="배구" onclick="location.href='schedule.do?category=2'">
-		   		<input type="button" name="category" class="category" value="농구" onclick="location.href='schedule.do?category=3'">
+	   <p>일정을 선택해주세요. <input type="text" id="datepicker"></p>
+	   
+		   		<input type="button" name="category" class="category" value="전체" data-num="9">
+		   		<input type="button" name="category" class="category" value="축구" data-num="0">
+		   		<input type="button" name="category" class="category" value="야구" data-num="1">
+		   		<input type="button" name="category" class="category" value="배구" data-num="2">
+		   		<input type="button" name="category" class="category" value="농구" data-num="3">
 		 </div>
+		 <c:if test="${category == 9 || category == 0 }">
+			 <div class="align-center">
+			 	<h5>축구</h5>
+			 	  <c:forEach var="schedule" items="${scheduleList}">
+			 	  	<c:if test="${schedule.team_category == 0}">
+				 	<table>
+				 		<tr>
+				 			<th>경기 시간</th>
+				 			<th>경기 팀1</th>
+				 			<th>팀1 사진</th>
+				 			<c:if test="${schedule.schedule_status==0}">
+					 			<th>경기 팀1 점수</th>
+					 		</c:if>
+					 			<th>경기현황</th>
+					 		<c:if test="${schedule.schedule_status==0}">
+					 			<th>경기 팀2 점수</th>
+					 		</c:if>
+					 		<th>팀2 사진</th>
+				 			<th>경기 팀2</th>
+				 		</tr>
+				 		<tr>
+				 			<td>${schedule.schedule_time}</td>
+				 			<td>${schedule.schedule_team1},${schedule.team1_name}</td>
+				 			<td>${schedule.team1_photo}</td>
+				 			<c:if test="${schedule.schedule_status==0}">
+					 			<td>${schedule.result_team1Score}</td>
+					 			<td>종료</td>
+					 			<td>${schedule.result_team2Score}</td>
+				 			</c:if>
+				 			<c:if test="${schedule.schedule_status==1}">
+					 			<td>진행중</td>
+				 			</c:if>
+				 			<c:if test="${schedule.schedule_status==2}">
+					 			<td>예정</td>
+				 			</c:if>
+				 			<c:if test="${schedule.schedule_status==3}">
+					 			<td>경기취소</td>
+				 			</c:if>
+				 			<td>${schedule.team1_photo}</td>
+				 			<td>${schedule.schedule_team2},${schedule.team2_name}</td>
+				 		</tr>
+				 	</table>
+				 	</c:if>
+				 </c:forEach>
+			 </div>
+		</c:if>
+		
+		<c:if test="${category == 9 || category == 1 }">
+			 <div class="align-center">
+			 	<h5>야구</h5>
+			 	  <c:forEach var="schedule" items="${scheduleList}">
+			 	  	<c:if test="${schedule.team_category == 1}">
+				 	<table>
+				 		<tr>
+				 			<th>경기 시간</th>
+				 			<th>경기 팀1</th>
+				 			<th>팀1 사진</th>
+				 			<c:if test="${schedule.schedule_status==0}">
+					 			<th>경기 팀1 점수</th>
+					 		</c:if>
+					 			<th>경기현황</th>
+					 		<c:if test="${schedule.schedule_status==0}">
+					 			<th>경기 팀2 점수</th>
+					 		</c:if>
+					 		<th>팀2 사진</th>
+				 			<th>경기 팀2</th>
+				 		</tr>
+				 		<tr>
+				 			<td>$${schedule.schedule_time}</td>
+				 			<td>${schedule.schedule_team1},${schedule.team1_name}</td>
+				 			<td>${schedule.team1_photo}</td>
+				 			<c:if test="${schedule.schedule_status==0}">
+					 			<td>${schedule.result_team1Score}</td>
+					 			<td>종료</td>
+					 			<td>${schedule.result_team2Score}</td>
+				 			</c:if>
+				 			<c:if test="${schedule.schedule_status==1}">
+					 			<td>진행중</td>
+				 			</c:if>
+				 			<c:if test="${schedule.schedule_status==2}">
+					 			<td>예정</td>
+				 			</c:if>
+				 			<c:if test="${schedule.schedule_status==3}">
+					 			<td>경기취소</td>
+				 			</c:if>
+				 			<td>${schedule.team1_photo}</td>
+				 			<td>${schedule.schedule_team2},${schedule.team2_name}</td>
+				 		</tr>
+				 	</table>
+				 	</c:if>
+				 </c:forEach>
+			 </div>
+		</c:if>
+		
+		 <c:if test="${category == 9 || category == 2 }">
+			 <div class="align-center">
+			 	<h5>배구</h5>
+			 	  <c:forEach var="schedule" items="${scheduleList}">
+			 	  	<c:if test="${schedule.team_category == 2}">
+				 	<table>
+				 		<tr>
+				 			<th>경기 시간</th>
+				 			<th>경기 팀1</th>
+				 			<th>팀1 사진</th>
+				 			<c:if test="${schedule.schedule_status==0}">
+					 			<th>경기 팀1 점수</th>
+					 		</c:if>
+					 			<th>경기현황</th>
+					 		<c:if test="${schedule.schedule_status==0}">
+					 			<th>경기 팀2 점수</th>
+					 		</c:if>
+					 		<th>팀2 사진</th>
+				 			<th>경기 팀2</th>
+				 		</tr>
+				 		<tr>
+				 			<td>${schedule.schedule_time}</td>
+				 			<td>${schedule.schedule_team1},${schedule.team1_name}</td>
+				 			<td>${schedule.team1_photo}</td>
+				 			<c:if test="${schedule.schedule_status==0}">
+					 			<td>${schedule.result_team1Score}</td>
+					 			<td>종료</td>
+					 			<td>${schedule.result_team2Score}</td>
+				 			</c:if>
+				 			<c:if test="${schedule.schedule_status==1}">
+					 			<td>진행중</td>
+				 			</c:if>
+				 			<c:if test="${schedule.schedule_status==2}">
+					 			<td>예정</td>
+				 			</c:if>
+				 			<c:if test="${schedule.schedule_status==3}">
+					 			<td>경기취소</td>
+				 			</c:if>
+				 			<td>${schedule.team1_photo}</td>
+				 			<td>${schedule.schedule_team2},${schedule.team2_name}</td>
+				 		</tr>
+				 	</table>
+				 	</c:if>
+				 </c:forEach>
+			 </div>
+		</c:if>
+		
+		 <c:if test="${category == 9 || category == 3 }">
+			 <div class="align-center">
+			 	<h5>농구</h5>
+			 	  <c:forEach var="schedule" items="${scheduleList}">
+			 	  	<c:if test="${schedule.team_category == 3}">
+				 	<table>
+				 		<tr>
+				 			<th>경기 시간</th>
+				 			<th>경기 팀1</th>
+				 			<th>팀1 사진</th>
+				 			<c:if test="${schedule.schedule_status==0}">
+					 			<th>경기 팀1 점수</th>
+					 		</c:if>
+					 			<th>경기현황</th>
+					 		<c:if test="${schedule.schedule_status==0}">
+					 			<th>경기 팀2 점수</th>
+					 		</c:if>
+					 		<th>팀2 사진</th>
+				 			<th>경기 팀2</th>
+				 		</tr>
+				 		<tr>
+				 			<td>${schedule.schedule_time}</td>
+				 			<td>${schedule.schedule_team1},${schedule.team1_name}</td>
+				 			<td>${schedule.team1_photo}</td>
+				 			<c:if test="${schedule.schedule_status==0}">
+					 			<td>${schedule.result_team1Score}</td>
+					 			<td>종료</td>
+					 			<td>${schedule.result_team2Score}</td>
+				 			</c:if>
+				 			<c:if test="${schedule.schedule_status==1}">
+					 			<td>진행중</td>
+				 			</c:if>
+				 			<c:if test="${schedule.schedule_status==2}">
+					 			<td>예정</td>
+				 			</c:if>
+				 			<c:if test="${schedule.schedule_status==3}">
+					 			<td>경기취소</td>
+				 			</c:if>
+				 			<td>${schedule.team1_photo}</td>
+				 			<td>${schedule.schedule_team2},${schedule.team2_name}</td>
+				 		</tr>
+				 	</table>
+				 	</c:if>
+				 </c:forEach>
+			 </div>
+		</c:if>
+		
+		 
+		 
    </div>
 </div>
 
