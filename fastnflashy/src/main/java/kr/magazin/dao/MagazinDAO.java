@@ -16,7 +16,7 @@ public class MagazinDAO {
 	
 	private MagazinDAO() {}
 	
-	//칼럼니스트 - 칼럼 등록
+	//칼럼 니스트 - 칼럼 등록
 	public void insertMagazin(MagazinVO magazin)throws Exception{
 		Connection conn = null;
 		PreparedStatement pstmt = null;

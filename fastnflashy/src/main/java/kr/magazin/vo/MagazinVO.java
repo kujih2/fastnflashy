@@ -10,8 +10,8 @@ public class MagazinVO {
 	private int mg_hit; //칼럼 조회수
 	private Date mg_reg_date; //칼럼 등록일
 	private Date mg_modify_date; //칼럼 수정일
-	private String mg_photo1; //사진1
-	private String mg_photo2; //사진2
+	private String mg_photo1; //이미지1
+	private String mg_photo2; //이미지2
 	private String mg_ip; //아이피
 	private int mem_num; //회원 고유 번호
 	
