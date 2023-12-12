@@ -25,15 +25,16 @@ public class MagazinDAO {
 		try {
 			conn = DBUtil.getConnection();
 			sql = "INSERT INTO magazin_board (mg_board_num,mg_title,sports_category,mg_content,"
-				+ "mg_fileneam,mg_ip,mem_num) VALUES (zboard_seq.nextval,?,?,?,?,?,?)";
+				+ "mg_photo1,mg_photo2,mg_ip,mem_num) VALUES (magazin_seq.nextval,?,?,?,?,?,?,?)";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, magazin.getMg_title());
 			pstmt.setInt(2, magazin.getSports_category());
 			pstmt.setString(3, magazin.getMg_content());
-			pstmt.setString(4, magazin.getMg_filename());
-			pstmt.setString(5, magazin.getMg_ip());
-			pstmt.setInt(6, magazin.getMem_num());
+			pstmt.setString(4, magazin.getMg_photo1());
+			pstmt.setString(5, magazin.getMg_photo2());
+			pstmt.setString(6, magazin.getMg_ip());
+			pstmt.setInt(7, magazin.getMem_num());
 			
 			pstmt.executeUpdate();
 		}catch(Exception e) {

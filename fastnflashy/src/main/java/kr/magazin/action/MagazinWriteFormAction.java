@@ -15,6 +15,10 @@ public class MagazinWriteFormAction implements Action{
 		if(user_num==null) {//비로그인
 			return "redirect:/member/loginForm.do";
 		}
+		Integer user_auth = (Integer)session.getAttribute("user_auth");
+		if(user_auth != 2) {//칼럼회원이 아닌 경우
+			return "/WEB-INF/views/common/notice.jsp";
+		}
 		//로그인이 된 경우
 		return "/WEB-INF/views/magazin/magazinWriteForm.jsp";
 	}

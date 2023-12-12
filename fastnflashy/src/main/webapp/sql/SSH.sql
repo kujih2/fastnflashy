@@ -7,7 +7,8 @@ create table magazin_board (
  mg_hit number(9) default 0 not null,
  mg_reg_date date default sysdate not null,
  mg_modify_date date,
- mg_filename varchar2(256) not null,
+ mg_photo1 varchar2(60) not null,
+ mg_photo2 varchar2(60),
  mg_video varchar2(900),
  mg_ip varchar2(40) not null,
  mem_num number not null, -- 회원 고유번호

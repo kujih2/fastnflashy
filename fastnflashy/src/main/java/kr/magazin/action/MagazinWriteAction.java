@@ -20,6 +20,10 @@ public class MagazinWriteAction implements Action{
 		if(user_num==null) {//비로그인
 			return "redirect:/member/loginForm.do";
 		}
+		Integer user_auth = (Integer)session.getAttribute("user_auth");
+		if(user_auth != 2) {//칼럼회원이 아닌 경우
+			return "/WEB-INF/views/common/notice.jsp";	
+		}
 		//로그인 된 경우
 		MultipartRequest multi = FileUtil.createFile(request);
 		MagazinVO magazin = new MagazinVO();
@@ -27,13 +31,14 @@ public class MagazinWriteAction implements Action{
 		magazin.setSports_category(Integer.parseInt(multi.getParameter("sports_category")));
 		magazin.setMg_content(multi.getParameter("mg_content"));
 		magazin.setMg_ip(request.getRemoteAddr());
-		magazin.setMg_filename(multi.getFilesystemName("filename"));
+		magazin.setMg_photo1(multi.getFilesystemName("mg_photo1"));
+		magazin.setMg_photo2(multi.getFilesystemName("mg_photo2"));
 		magazin.setMem_num(user_num);
 		
 		MagazinDAO dao = MagazinDAO.getInstance();
 		dao.insertMagazin(magazin);
 		
-		return "WEB-INF/views/magazin/magazinWrite.jsp";
+		return "/WEB-INF/views/magazin/magazinWrite.jsp";
 	}
 
 }

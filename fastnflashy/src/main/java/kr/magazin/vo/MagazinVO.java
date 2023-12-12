@@ -10,9 +10,11 @@ public class MagazinVO {
 	private int mg_hit; //칼럼 조회수
 	private Date mg_reg_date; //칼럼 등록일
 	private Date mg_modify_date; //칼럼 수정일
-	private String mg_filename; //파일 이름
+	private String mg_photo1; //사진1
+	private String mg_photo2; //사진2
 	private String mg_ip; //아이피
 	private int mem_num; //회원 고유 번호
+	
 	
 	
 	public int getMg_board_num() {
@@ -57,11 +59,17 @@ public class MagazinVO {
 	public void setMg_modify_date(Date mg_modify_date) {
 		this.mg_modify_date = mg_modify_date;
 	}
-	public String getMg_filename() {
-		return mg_filename;
+	public String getMg_photo1() {
+		return mg_photo1;
 	}
-	public void setMg_filename(String mg_filename) {
-		this.mg_filename = mg_filename;
+	public void setMg_photo1(String mg_photo1) {
+		this.mg_photo1 = mg_photo1;
+	}
+	public String getMg_photo2() {
+		return mg_photo2;
+	}
+	public void setMg_photo2(String mg_photo2) {
+		this.mg_photo2 = mg_photo2;
 	}
 	public String getMg_ip() {
 		return mg_ip;
