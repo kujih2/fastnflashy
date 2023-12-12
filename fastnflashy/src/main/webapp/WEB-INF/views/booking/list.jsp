@@ -32,7 +32,7 @@
 					${match.schedule_team1} VS ${match.schedule_team2}<br>
 					${match.team_category}
 				</div>
-				<input type="button" value="예매가능">
+				<input type="button" value="예매가능" onclick="location.href='bookingForm.do?schedule_num=${match.schedule_num}'">
 				</c:forEach>
 			</div>
 		</div>

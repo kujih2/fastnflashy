@@ -7,7 +7,6 @@ public class BookedSeatVO {
 	private int seat_row;			//절대적 좌석 열번호
 	private int seat_status;		//좌석 예매 상태 0취소 1예매됨
 	
-	
 	public int getSchedule_num() {
 		return schedule_num;
 	}
@@ -38,4 +37,7 @@ public class BookedSeatVO {
 	public void setSeat_status(int seat_status) {
 		this.seat_status = seat_status;
 	}
+
+	
+	
 }

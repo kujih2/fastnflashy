@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+*{
+margin:0;
+padding:0;
+}
+/*booking form
+==========================*/
+.booking-main{
+	width:1000px;
+	min-height:400px;
+	margin:0;
+	padding:0;
+	background:white;
+}
+.booking-form-left{
+	width:550px;
+	float:left;
+
+}
+.booking-form-right{
+	width:450px;
+	float:right;
+
+}
+.booking-form-right div:nth-child(1){
+	background:black;
+
+}
+.booking-form-right div:nth-child(1) p{
+	color:white;
+}
+.seat{
+	line-height:0.5;
+}
+.selected-seat{
+	background:blue;
+}
