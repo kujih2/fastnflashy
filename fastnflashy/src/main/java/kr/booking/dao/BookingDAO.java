@@ -8,6 +8,7 @@ import java.util.List;
 
 import kr.schedule.vo.ScheduleVO;
 import kr.util.DBUtil;
+import kr.util.StringUtil;
 
 public class BookingDAO {
 
@@ -70,5 +71,38 @@ public class BookingDAO {
 			DBUtil.executeClose(null, pstmt, conn);
 		}
 	}
-	
+	//등록된 경기 목록 불러오기
+	public List<ScheduleVO> getListOfRegistedMatch() throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<ScheduleVO> list = null;
+		String sql = null;
+		
+		try {
+			conn = DBUtil.getConnection();
+			sql = "SELECT * FROM match_schedule WHERE schedule_regmatch = 1";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			list = new ArrayList<ScheduleVO>();
+			while(rs.next()) {
+				ScheduleVO schedule =new ScheduleVO();
+				schedule.setSchedule_num(rs.getInt("schedule_num"));
+				schedule.setTeam_category(rs.getInt("team_category"));
+				schedule.setSchedule_start(StringUtil.standardFormOfDate(rs.getString("schedule_start")));
+				schedule.setSchedule_end(rs.getString("schedule_end"));
+				schedule.setSchedule_status(rs.getInt("schedule_status"));
+				schedule.setSchedule_team1(rs.getInt("schedule_team1"));
+				schedule.setSchedule_team2(rs.getInt("schedule_team2"));
+			
+				list.add(schedule);
+			}
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		
+		return list;
+	}
 }
