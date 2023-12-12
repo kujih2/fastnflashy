@@ -5,7 +5,7 @@ import java.sql.Date;
 public class MagazinVO {
 	private int mg_board_num; //칼럼 게시글 고유번호
 	private String mg_title; //칼럼 제목
-	private String sports_category; //매거진 카테고리
+	private int sports_category; //매거진 카테고리
 	private String mg_content; //칼럼 내용
 	private int mg_hit; //칼럼 조회수
 	private Date mg_reg_date; //칼럼 등록일
@@ -27,10 +27,10 @@ public class MagazinVO {
 	public void setMg_title(String mg_title) {
 		this.mg_title = mg_title;
 	}
-	public String getSports_category() {
+	public int getSports_category() {
 		return sports_category;
 	}
-	public void setSports_category(String sports_category) {
+	public void setSports_category(int sports_category) {
 		this.sports_category = sports_category;
 	}
 	public String getMg_content() {

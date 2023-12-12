@@ -2,9 +2,9 @@
 create table magazin_board (
  mg_board_num number not null, -- 칼럼 게시글 고유번호
  mg_title varchar2(150) not null,
- sports_category number(9) not null, -- 축구:0,야구:1,배구:2,농구:3
+ sports_category number(9) default 0 not null, -- 축구:0,야구:1,배구:2,농구:3
  mg_content clob not null,
- mg_hit number(9) not null,
+ mg_hit number(9) default 0 not null,
  mg_reg_date date default sysdate not null,
  mg_modify_date date,
  mg_filename varchar2(256) not null,
@@ -19,7 +19,7 @@ create sequence magazin_seq;
 -- 메거진 댓글
 create table magazin_reply (
  mg_re_num number not null, -- 칼럼 댓글 고유번호
- mg_isdeleted number(1) not null, -- 댓글 삭제여부 0:기본값, 1:삭제
+ mg_isdeleted number(1) default 0 not null, -- 댓글 삭제여부 0:기본값, 1:삭제
  mg_content varchar2(900) not null,
  mg_reg_date date default sysdate not null,
  mg_modify_date date,
@@ -52,7 +52,7 @@ create sequence magazin_sub_reply_seq;
 create table magazin_fav(
  mem_num number not null,
  mg_board_num not null,
- mg_fav_status number(5) not null, -- DEFAULT:0,공감:1, 후속:2, 추천:3, :4,흥미진진 :5:별로
+ mg_fav_status number(5) default 0 not null, -- DEFAULT:0,공감:1, 후속:2, 추천:3, :4,흥미진진 :5:별로
  constraint magazin_fav_fk1 foreign key (mg_board_num) references magazin_board (mg_board_num),
  constraint magazin_fav_fk2 foreign key (mem_num) references member (mem_num)
 );
@@ -61,7 +61,7 @@ create table magazin_fav(
 create table mg_reply_like (
  mem_num number not null,
  mg_re_num number not null,
- mg_like_status number(2) not null,
+ mg_like_status number(2) default 0 not null,
  constraint mg_reply_like_fk1 foreign key (mem_num) references member (mem_num),
  constraint mg_reply_like_fk2 foreign key (mg_re_num) references magazin_reply (mg_re_num)
 );
@@ -70,7 +70,7 @@ create table mg_reply_like (
 create table mg_sub_reply_like (
  mem_num number not null,
  mg_sub_re_num number not null,
- mg_sub_like_status number(2) not null,
+ mg_sub_like_status number(2) default 0 not null,
  constraint mg_sub_reply_like_fk1 foreign key (mem_num) references member (mem_num),
  constraint mg_sub_reply_like_fk2 foreign key (mg_sub_re_num) references magazin_sub_reply (mg_sub_re_num)
 );

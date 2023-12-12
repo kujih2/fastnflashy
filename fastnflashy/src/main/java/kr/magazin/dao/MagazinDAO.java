@@ -1,5 +1,11 @@
 package kr.magazin.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+import kr.magazin.vo.MagazinVO;
+import kr.util.DBUtil;
+
 public class MagazinDAO {
 	//싱글턴 패턴
 	private static MagazinDAO instance = new MagazinDAO();
@@ -11,6 +17,31 @@ public class MagazinDAO {
 	private MagazinDAO() {}
 	
 	//칼럼니스트 - 칼럼 등록
+	public void insertMagazin(MagazinVO magazin)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			conn = DBUtil.getConnection();
+			sql = "INSERT INTO magazin_board (mg_board_num,mg_title,sports_category,mg_content,"
+				+ "mg_fileneam,mg_ip,mem_num) VALUES (zboard_seq.nextval,?,?,?,?,?,?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, magazin.getMg_title());
+			pstmt.setInt(2, magazin.getSports_category());
+			pstmt.setString(3, magazin.getMg_content());
+			pstmt.setString(4, magazin.getMg_filename());
+			pstmt.setString(5, magazin.getMg_ip());
+			pstmt.setInt(6, magazin.getMem_num());
+			
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+	}
 	//전체 레코드수/검색 레코드 수
 	//전체글/검색 글 목록
 	//글상세
