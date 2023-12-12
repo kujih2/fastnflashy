@@ -9,7 +9,7 @@
 			fast&amp;flashy
 		</li>
 		<li>
-			<a href="${pageContext.request.contextPath}/magazin/List.do">매거진</a>
+			<a href="${pageContext.request.contextPath}/magazin/magazinList.do">매거진</a>
 		</li>
 		<li>
 			<a href="${pageContext.request.contextPath}/board/boardList.do">게시판</a>
