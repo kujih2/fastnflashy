@@ -2,9 +2,13 @@ package kr.magazin.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import kr.magazin.vo.MagazinVO;
 import kr.util.DBUtil;
+import kr.util.StringUtil;
 
 public class MagazinDAO {
 	//싱글턴 패턴
@@ -44,8 +48,121 @@ public class MagazinDAO {
 		}
 	}
 	//전체 레코드수/검색 레코드 수
+	public int getMagazinCount(String keyfield,String keyword)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		String sub_sql = "";
+		int count = 0;
+		
+		try {
+			conn = DBUtil.getConnection();
+			
+			if(keyword!=null && !"".equals(keyword)) {
+				//검색처리
+				if(keyfield.equals("1")) sub_sql += "WHERE mg_title LIKE ?";
+				else if(keyfield.equals("2")) sub_sql += "WHERE mem_name LIKE ?";
+				else if(keyfield.equals("3")) sub_sql += "WHERE mg_content LIKE ?";
+			}
+			sql = "SELECT COUNT(*) FROM magazin_board JOIN member_detail USING(mem_num) " + sub_sql;
+			pstmt = conn.prepareStatement(sql);
+			if(keyword != null && !"".equals(keyword)) {
+				pstmt.setString(1, "%"+keyword+"%");
+			}
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		
+		return count;
+	}
 	//전체글/검색 글 목록
+	public List<MagazinVO> getListMagazin(int start, int end,String keyfield,String keyword)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<MagazinVO> list = null;
+		String sql = null;
+		String sub_sql = "";
+		int cnt = 0;
+		
+		try {
+			conn = DBUtil.getConnection();
+			
+			if(keyword!=null && !"".equals(keyword)) {
+				//검색
+				if(keyfield.equals("1")) sub_sql += "WHERE mg_title LIKE ?";
+				else if(keyfield.equals("2")) sub_sql += "WHERE mem_name LIKE ?";
+				else if(keyfield.equals("3")) sub_sql += "WHERE mg_content LIKE ?";
+			}
+			
+			sql = "SELECT * FROM (SELECT a.*, rownum rnum FROM "
+				+ "(SELECT *FROM magazin_board JOIN member_detail USING(mem_num) " + sub_sql
+				+ "ORDER BY mg_board_num DESC)a) WHERE rnum >= ? AND rnum <= ?";
+			pstmt = conn.prepareStatement(sql);
+			if(keyword != null && !"".equals(keyword)) {
+				pstmt.setString(++cnt, "%"+keyword+"%");
+			}
+			pstmt.setInt(++cnt, start);
+			pstmt.setInt(++cnt, end);
+			
+			rs = pstmt.executeQuery();
+			list = new ArrayList<MagazinVO>();
+			while(rs.next()) {
+				MagazinVO magazin = new MagazinVO();
+				magazin.setMg_board_num(rs.getInt("mg_board_num"));
+				magazin.setMg_title(StringUtil.useNoHtml(rs.getString("mg_title")));
+				magazin.setMg_hit(rs.getInt("mg_hit"));
+				magazin.setMg_content(StringUtil.useNoHtml(rs.getString("mg_content")));
+				magazin.setMg_photo1(rs.getString("mg_photo1"));
+				
+				list.add(magazin);
+			}
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		
+		return list;
+	}
 	//글상세
+	public MagazinVO getMagazin(int mg_board_num)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		MagazinVO magazin = null;
+		String sql = null;
+		
+		try {
+			conn = DBUtil.getConnection();
+			sql = "SELECT * FROM magazin_board JOIN member USING(mem_num) "
+				+ "LEFT OUTER JOIN member_detail USING(mem_num) "
+				+ "WHERE mg_board_num=?";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				magazin = new MagazinVO();
+				magazin.setMg_board_num(rs.getInt("mg_board_num"));
+				magazin.setMg_title(rs.getString("mg_title"));
+				magazin.setSports_category(rs.getInt("sports_category"));
+				magazin.setMg_content(rs.getString("mg_content"));
+				magazin.setMg_hit(rs.getInt("mg_hit"));
+			}
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		
+		return magazin;
+	}
 	//조회수 증가
 	//파일 삭제
 	//칼럼니스트 - 칼럼 수정
