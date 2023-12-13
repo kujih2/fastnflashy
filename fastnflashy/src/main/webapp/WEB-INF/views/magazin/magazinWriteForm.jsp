@@ -11,7 +11,29 @@
 function showImage2Input() {
 	console.log("showImage2Input function called");
     document.getElementById("image2Input").style.display = "block";
-}
+};
+$(function(){
+	$('#magazinWrite_form').submit(function(){
+		let magazin = document.querySelectorAll('input[type="text"],textarea');
+		for(let i=0;i<magazin.length;i++){
+			if($('#sports_category').val() == 0){
+				alert('카테고리를 선택하세요.');
+				return false;
+			}
+			if(magazin[i].value.trim()==''){
+				let label = document.querySelector('label[for="'+magazin[i].id+'"]');
+				alert(label.textContent + ' 을 입력하세요');
+				magazin[i].value = '';
+				magazin[i].focus();
+				return false
+			}
+			if($('#mg_photo1').val() == ''){
+				alert('최소 1개이상의 이미지는 있어야합니다.');
+				return false;
+			}
+			}
+	});
+});
 </script>
 </head>
 <body>
