@@ -13,6 +13,18 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 $(function() {
+	var avilableDates = ["2023-12-12"]
+	
+	function avilable(date){
+		
+		var thismonth = date.getMonth()+1;
+		var thisday = date.getDate();
+		
+		if(thismonth<10){
+			thismonth = "0"+thismonth;
+		}
+	}
+	
     //input을 datepicker로 선언
     $("#datepicker").datepicker({
         dateFormat: 'yy-mm-dd' //달력 날짜 형태
@@ -31,11 +43,14 @@ $(function() {
         ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
         ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
         ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+    	,onSelect: function (date) {
+    		location.href='schedule.do?category=9'+'&date='+$('#datepicker').val();
+        }
         
     });                    
     
     //초기값을 오늘 날짜로 설정해줘야 합니다.
-    $('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)  
+    $('#datepicker').datepicker('setDate', '${date}'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)  
     
     
     //이벤트 연결
@@ -57,7 +72,7 @@ $(function() {
 		   </c:if>
 	   </div>
 	   <div class="align-center">
-	   <p>일정을 선택해주세요. <input type="text" id="datepicker"></p>
+	   <p><input type="text" id="datepicker"></p>
 	   
 		   		<input type="button" name="category" class="category" value="전체" data-num="9">
 		   		<input type="button" name="category" class="category" value="축구" data-num="0">
@@ -65,7 +80,8 @@ $(function() {
 		   		<input type="button" name="category" class="category" value="배구" data-num="2">
 		   		<input type="button" name="category" class="category" value="농구" data-num="3">
 		 </div>
-		 <c:if test="${category == 9 || category == 0 }">
+		  
+		 <c:if test="${!empty scheduleList && (category == 9 || category == 0 )}">
 			 <div class="align-center">
 			 	<h5>축구</h5>
 			 	  <c:forEach var="schedule" items="${scheduleList}">
@@ -87,7 +103,7 @@ $(function() {
 				 		</tr>
 				 		<tr>
 				 			<td>${schedule.schedule_time}</td>
-				 			<td>${schedule.schedule_team1},${schedule.team1_name}</td>
+				 			<td>${schedule.team1_name}</td>
 				 			<td>${schedule.team1_photo}</td>
 				 			<c:if test="${schedule.schedule_status==0}">
 					 			<td>${schedule.result_team1Score}</td>
@@ -103,8 +119,8 @@ $(function() {
 				 			<c:if test="${schedule.schedule_status==3}">
 					 			<td>경기취소</td>
 				 			</c:if>
-				 			<td>${schedule.team1_photo}</td>
-				 			<td>${schedule.schedule_team2},${schedule.team2_name}</td>
+				 			<td>${schedule.team2_photo}</td>
+				 			<td>${schedule.team2_name}</td>
 				 		</tr>
 				 	</table>
 				 	</c:if>
@@ -112,7 +128,7 @@ $(function() {
 			 </div>
 		</c:if>
 		
-		<c:if test="${category == 9 || category == 1 }">
+		<c:if test="${!empty scheduleList && (category == 9 || category == 1)}">
 			 <div class="align-center">
 			 	<h5>야구</h5>
 			 	  <c:forEach var="schedule" items="${scheduleList}">
@@ -133,8 +149,8 @@ $(function() {
 				 			<th>경기 팀2</th>
 				 		</tr>
 				 		<tr>
-				 			<td>$${schedule.schedule_time}</td>
-				 			<td>${schedule.schedule_team1},${schedule.team1_name}</td>
+				 			<td>${schedule.schedule_time}</td>
+				 			<td>${schedule.team1_name}</td>
 				 			<td>${schedule.team1_photo}</td>
 				 			<c:if test="${schedule.schedule_status==0}">
 					 			<td>${schedule.result_team1Score}</td>
@@ -150,8 +166,8 @@ $(function() {
 				 			<c:if test="${schedule.schedule_status==3}">
 					 			<td>경기취소</td>
 				 			</c:if>
-				 			<td>${schedule.team1_photo}</td>
-				 			<td>${schedule.schedule_team2},${schedule.team2_name}</td>
+				 			<td>${schedule.team2_photo}</td>
+				 			<td>${schedule.team2_name}</td>
 				 		</tr>
 				 	</table>
 				 	</c:if>
@@ -159,7 +175,7 @@ $(function() {
 			 </div>
 		</c:if>
 		
-		 <c:if test="${category == 9 || category == 2 }">
+		 <c:if test="${!empty scheduleList && (category == 9 || category == 2 )}">
 			 <div class="align-center">
 			 	<h5>배구</h5>
 			 	  <c:forEach var="schedule" items="${scheduleList}">
@@ -181,7 +197,7 @@ $(function() {
 				 		</tr>
 				 		<tr>
 				 			<td>${schedule.schedule_time}</td>
-				 			<td>${schedule.schedule_team1},${schedule.team1_name}</td>
+				 			<td>${schedule.team1_name}</td>
 				 			<td>${schedule.team1_photo}</td>
 				 			<c:if test="${schedule.schedule_status==0}">
 					 			<td>${schedule.result_team1Score}</td>
@@ -197,8 +213,8 @@ $(function() {
 				 			<c:if test="${schedule.schedule_status==3}">
 					 			<td>경기취소</td>
 				 			</c:if>
-				 			<td>${schedule.team1_photo}</td>
-				 			<td>${schedule.schedule_team2},${schedule.team2_name}</td>
+				 			<td>${schedule.team2_photo}</td>
+				 			<td>${schedule.team2_name}</td>
 				 		</tr>
 				 	</table>
 				 	</c:if>
@@ -206,7 +222,7 @@ $(function() {
 			 </div>
 		</c:if>
 		
-		 <c:if test="${category == 9 || category == 3 }">
+		 <c:if test="${!empty scheduleList &&(category == 9 || category == 3 )}">
 			 <div class="align-center">
 			 	<h5>농구</h5>
 			 	  <c:forEach var="schedule" items="${scheduleList}">
@@ -228,7 +244,7 @@ $(function() {
 				 		</tr>
 				 		<tr>
 				 			<td>${schedule.schedule_time}</td>
-				 			<td>${schedule.schedule_team1},${schedule.team1_name}</td>
+				 			<td>${schedule.team1_name}</td>
 				 			<td>${schedule.team1_photo}</td>
 				 			<c:if test="${schedule.schedule_status==0}">
 					 			<td>${schedule.result_team1Score}</td>
@@ -244,8 +260,8 @@ $(function() {
 				 			<c:if test="${schedule.schedule_status==3}">
 					 			<td>경기취소</td>
 				 			</c:if>
-				 			<td>${schedule.team1_photo}</td>
-				 			<td>${schedule.schedule_team2},${schedule.team2_name}</td>
+				 			<td>${schedule.team2_photo}</td>
+				 			<td>${schedule.team2_name}</td>
 				 		</tr>
 				 	</table>
 				 	</c:if>
@@ -253,7 +269,11 @@ $(function() {
 			 </div>
 		</c:if>
 		
-		 
+		 <c:if test="${empty scheduleList}">
+		 	<div class="align-center">
+		 		<h2>경기 일정이 없습니다.</h2>
+		 	</div>
+		 </c:if>
 		 
    </div>
 </div>
