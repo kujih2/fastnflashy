@@ -32,6 +32,7 @@ public class BoardWriteAction implements Action{
 		board.setFilename(multi.getFilesystemName("filename"));
 		board.setMem_num(user_num);
 		
+		
 		BoardDAO dao = BoardDAO.getInstance();
 		dao.insertBoard(board);
 		
