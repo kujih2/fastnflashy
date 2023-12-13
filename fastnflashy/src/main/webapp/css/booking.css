@@ -13,6 +13,19 @@ padding:0;
 	padding:0;
 	background:white;
 }
+.booking-header{
+	background:black;
+}
+.booking-header div{
+	width:300px;
+	float:left;
+}
+form{
+	border:none;
+	width:1000px;
+	margin:0;
+	padding:0;
+}
 .booking-form-left{
 	width:550px;
 	float:left;
@@ -23,11 +36,13 @@ padding:0;
 	float:right;
 
 }
-.booking-form-right div:nth-child(1){
+.booking-form-right .form1 .schedule-info,
+.booking-form-right .form2 .schedule-info{
 	background:black;
 
 }
-.booking-form-right div:nth-child(1) p{
+.booking-form-right .form1 .schedule-info p,
+.booking-form-right .form2 .schedule-info p{
 	color:white;
 }
 .seat{

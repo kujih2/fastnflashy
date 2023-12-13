@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,21 +12,59 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.6.0.min.js"></script>
 <script>
 $(function(){
+	$('.booking-header').hide();
+	$('.form2').hide();
+	
+//form1
 	$('#seat td').click(function(){
 		var seatClasses = $(this).attr('class')
 		var classNames = seatClasses.split(' ')
 		var rowName=classNames[0]
 		var colName = $(this).parent().attr('class');
-		
 		if($(this).hasClass('selected-seat')){
 			$(this).removeClass('selected-seat')
 			$('.'+colName+rowName).remove()
 		}else{
 			$(this).addClass('selected-seat');	
-			$('#my_select').append('<span class="' + colName + rowName + '">'+colName+'행 '+rowName+'열<br></span>')
+			$('.my-select div').append('<p class="' + colName + rowName + '">'+colName+'행 '+rowName+'열</p>')
 		}
+		var numOfSeat = $('.selected-seat').length;
+		$('#num_of_seat').val(numOfSeat);
 		
+		$('.my-select span.number-of-seat').text(numOfSeat)
+		$('.fee').text(1000*numOfSeat+'원');
+		updateOptions(numOfSeat);
 	});
+	
+	$('#reselect').click(function(){
+		$('#seat td').removeClass('selected-seat');
+		$('.my-select div p').remove();
+		numOfSeat = $('.selected-seat').length;
+		$('.my-select span.number-of-seat').text(numOfSeat)
+	})
+	
+	$('#toForm2').click(function(){
+		if($('.selected-seat').length==0){
+			alert('좌석을 선택해야 합니다');
+			return;
+		}
+		$('.form1').hide();
+		$('.booking-header').show();
+		$('.form2').show();
+	});
+//form2
+	$('#toForm1').click(function(){
+		$('.form2').hide();
+		$('.form1').show();
+	});
+	
+function updateOptions(numOfSeat){
+	$('.ticketSelect').empty();
+	for(var i =0;i<=numOfSeat;i++){
+		$('.ticketSelect').append('<option value="' + i + '">' + i + '매</option>');
+	}
+}
+	
 });
 </script>
 </head>
@@ -32,27 +72,24 @@ $(function(){
 	<div class="content-main">
 		<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 		<div class="booking-main">
+			<jsp:include page="/WEB-INF/views/booking/bookingHeader.jsp" />
+
+		<form action="" method="post">
+			<input type="hidden" id="num_of_seat" value="${numOfSeat}">
 			<div class="booking-form-left">
-				<h2>티켓 예매하기</h2>
-				<p>${schedule.team1_name} VS ${schedule.team2_name}</p>
-				<div>
-				<%@ include file="seatTable.html" %>
-				</div>
+				<jsp:include page="/WEB-INF/views/booking/form1Left.jsp" />
+				<jsp:include page="/WEB-INF/views/booking/form2Left.jsp" />
 			</div>
 			<div class="booking-form-right">
-				<div>
-					<p>관람일 : ${schedule.schedule_start}</p>
-				</div>
-				<div id="my_select">
-					<p>선택좌석</p>
-				</div>
-				<div class="booking-buttons">
-					<input type="button" value="좌석선택완료">
-					<input type="button" value="취소">
-					<input type="button" value="다시선택">
-				</div>
+				<jsp:include page="/WEB-INF/views/booking/form1Right.jsp" />
+				<jsp:include page="/WEB-INF/views/booking/form2Right.jsp" />
+				
+				
+				
 			</div>
+		</form>
 		</div>
+
 	</div>
 
 </body>
