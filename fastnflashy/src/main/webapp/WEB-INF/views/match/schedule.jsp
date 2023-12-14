@@ -13,9 +13,10 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 $(function() {
-	var avilableDates = ["2023-12-12"]
+	//경기일정이 있는 날짜만 선택 가능
+	var availableDates = [	]
 	
-	function avilable(date){
+	function available(date){
 		
 		var thismonth = date.getMonth()+1;
 		var thisday = date.getDate();
@@ -23,11 +24,22 @@ $(function() {
 		if(thismonth<10){
 			thismonth = "0"+thismonth;
 		}
+		if(thisday<10){
+			thisday = "0"+thisday;
+		}
+		ymd = date.getFullYear() + "-" + thismonth + "-" + thisday;
+		
+		if($.inArray(ymd,availableDates)>=0){
+			return[true,"",""];
+		}else{
+			return[false,"",""];
+		}
 	}
 	
     //input을 datepicker로 선언
     $("#datepicker").datepicker({
         dateFormat: 'yy-mm-dd' //달력 날짜 형태
+        ,beforeShowDay: available
         ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
         ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
         ,changeYear: true //option값 년 선택 가능
@@ -67,6 +79,7 @@ $(function() {
 <div class="content-main">
 	<h2>경기 일정</h2>
 		<div class="align-right">
+		<input type="hidden" id="scheduleDate" value="">
 			<c:if test="${!empty user_num && user_auth == 9}">
 			<input type="button" value="경기일정 삽입" onclick="location.href='insertScheduleForm.do'">
 		   </c:if>

@@ -297,5 +297,5 @@ public class ScheduleDAO {
 			DBUtil.executeClose(rs, pstmt, conn);
 		}
 	}
-	
+	//경기일정이 있는 날짜만 조회
 }

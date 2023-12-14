@@ -5,6 +5,7 @@ public class ScheduleVO {
 	private int team_category;		 //경기 종목(축구:0,야구:1,배구:2,농구:3)	
 	private String schedule_start;   //경기 시작일
 	private String schedule_time;	 //경기 시작 시간
+	private String schedule_date;	 //경기일 
 	private String schedule_end;	 //경기 종료일
 	private int schedule_status;	 //경기 현황(0:종료,1:진행중,2:예정,3:취소)
 	private int schedule_team1;		 //경기 팀 1	식별번호
@@ -40,6 +41,12 @@ public class ScheduleVO {
 	}
 	public void setSchedule_time(String schedule_time) {
 		this.schedule_time = schedule_time;
+	}
+	public String getSchedule_date() {
+		return schedule_date;
+	}
+	public void setSchedule_date(String schedule_date) {
+		this.schedule_date = schedule_date;
 	}
 	public void setSchedule_start(String schedule_start) {
 		this.schedule_start = schedule_start;
