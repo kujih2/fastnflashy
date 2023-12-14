@@ -146,6 +146,7 @@ public class MagazinDAO {
 				+ "LEFT OUTER JOIN member_detail USING(mem_num) "
 				+ "WHERE mg_board_num=?";
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, mg_board_num);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				magazin = new MagazinVO();
@@ -153,19 +154,93 @@ public class MagazinDAO {
 				magazin.setMg_title(rs.getString("mg_title"));
 				magazin.setSports_category(rs.getInt("sports_category"));
 				magazin.setMg_content(rs.getString("mg_content"));
+				magazin.setMg_photo1(rs.getString("mg_photo1"));
+				magazin.setMg_photo2(rs.getString("mg_photo2"));
 				magazin.setMg_hit(rs.getInt("mg_hit"));
+				magazin.setMg_reg_date(rs.getDate("mg_reg_date"));
+				magazin.setMg_modify_date(rs.getDate("mg_modify_date"));
+				magazin.setMem_name(rs.getString("mem_name"));
+				magazin.setMem_email(rs.getString("mem_email"));
+				magazin.setMem_photo(rs.getString("mem_photo"));
+				magazin.setMem_num(rs.getInt("mem_num"));
 			}
 		}catch(Exception e) {
 			throw new Exception(e);
 		}finally {
 			DBUtil.executeClose(rs, pstmt, conn);
 		}
-		
 		return magazin;
 	}
 	//조회수 증가
+	public void updateReadcount(int mg_board_num)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			conn = DBUtil.getConnection();
+			sql = "UPDATE magazin_board SET mg_hit=mg_hit+1 WHERE mg_board_num=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, mg_board_num);
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+	}
 	//파일 삭제
+	public void deleteImage(int board_num)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			conn = DBUtil.getConnection();
+			sql = "UPDATE magazin_board SET mg_photo1='' "
+				+ "AND mg_photo2='' WHERE mg_board_num=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board_num);
+			pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+	}
 	//칼럼니스트 - 칼럼 수정
+	public void updateMagazin(MagazinVO magazin)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		String sub_sql = "";
+		int cnt = 0;
+		
+		try {
+			conn = DBUtil.getConnection();
+			
+			if(magazin.getMg_photo2()!=null) {
+				sub_sql += ",mg_photo2=?";
+			}
+			sql ="UPDATE magazin_board SET sports_category=?,mg_title=?,mg_content=?,"
+			   + "mg_modyfy_date=SYSDATE,mg_photo1=?" + sub_sql + "WHERE mg_board_num=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(++cnt, magazin.getSports_category());
+			pstmt.setString(++cnt, magazin.getMg_title());
+			pstmt.setString(++cnt, magazin.getMg_content());
+			pstmt.setString(++cnt, magazin.getMg_photo1());
+			if(magazin.getMg_photo2() != null) {
+				pstmt.setString(++cnt, magazin.getMg_photo2());
+			}
+			pstmt.setInt(++cnt, magazin.getMem_num());
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+	}
 	//관리자 - 칼럼 삭제
 	//칼럼 반응 등록
 	//칼럼 반응 개수

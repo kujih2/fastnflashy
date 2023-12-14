@@ -15,7 +15,9 @@ public class MagazinVO {
 	private String mg_ip; //아이피
 	private int mem_num; //회원 고유 번호
 	
-	
+	private String mem_name;//회원 이름
+	private String mem_email;//회원 이메일
+	private String mem_photo;//회원 사진
 	
 	public int getMg_board_num() {
 		return mg_board_num;
@@ -82,6 +84,26 @@ public class MagazinVO {
 	}
 	public void setMem_num(int mem_num) {
 		this.mem_num = mem_num;
+	}
+	
+	
+	public String getMem_name() {
+		return mem_name;
+	}
+	public void setMem_name(String mem_name) {
+		this.mem_name = mem_name;
+	}
+	public String getMem_email() {
+		return mem_email;
+	}
+	public void setMem_email(String mem_email) {
+		this.mem_email = mem_email;
+	}
+	public String getMem_photo() {
+		return mem_photo;
+	}
+	public void setMem_photo(String mem_photo) {
+		this.mem_photo = mem_photo;
 	}
 	
 	
