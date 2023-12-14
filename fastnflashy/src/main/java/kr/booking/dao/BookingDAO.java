@@ -6,7 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.booking.vo.BookedSeatVO;
+import kr.booking.vo.BookedInfoVO;
+import kr.member.vo.MemberVO;
 import kr.schedule.vo.ScheduleVO;
 import kr.util.DBUtil;
 import kr.util.StringUtil;
@@ -142,25 +143,62 @@ public class BookingDAO {
 	}
 	
 	//경기 좌석정보 조회하기
-//	public BookedSeatVO getInfoOfSeats(int schedule_num) throws Exception{
-//		Connection conn = null;
-//		PreparedStatement pstmt = null;
-//		String sql = null;
-//		ResultSet rs = null;
-//		BookedSeatVO vo = null;
-//		
-//		try {
-//			
-//		}catch(Exception e) {
-//			throw new Exception(e);
-//		}finally {
-//			DBUtil.executeClose(rs, pstmt, conn);
-//		}
-//		
-//		
-//		return vo;
-//	}
-	
+	public BookedInfoVO getInfoOfSeats(int schedule_num) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		ResultSet rs = null;
+		BookedInfoVO vo = null;
+		
+		try {
+			
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		
+		
+		return vo;
+	}
+	//회원 잔고 조회하기
+	public MemberVO getBalanceOfMember(int user_num) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		ResultSet rs = null;
+		MemberVO member = null;
+		
+		try {
+			conn = DBUtil.getConnection();
+			sql = "SELECT * FROM member JOIN member_detail USING(mem_num) WHERE mem_num=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, user_num);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				member = new MemberVO();
+				member.setMem_num(rs.getInt("mem_num"));
+				member.setMem_id(rs.getString("mem_id"));
+				member.setMem_name(rs.getString("mem_name"));
+				member.setMem_email(rs.getString("mem_email"));
+				member.setMem_zipcode(rs.getString("mem_zipcode"));
+				member.setMem_address1(rs.getString("mem_address1"));
+				member.setMem_address2(rs.getString("mem_address2"));
+				member.setMem_regdate(rs.getDate("mem_regdate"));
+				member.setMem_gender(rs.getInt("mem_gender"));
+				member.setMem_balance(rs.getInt("mem_balance"));
+				member.setMem_subscription(rs.getInt("mem_subscription"));
+				member.setMem_photo(rs.getString("mem_photo"));
+			}
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		
+		
+		return member;
+	}
 	
 	
 	

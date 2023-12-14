@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<div class="form2">
+<div class="form4">
 	<div class="schedule-info">
 		<p>${schedule.team1_name}
 			VS ${schedule.team2_name}
@@ -52,7 +52,7 @@
 		</div>
 	</div>
 	<div class="booking-buttons">
-		<input type="button" value="이전단계" class="toForm1">
-		<input type="button" value="다음단계" class="toForm3">
+		<input type="button" value="이전단계" class="toForm3">
+		<input type="submit" value="결제하기">
 	</div>
 </div>

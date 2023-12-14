@@ -51,3 +51,7 @@ form{
 .selected-seat{
 	background:blue;
 }
+.input-form{
+	height: 300px;
+	overflow-y: scroll;
+}

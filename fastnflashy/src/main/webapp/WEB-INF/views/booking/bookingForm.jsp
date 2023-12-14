@@ -14,6 +14,14 @@
 $(function(){
 	$('.booking-header').hide();
 	$('.form2').hide();
+	$('.form3').hide();
+	$('.form4').hide();
+	
+	var numOfSeat = 0;
+	var sumOfSeats = 0;
+	var fee = 0;
+	var predictedBalance = 0;
+	var totalPirce = 0;
 	
 //form1
 	$('#seat td').click(function(){
@@ -26,14 +34,15 @@ $(function(){
 			$('.'+colName+rowName).remove()
 		}else{
 			$(this).addClass('selected-seat');	
-			$('.my-select div').append('<p class="' + colName + rowName + '">'+colName+'행 '+rowName+'열</p>')
+			$('.my-select .listOfSeat').append('<p class="' + colName + rowName + '">'+colName+'행 '+rowName+'열</p>')
+			$('#hidden_area').append('<input type="hidden" class="confirmed-seat" data-colName="'+colName+'" data-rowName="'+rowName+'">')
 		}
-		var numOfSeat = $('.selected-seat').length;
+		numOfSeat = $('.selected-seat').length;
 		$('#num_of_seat').val(numOfSeat);
 		
 		$('.my-select span.number-of-seat').text(numOfSeat)
-		$('.fee').text(1000*numOfSeat+'원');
 		updateOptions(numOfSeat);
+		updateInputForm(numOfSeat);
 	});
 	
 	$('#reselect').click(function(){
@@ -43,7 +52,7 @@ $(function(){
 		$('.my-select span.number-of-seat').text(numOfSeat)
 	})
 	
-	$('#toForm2').click(function(){
+	$('.toForm2').click(function(){
 		if($('.selected-seat').length==0){
 			alert('좌석을 선택해야 합니다');
 			return;
@@ -53,15 +62,124 @@ $(function(){
 		$('.form2').show();
 	});
 //form2
-	$('#toForm1').click(function(){
+    $('.ticketSelect').change(function(){
+		sumOfSeats = 0;
+    	let sumOfPrice = 0;
+    	let sumOfFee =0;
+    	$('.ticketSelect').each(function(){
+            sumOfSeats += parseInt($(this).val());
+        });
+        if (sumOfSeats > numOfSeat) {
+            alert('총 좌석 개수는 ' + numOfSeat + '개 입니다');
+            $(this).val('0');
+        }
+        $('.ticketSelect').each(function(index){
+        	   let selectedValue = parseInt($(this).val());
+               switch(index){
+               	case 0:
+               		fee = selectedValue*1000;
+               		selectedValue *= 12000;
+               		break;
+               	case 1:
+               		fee = selectedValue*1000;
+               		selectedValue *= 6000;
+               		break;
+               	case 2:
+               		fee = selectedValue*1000;
+               		selectedValue *= 1500;
+               		break;
+               }
+                    sumOfPrice += selectedValue;
+                    sumOfFee +=fee;
+                    totalPrice = sumOfPrice+sumOfFee;
+                    $('.sub-total').text(sumOfPrice+'원');
+                    $('.all-total').text(sumOfPrice+sumOfFee+'원');
+                    $('.fee').text(sumOfFee+'원');
+                    predictedBalance = parseInt($('#current_balance').text())-(totalPrice)
+                    if(predictedBalance<0){
+	                    $('#predicted_balance').text('잔액이 부족합니다');
+                    	
+                    }else{
+                	    $('#predicted_balance').text(predictedBalance+'원');
+                    }
+                    
+        })
+    });
+    
+	$('.toForm1').click(function(){
 		$('.form2').hide();
 		$('.form1').show();
 	});
+    
+    $('.toForm3').click(function(){
+    	if(sumOfSeats != numOfSeat){
+    		alert('좌석은 ' +numOfSeat+'개 선택해야합니다')
+    		return;
+    	}
+
+		$('.form2').hide();
+		$('.form3').show();
+    	
+    });
+//form3
+	$('.toForm2').click(function(){
+		$('.form3').hide();
+		$('.form2').show();
+	});
+	$('.toForm4').click(function(){
+		let items = document.querySelectorAll('.input-check');
+		for(let i=0;i<items.length;i++){
+			if(items[i].value.trim()==''){
+				let label = document.querySelector('label[for="'+items[i].id+'"]')
+				alert(label.textContent+' 항목은 필수 입력')
+				items[i].value = '';
+				items[i].focus();
+				return;
+			}
+		}
+		$('.form3').hide();
+		$('.form4').show();
+	});
+//form4
+	$('.toForm3').click(function(){
+    	if(sumOfSeats != numOfSeat){
+    		return;
+    	}
+		$('.form4').hide();
+		$('.form3').show();
+	});
+	
+	$('#booking_form').submit(function(){
+		if(predictedBalance<0){
+			alert('잔액이 부족합니다');
+			return false;
+		}
+		$('#hidden_area').append('<input type="hidden" id="confirmed_price" value="'+totalPrice+'">')
+		return false;
+	});
+	
 	
 function updateOptions(numOfSeat){
 	$('.ticketSelect').empty();
 	for(var i =0;i<=numOfSeat;i++){
 		$('.ticketSelect').append('<option value="' + i + '">' + i + '매</option>');
+	}
+}
+function updateInputForm(numOfSeat){
+	$('.input-form').empty();
+	for(var i=1;i<=numOfSeat;i++){
+		$('.input-form').append('<p>예매자'+i+'</p>'
+								+'<ul>'
+								+'<li>'
+								+	'<label for="name' + i + '">이름</label>'
+								+	'<input type="text" name="name" id="name'+i+'" maxlength="12" class="input-check">'
+								+'</li>'
+								+'<li>'
+								+	'<label for="email' + i + '">이메일</label>'
+								+	'<input type="email" name="email" id="email'+i+'" maxlength="15" class="input-check">'
+								+'</li>'
+								+'</ul>')
+		
 	}
 }
 	
@@ -74,15 +192,21 @@ function updateOptions(numOfSeat){
 		<div class="booking-main">
 			<jsp:include page="/WEB-INF/views/booking/bookingHeader.jsp" />
 
-		<form action="" method="post">
-			<input type="hidden" id="num_of_seat" value="${numOfSeat}">
+		<form id="booking_form" action="booking.do" method="post">
+			<div id="hidden_area">
+				<input type="hidden" id="num_of_seat" value="${numOfSeat}">
+			</div>
 			<div class="booking-form-left">
 				<jsp:include page="/WEB-INF/views/booking/form1Left.jsp" />
 				<jsp:include page="/WEB-INF/views/booking/form2Left.jsp" />
+				<jsp:include page="/WEB-INF/views/booking/form3Left.jsp" />
+				<jsp:include page="/WEB-INF/views/booking/form4Left.jsp" />
 			</div>
 			<div class="booking-form-right">
 				<jsp:include page="/WEB-INF/views/booking/form1Right.jsp" />
 				<jsp:include page="/WEB-INF/views/booking/form2Right.jsp" />
+				<jsp:include page="/WEB-INF/views/booking/form3Right.jsp" />
+				<jsp:include page="/WEB-INF/views/booking/form4Right.jsp" />
 				
 				
 				

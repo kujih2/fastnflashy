@@ -11,10 +11,10 @@
 		</p>
 		<hr
 			style="border: none; height: 3px; background-color: black; width: 80%;">
-		<div></div>
+		<div class="listOfSeat"></div>
 	</div>
 	<div class="booking-buttons">
-		<input type="button" value="좌석선택완료" id="toForm2"> <input
+		<input type="button" value="좌석선택완료" class="toForm2"> <input
 			type="button" value="취소"
 			onclick="location.href='${pageContext.request.contextPath}/booking/list.do'">
 		<input type="button" value="다시선택" id="reselect">
