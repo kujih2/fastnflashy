@@ -25,6 +25,7 @@ create table booked_info(
 	constraint booked_info_fk2 foreign key (mem_num) references member (mem_num)
 );
 create sequence booked_info_seq;
+create sequence booked_package_seq;
 
 
 

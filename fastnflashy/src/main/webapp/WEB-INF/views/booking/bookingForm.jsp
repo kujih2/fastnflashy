@@ -35,7 +35,8 @@ $(function(){
 		}else{
 			$(this).addClass('selected-seat');	
 			$('.my-select .listOfSeat').append('<p class="' + colName + rowName + '">'+colName+'행 '+rowName+'열</p>')
-			$('#hidden_area').append('<input type="hidden" class="confirmed-seat" data-colName="'+colName+'" data-rowName="'+rowName+'">')
+			$('#hidden_area').append('<input type="hidden" class="' + colName + rowName + '" name="colName" value="'+colName+'">')
+			$('#hidden_area').append('<input type="hidden" class="' + colName + rowName + '" name="rowName" value="'+rowName+'">')
 		}
 		numOfSeat = $('.selected-seat').length;
 		$('#num_of_seat').val(numOfSeat);
@@ -154,9 +155,8 @@ $(function(){
 			alert('잔액이 부족합니다');
 			return false;
 		}
-		$('#hidden_area').append('<input type="hidden" id="confirmed_price" value="'+totalPrice+'">')
-		return false;
-	});
+		$('#hidden_area').append('<input type="hidden" name="confirmed_price" value="'+totalPrice+'">')
+});
 	
 	
 function updateOptions(numOfSeat){
@@ -172,11 +172,11 @@ function updateInputForm(numOfSeat){
 								+'<ul>'
 								+'<li>'
 								+	'<label for="name' + i + '">이름</label>'
-								+	'<input type="text" name="name" id="name'+i+'" maxlength="12" class="input-check">'
+								+	'<input type="text" name="name'+i+'" id="name'+i+'" maxlength="12" class="input-check">'
 								+'</li>'
 								+'<li>'
 								+	'<label for="email' + i + '">이메일</label>'
-								+	'<input type="email" name="email" id="email'+i+'" maxlength="15" class="input-check">'
+								+	'<input type="email" name="email'+i+'" id="email'+i+'" maxlength="15" class="input-check">'
 								+'</li>'
 								+'</ul>')
 		
@@ -194,7 +194,8 @@ function updateInputForm(numOfSeat){
 
 		<form id="booking_form" action="booking.do" method="post">
 			<div id="hidden_area">
-				<input type="hidden" id="num_of_seat" value="${numOfSeat}">
+				<input type="hidden" name="schedule_num" value="${schedule_num}">
+				<input type="hidden" name="num_of_seat" id="num_of_seat"value="${numOfSeat}">
 			</div>
 			<div class="booking-form-left">
 				<jsp:include page="/WEB-INF/views/booking/form1Left.jsp" />

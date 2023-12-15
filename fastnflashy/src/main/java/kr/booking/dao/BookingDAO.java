@@ -200,6 +200,88 @@ public class BookingDAO {
 		return member;
 	}
 	
+	//예매 등록하기
+	public void insertBooked(List<BookedInfoVO> list,int schedule_num) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
+		PreparedStatement pstmt4 = null;
+		ResultSet rs = null;
+		String sql = null;
+		String sub_sql = "";
+		Integer seatId = null;
+		Integer num = null;//패키지 번호 저장
+		
+		try {
+			conn = DBUtil.getConnection();
+			conn.setAutoCommit(false);
+			if(list.size()>1) {
+				sql = "SELECT booked_package_seq.nextval FROM dual";
+				pstmt = conn.prepareStatement(sql);
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					num = rs.getInt(1);
+				}
+				
+			}
+			
+			sql = "SELECT booked_seat_seq.nextval FROM dual";
+			pstmt2 = conn.prepareStatement(sql);
+			
+			sql = "INSERT INTO booked_seat (schedule_num,seat_id,seat_col,seat_row) VALUES(?,?,?,?)";
+			pstmt3 = conn.prepareStatement(sql);
+			
+			sql = "INSERT INTO booked_info (booked_num,booked_package,seat_id,mem_num,booked_name,booked_email,booked_ip,booked_price) VALUES(booked_info_seq.nextval,?,?,?,?,?,?,?)";
+			pstmt4 = conn.prepareStatement(sql);
+			
+			for(int i=0;i<list.size();i++) {
+				System.out.println("list.size() : " + list.size());
+				BookedInfoVO vo = list.get(i);
+				
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					seatId = rs.getInt(1);
+				}
+				
+				pstmt3.setInt(1, schedule_num);
+				pstmt3.setInt(2,seatId);
+				pstmt3.setString(3,vo.getSeat_col());
+				pstmt3.setInt(4,vo.getSeat_row());
+				pstmt3.addBatch();
+				
+				
+				pstmt4.setInt(1, num);
+				pstmt4.setInt(2,seatId);
+				pstmt4.setInt(3,vo.getUser_num());
+				pstmt4.setString(4, vo.getBooked_name());
+				pstmt4.setString(5, vo.getBooked_email());
+				pstmt4.setString(6, vo.getBooked_ip());
+				pstmt4.setInt(7, vo.getBooked_price());
+				pstmt4.addBatch();
+				
+				if(i%1000==0) {
+					pstmt3.executeBatch();
+					pstmt4.executeBatch();
+				}
+			}
+			pstmt3.executeBatch();
+			pstmt4.executeBatch();
+			conn.commit();
+		}catch(Exception e) {
+			conn.rollback();
+			throw new Exception(e);
+			
+		}finally {
+			DBUtil.executeClose(null, pstmt, null);
+			DBUtil.executeClose(null, pstmt2, null);
+			DBUtil.executeClose(null, pstmt3, null);
+			DBUtil.executeClose(rs, pstmt4, conn);
+		}
+		
+		
+	}
+	
 	
 	
 }
