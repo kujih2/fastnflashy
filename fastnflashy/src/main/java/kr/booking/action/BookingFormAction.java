@@ -31,11 +31,20 @@ public class BookingFormAction implements Action{
 		int count = dao.getNumOfBookedSeats(schedule_num);
 		List<BookedInfoVO> list = dao.getInfoOfSeats(schedule_num);
 		
+//		String array = "";
+//		array += "[";
+//		for(int i=0;i<list.size();i++) {
+//			if(i>0) array+=",";
+//			array+= "'"+list.get(i).getSeat_col()+"'";
+//		}
+//		array +="]";
+		
 		request.setAttribute("schedule_num", schedule_num);
 		request.setAttribute("schedule", schedule);
 		request.setAttribute("member", member);
 		request.setAttribute("list", list);
 		request.setAttribute("count", count);
+//		request.setAttribute("array", array);
 
 		return "/WEB-INF/views/booking/bookingForm.jsp";
 	}

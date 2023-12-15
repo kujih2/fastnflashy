@@ -7,11 +7,14 @@
 <meta charset="UTF-8">
 <title>예매 메인</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/booking.css">
 
 </head>
 <body>
 	<div class="page-main">
 		<jsp:include page="/WEB-INF/views/common/header.jsp"/>
+		<jsp:include page="/WEB-INF/views/booking/bookingHeader.jsp"/>
+		
 		<div class="content-main">
 			<div>
 			<input type="button" value="전체" onclick=""> 

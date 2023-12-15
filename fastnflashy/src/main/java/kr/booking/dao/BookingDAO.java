@@ -319,6 +319,25 @@ public class BookingDAO {
 		
 	}
 	
+	//나의 예매정보 불러오기
+	public List<BookedInfoVO> getMyBook(int user_num,int schedule_num) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		ResultSet rs = null;
+		List<BookedInfoVO> list = null;
+		
+		try {
+			
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		
+		return list;
+			
+	}
 	
 	
 }

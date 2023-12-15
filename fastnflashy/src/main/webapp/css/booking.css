@@ -4,6 +4,26 @@
 margin:0;
 padding:0;
 }
+/*sub nav바
+===========================*/
+#booking_sub_nav{
+	padding:0 10px 0 310px;
+	height: 20px;
+	background-color:white;
+}
+#booking_sub_nav ul{
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+#booking_sub_nav ul li{
+	display:inline-block;
+	width:80px;
+	text-align:center;
+	vertical-align:middle;
+	padding-top:8px;
+}
+	
 /*booking form
 ==========================*/
 .booking-main{

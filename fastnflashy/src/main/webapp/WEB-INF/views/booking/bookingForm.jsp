@@ -17,6 +17,8 @@ $(function(){
 	$('.form3').hide();
 	$('.form4').hide();
 	
+	//let array = ${array};
+	
 	var bookedSeats = $(".booked-seat")
 	var count = bookedSeats.length;
 	for(let i =0;i<count;i++){
@@ -197,8 +199,9 @@ function updateInputForm(numOfSeat){
 <body>
 	<div class="content-main">
 		<jsp:include page="/WEB-INF/views/common/header.jsp"/>
+		<jsp:include page="/WEB-INF/views/booking/bookingHeader.jsp"/>
 		<div class="booking-main">
-			<jsp:include page="/WEB-INF/views/booking/bookingHeader.jsp" />
+			<jsp:include page="/WEB-INF/views/booking/bookingFormHeader.jsp" />
 
 		<form id="booking_form" action="booking.do" method="post">
 			<div id="hidden_area">

@@ -1,13 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<div class="booking-header">
-	<div>
-		<span>가격/할인 선택</span>
-	</div>
-	<div>
-		<span>주문자 정보 입력</span>
-	</div>
-	<div>
-		<span>결제하기</span>
-	</div>
+<div id="booking_sub_nav">
+	<ul>
+		<li>
+			<a href="${pageContext.request.contextPath}/booking/list.do">예매하기</a>
+		</li>
+		<li>
+			<a href="${pageContext.request.contextPath}/booking/listOfMyBooking.do">나의 예매</a>
+		</li>
+	</ul>
 </div>

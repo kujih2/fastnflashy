@@ -64,6 +64,7 @@ $(function(){
 <body>
 	<div class="page-main">
 		<jsp:include page="/WEB-INF/views/common/header.jsp"/>
+		<jsp:include page="/WEB-INF/views/booking/bookingHeader.jsp"/>
 		<div class="content-main">
 		<h2>경기 등록하기</h2> 
 		<input type="button" value="등록가능 경기목록 불러오기" id="load_match">
