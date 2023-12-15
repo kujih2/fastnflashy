@@ -48,10 +48,20 @@ form{
 .seat{
 	line-height:0.5;
 }
-.selected-seat{
-	background:blue;
-}
 .input-form{
 	height: 300px;
 	overflow-y: scroll;
+}
+.clickable{
+	background:lightgreen;
+}
+.clickable:hover{
+	cursor:pointer
+	
+}
+.selected-seat{
+	background:blue;
+}
+.booked-seat{
+	background:grey;
 }

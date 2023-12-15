@@ -141,16 +141,24 @@ public class BookingDAO {
 		}
 		return schedule;
 	}
-	
-	//경기 좌석정보 조회하기
-	public BookedInfoVO getInfoOfSeats(int schedule_num) throws Exception{
+	//경기 좌석정보 조회하기1(예약된 좌석 개수 세기)
+	public int getNumOfBookedSeats(int schedule_num) throws Exception{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		ResultSet rs = null;
-		BookedInfoVO vo = null;
+		int count = 0;
 		
 		try {
+			conn = DBUtil.getConnection();
+			sql = "SELECT * FROM BOOKED_SEAT WHERE schedule_num=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1,schedule_num);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				count++;
+			}
+			
 			
 		}catch(Exception e) {
 			throw new Exception(e);
@@ -159,7 +167,38 @@ public class BookingDAO {
 		}
 		
 		
-		return vo;
+		return count;
+	}
+	//경기 좌석정보 조회하기2
+	public List<BookedInfoVO> getInfoOfSeats(int schedule_num) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		ResultSet rs = null;
+		List<BookedInfoVO> list = new ArrayList<BookedInfoVO>();
+		
+		try {
+			conn = DBUtil.getConnection();
+			sql = "SELECT * FROM BOOKED_SEAT WHERE schedule_num=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1,schedule_num);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BookedInfoVO vo = new BookedInfoVO();
+				vo.setSeat_col(rs.getString("seat_col"));
+				vo.setSeat_row(rs.getInt("seat_row"));
+				list.add(vo);
+			}
+			
+			
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		
+		
+		return list;
 	}
 	//회원 잔고 조회하기
 	public MemberVO getBalanceOfMember(int user_num) throws Exception{
@@ -209,9 +248,8 @@ public class BookingDAO {
 		PreparedStatement pstmt4 = null;
 		ResultSet rs = null;
 		String sql = null;
-		String sub_sql = "";
 		Integer seatId = null;
-		Integer num = null;//패키지 번호 저장
+		Integer num = 0;//패키지 번호 저장
 		
 		try {
 			conn = DBUtil.getConnection();
@@ -236,10 +274,9 @@ public class BookingDAO {
 			pstmt4 = conn.prepareStatement(sql);
 			
 			for(int i=0;i<list.size();i++) {
-				System.out.println("list.size() : " + list.size());
 				BookedInfoVO vo = list.get(i);
 				
-				rs = pstmt.executeQuery();
+				rs = pstmt2.executeQuery();
 				if(rs.next()) {
 					seatId = rs.getInt(1);
 				}

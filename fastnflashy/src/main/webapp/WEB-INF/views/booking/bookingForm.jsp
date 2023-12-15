@@ -17,6 +17,14 @@ $(function(){
 	$('.form3').hide();
 	$('.form4').hide();
 	
+	var bookedSeats = $(".booked-seat")
+	var count = bookedSeats.length;
+	for(let i =0;i<count;i++){
+	    let col = bookedSeats.eq(i).data('col');
+	    let row = bookedSeats.eq(i).data('row');
+	    $('tr.'+col+' td.'+row).removeClass('clickable')
+	    $('tr.'+col+' td.'+row).addClass('booked-seat')
+	}
 	var numOfSeat = 0;
 	var sumOfSeats = 0;
 	var fee = 0;
@@ -24,7 +32,7 @@ $(function(){
 	var totalPirce = 0;
 	
 //form1
-	$('#seat td').click(function(){
+	$('#seat td.clickable').click(function(){
 		var seatClasses = $(this).attr('class')
 		var classNames = seatClasses.split(' ')
 		var rowName=classNames[0]
@@ -196,6 +204,12 @@ function updateInputForm(numOfSeat){
 			<div id="hidden_area">
 				<input type="hidden" name="schedule_num" value="${schedule_num}">
 				<input type="hidden" name="num_of_seat" id="num_of_seat"value="${numOfSeat}">
+			</div>
+			<div id="booked_seat">
+				<input type="hidden" id="num_of_booked_seat" value="${count}">
+				<c:forEach var="detail" items="${list}">
+					<input type="hidden" class="booked-seat" data-col="${detail.seat_col}" data-row="${detail.seat_row}">
+				</c:forEach>
 			</div>
 			<div class="booking-form-left">
 				<jsp:include page="/WEB-INF/views/booking/form1Left.jsp" />
