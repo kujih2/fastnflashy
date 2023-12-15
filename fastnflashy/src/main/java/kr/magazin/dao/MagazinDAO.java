@@ -119,7 +119,7 @@ public class MagazinDAO {
 				magazin.setMg_board_num(rs.getInt("mg_board_num"));
 				magazin.setMg_title(StringUtil.useNoHtml(rs.getString("mg_title")));
 				magazin.setMg_hit(rs.getInt("mg_hit"));
-				magazin.setMg_content(StringUtil.useNoHtml(rs.getString("mg_content")));
+				magazin.setMg_content(StringUtil.shortWords(100, StringUtil.useNoHtml(rs.getString("mg_content"))));
 				magazin.setMg_photo1(rs.getString("mg_photo1"));
 				
 				list.add(magazin);
@@ -190,17 +190,18 @@ public class MagazinDAO {
 		}
 	}
 	//파일 삭제
-	public void deleteImage(int board_num)throws Exception{
+	public void deleteImage(int mg_board_num, int photo_num)throws Exception{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		
 		try {
 			conn = DBUtil.getConnection();
-			sql = "UPDATE magazin_board SET mg_photo1='' "
-				+ "AND mg_photo2='' WHERE mg_board_num=?";
+			sql = "UPDATE magazin_board SET mg_photo1='', "
+				+ "mg_photo2='' WHERE mg_board_num=? AND photo_num=?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, board_num);
+			pstmt.setInt(1, mg_board_num);
+			pstmt.setInt(2, photo_num);
 			pstmt.executeUpdate();
 			
 		}catch(Exception e) {

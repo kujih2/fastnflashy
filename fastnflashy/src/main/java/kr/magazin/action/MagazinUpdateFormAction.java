@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import kr.controller.Action;
 import kr.magazin.dao.MagazinDAO;
 import kr.magazin.vo.MagazinVO;
+import kr.util.StringUtil;
 
 public class MagazinUpdateFormAction implements Action{
 
@@ -30,8 +31,9 @@ public class MagazinUpdateFormAction implements Action{
 			//번호 불일치
 			return "/WEB-INF/views/common/notice.jsp";
 		}
+		db_magazin.setMg_title(StringUtil.parseQuot(db_magazin.getMg_title()));
 		
-		request.setAttribute("board", db_magazin);
+		request.setAttribute("magazin", db_magazin);
 		
 		return "/WEB-INF/views/magazin/magazinUpdateForm.jsp";
 	}

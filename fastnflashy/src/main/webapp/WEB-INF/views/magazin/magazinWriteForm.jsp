@@ -6,12 +6,9 @@
 <meta charset="UTF-8">
 <title>칼럼 작성</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/magazin.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
-function showImage2Input() {
-	console.log("showImage2Input function called");
-    document.getElementById("image2Input").style.display = "block";
-};
 $(function(){
 	$('#magazinWrite_form').submit(function(){
 		let magazin = document.querySelectorAll('input[type="text"],textarea');
@@ -27,11 +24,11 @@ $(function(){
 				magazin[i].focus();
 				return false
 			}
-			if($('#mg_photo1').val() == ''){
+			if($('#mg_photo1').val() == '' && $('#mg_photo2').val() == '' ){
 				alert('최소 1개이상의 이미지는 있어야합니다.');
 				return false;
 			}
-			}
+		}
 	});
 });
 </script>
@@ -39,6 +36,7 @@ $(function(){
 <body>
 <div class="page-main">
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
+	<jsp:include page="/WEB-INF/views/magazin/magazinHeader.jsp"/>
 	<div class="content-main">
 		<form action="magazinWrite.do" method="post"
 		       enctype="multipart/form-data" id="magazinWrite_form" >
@@ -55,22 +53,29 @@ $(function(){
 					<input type="text" name="mg_title" id="mg_title"
 					   placeholder="제목을 입력하세요" maxlength="50">
 				</li>
+			</ul>
+			<hr size="1" noshade="noshade" width="100%">
+			<ul>
 				<li>
 					<label for="mg_content">내용</label>
 					<textarea rows="5" cols="30" name="mg_content" id="mg_content"
 								placeholder="내용을 입력하세요"></textarea>
 				</li>
+			</ul>
+			<hr size="1" noshade="noshade" width="100%">
+			<ul>
 				<li>
 					<label for="mg_photo1">이미지1</label>
 					<input type="file" name="mg_photo1"
-					  id="mg_photo1" accept="image/gif,image/png,image/jpeg" onchange="showImage2Input()">
+					  id="mg_photo1" accept="image/gif,image/png,image/jpeg">
 				</li>
-				<li id="image2Input" style="display:none;">
+				<li>
 					<label for="mg_photo2">이미지2</label>
 					<input type="file" name="mg_photo2"
 					  id="mg_photo2" accept="image/gif,image/png,image/jpeg">
 				</li>
 			</ul>
+			<hr size="1" noshade="noshade" width="100%">
 			<div class="align-center">
 				<input type="submit" value="작성완료">
 				<input type="button" value="취소" 
