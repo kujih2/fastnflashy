@@ -32,11 +32,15 @@ public class ScheduleAction implements Action{
 		dao.insertResult();
 		//경기 조회
 		List<ScheduleVO> scheduleList = dao.selectSchedule(team_category,date);
+		//경기가 있는 날짜만 가져오기
+		List<ScheduleVO> dateList = dao.ableDate();
 		
 		String category = request.getParameter("category");
 		request.setAttribute("category", category);
 		request.setAttribute("date", date);
 		request.setAttribute("scheduleList", scheduleList);
+		request.setAttribute("ableDateList", dateList);
+		
 		return "/WEB-INF/views/match/schedule.jsp";
 		
 	}

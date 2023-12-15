@@ -74,7 +74,7 @@ public class StringUtil {
 		String new_date = "";
 		new_date += date.substring(0, 4) + "-";
 		new_date += date.substring(4, 6) + "-";
-		new_date += date.substring(6, 8) + "-";
+		new_date += date.substring(6, 8);
 		
 		return new_date;
 	}

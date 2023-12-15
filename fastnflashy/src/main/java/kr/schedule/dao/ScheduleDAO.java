@@ -298,4 +298,66 @@ public class ScheduleDAO {
 		}
 	}
 	//경기일정이 있는 날짜만 조회
+	public List<ScheduleVO> ableDate() throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<ScheduleVO> dateList = null;
+		String sql = null;
+
+		
+		try {
+			//커넥션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			//SQL문 작성
+			sql="SELECT schedule_start FROM match_schedule";
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			//SQL문 실행
+			rs = pstmt.executeQuery();
+			dateList = new ArrayList<ScheduleVO>();
+			while(rs.next()) {
+				ScheduleVO vo = new ScheduleVO();
+				vo.setSchedule_date('"'+StringUtil.ScheduleDateFormat(rs.getString("schedule_start"))+'"'+",");
+				dateList.add(vo);
+			}
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		return dateList;
+	}
+	//경기 일정 삽입 유효성체크
+	public int checkInsert(String start, String end) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql=null;
+		int check = 0;
+		try {
+			///커넥션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			//SQL문 작성 - 입력한 경기 시작일 또는 경기 종료일이 이미 경기일정에 존재할경우
+			sql = "SELECT * FROM match_schedule WHERE (schedule_start <= ? AND ? <= schedule_end) OR "
+					+ "(schedule_start <= ? and  ? <=schedule_end)";
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt.setString(1,start);
+			pstmt.setString(2,start);
+			pstmt.setString(3,end);
+			pstmt.setString(4,end);
+			//SQL문 실행
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				check=1;
+			}
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		return check;
+	}
 }

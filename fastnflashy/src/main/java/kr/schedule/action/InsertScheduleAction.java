@@ -34,6 +34,8 @@ public class InsertScheduleAction implements Action{
 		schedule.setSchedule_team2(Integer.parseInt(request.getParameter("schedule_team2")));
 		
 		ScheduleDAO dao = ScheduleDAO.getInstance();
+		int check = dao.checkInsert(schedule.getSchedule_start(),schedule.getSchedule_end());
+		if(check != 1) {
 		dao.insertSchedule(schedule);
 		
 				//Refresh 정보를 응답 헤더에 추가
@@ -42,6 +44,8 @@ public class InsertScheduleAction implements Action{
 				request.setAttribute("accessUrl", "insertScheduleForm.do");
 				
 				return "/WEB-INF/views/common/notice.jsp";
+		}
+		return"/WEB-INF/views/match/check.jsp";
 	}
 
 }
