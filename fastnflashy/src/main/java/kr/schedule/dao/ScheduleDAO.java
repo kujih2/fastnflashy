@@ -48,7 +48,6 @@ public class ScheduleDAO {
 			DBUtil.executeClose(null, pstmt, conn);
 		}
 	}
-	//경기일정 수정
 	//경기일정 조회
 	public List<ScheduleVO> selectSchedule(Integer team_category,String date) throws Exception{
 		Connection conn = null;
@@ -165,7 +164,7 @@ public class ScheduleDAO {
 			//SQL문 실행
 			rs = pstmt.executeQuery();
 			while(rs.next()) {//끝난 경기들이 있다면
-				sql="UPDATE match_schedule SET schedule_status=0 WHERE schedule_num = ?";
+				sql="UPDATE match_schedule SET schedule_status=0 ,schedule_regmatch=0 WHERE schedule_num = ?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, rs.getInt("schedule_num"));
 				pstmt.executeUpdate();
@@ -329,35 +328,322 @@ public class ScheduleDAO {
 		return dateList;
 	}
 	//경기 일정 삽입 유효성체크
-	public int checkInsert(String start, String end) throws Exception{
+	public int checkInsert(ScheduleVO schedule) throws Exception{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
+		PreparedStatement pstmt4 = null;
 		ResultSet rs = null;
+		ResultSet rs2 = null;
+		ResultSet rs3 = null;
+		ResultSet rs4 = null;
 		String sql=null;
 		int check = 0;
 		try {
 			///커넥션풀로부터 커넥션 할당
 			conn = DBUtil.getConnection();
+			//오토 커밋 해제
+			conn.setAutoCommit(false);
 			//SQL문 작성 - 입력한 경기 시작일 또는 경기 종료일이 이미 경기일정에 존재할경우
 			sql = "SELECT * FROM match_schedule WHERE (schedule_start <= ? AND ? <= schedule_end) OR "
 					+ "(schedule_start <= ? and  ? <=schedule_end)";
 			//PreparedStatement 객체 생성
 			pstmt = conn.prepareStatement(sql);
 			//?에 데이터 바인딩
-			pstmt.setString(1,start);
-			pstmt.setString(2,start);
-			pstmt.setString(3,end);
-			pstmt.setString(4,end);
+			pstmt.setString(1,schedule.getSchedule_start());
+			pstmt.setString(2,schedule.getSchedule_start());
+			pstmt.setString(3,schedule.getSchedule_end());
+			pstmt.setString(4,schedule.getSchedule_end());
 			//SQL문 실행
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				check=1;
 			}
-		}catch(Exception e) {
+			
+			//SQL문 작성 - 입력한 팀1, 팀2의 종목이 맞지 않을 때
+			sql = "SELECT team_category FROM  match_team WHERE team_num = ? OR team_num = ?";
+			pstmt2 = conn.prepareStatement(sql); 
+			//?에 데이터 바인딩
+			pstmt2.setInt(1, schedule.getSchedule_team1());
+			pstmt2.setInt(2, schedule.getSchedule_team2());
+			//SQL문 실행
+			rs2 = pstmt2.executeQuery();
+			while(rs2.next()) {
+				if(rs2.getInt("team_category") != schedule.getTeam_category()){
+					check=2;
+				}
+			 }
+			
+			//SQL문 작성 - 입력한 팀1,팀2의 팀번호가 존재하지 않는 팀번호일 때
+			sql = "SELECT * FROM match_team WHERE team_num = ?";
+			pstmt3 = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt3.setInt(1, schedule.getSchedule_team1());
+			//SQL문 실행
+			rs3 = pstmt3.executeQuery();
+			if(!rs3.next()) {
+				check = 3;
+			}
+			
+			//SQL문 작성 - 입력한 팀1,팀2의 팀번호가 존재하지 않는 팀번호일 때
+			sql = "SELECT * FROM match_team WHERE team_num = ?";
+			pstmt4 = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt4.setInt(1, schedule.getSchedule_team2());
+			//SQL문 실행
+			rs4 = pstmt4.executeQuery();
+			if(!rs4.next()) {
+				check = 3;
+			}
+			//모든 SQL문이 정상적으로 수행
+			conn.commit();
+			}catch(Exception e) {
+			//SQL문장이 하나라도 실패하면 
+			 conn.rollback();
 			throw new Exception(e);
 		}finally {
+			DBUtil.executeClose(rs4, pstmt4, conn);
+			DBUtil.executeClose(rs3, pstmt3, conn);
+			DBUtil.executeClose(rs2, pstmt2, conn);
 			DBUtil.executeClose(rs, pstmt, conn);
 		}
 		return check;
+	}
+	//경기 일정 수정 유효성체크
+		public int checkModify(ScheduleVO schedule) throws Exception{
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			PreparedStatement pstmt2 = null;
+			PreparedStatement pstmt3 = null;
+			PreparedStatement pstmt4 = null;
+			
+			ResultSet rs = null;
+			ResultSet rs2 = null;
+			ResultSet rs3 = null;
+			ResultSet rs4 = null;
+			String sql=null;
+			int check = 0;
+			try {
+				///커넥션풀로부터 커넥션 할당
+				conn = DBUtil.getConnection();
+				//오토 커밋 해제
+				conn.setAutoCommit(false);
+				//SQL문 작성 - 입력한 경기 시작일 또는 경기 종료일이 이미 경기일정에 존재할경우
+				sql = "SELECT * FROM match_schedule WHERE schedule_num !=? AND ((schedule_start <= ? AND ? <= schedule_end) OR "
+						+ "(schedule_start <= ? and  ? <=schedule_end))";
+				//PreparedStatement 객체 생성
+				pstmt = conn.prepareStatement(sql);
+				//?에 데이터 바인딩
+				pstmt.setInt(1, schedule.getSchedule_num());
+				pstmt.setString(2,schedule.getSchedule_start());
+				pstmt.setString(3,schedule.getSchedule_start());
+				pstmt.setString(4,schedule.getSchedule_end());
+				pstmt.setString(5,schedule.getSchedule_end());
+				//SQL문 실행
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					check=1;
+				}
+				//SQL문 작성 - 입력한 팀1, 팀2의 종목이 맞지 않을 때
+				sql = "SELECT team_category FROM  match_team WHERE team_num = ? OR team_num = ?";
+				pstmt2 = conn.prepareStatement(sql); 
+				//?에 데이터 바인딩
+				pstmt2.setInt(1, schedule.getSchedule_team1());
+				pstmt2.setInt(2, schedule.getSchedule_team2());
+				//SQL문 실행
+				rs2 = pstmt2.executeQuery();
+				while(rs2.next()) {
+					if(rs2.getInt("team_category") != schedule.getTeam_category()){
+						check=2;
+					}
+				 }
+				
+				//SQL문 작성 - 입력한 팀1,팀2의 팀번호가 존재하지 않는 팀번호일 때
+				sql = "SELECT * FROM match_team WHERE team_num = ?";
+				pstmt3 = conn.prepareStatement(sql);
+				//?에 데이터 바인딩
+				pstmt3.setInt(1, schedule.getSchedule_team1());
+				//SQL문 실행
+				rs3 = pstmt3.executeQuery();
+				if(!rs3.next()) {
+					check = 3;
+				}
+				
+				//SQL문 작성 - 입력한 팀1,팀2의 팀번호가 존재하지 않는 팀번호일 때
+				sql = "SELECT * FROM match_team WHERE team_num = ?";
+				pstmt4 = conn.prepareStatement(sql);
+				//?에 데이터 바인딩
+				pstmt4.setInt(1, schedule.getSchedule_team2());
+				//SQL문 실행
+				rs4 = pstmt4.executeQuery();
+				if(!rs4.next()) {
+					check = 3;
+				}
+				//모든 SQL문이 정상적으로 수행
+				conn.commit();
+			}catch(Exception e) {
+				//SQL문장이 하나라도 실패하면 
+				conn.rollback();
+				throw new Exception(e);
+			}finally {
+				DBUtil.executeClose(rs4, pstmt4, conn);
+				DBUtil.executeClose(rs3, pstmt3, conn);
+				DBUtil.executeClose(rs2, pstmt2, conn);
+				DBUtil.executeClose(rs, pstmt, conn);
+			}
+			return check;
+		}
+	//수정할 경기 조회
+	public ScheduleVO modifySelect(int schedule_num) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql=null;
+		ScheduleVO vo = null;
+		
+		try {
+			//커넥션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			//SQL문 작성
+			sql="SELECT * FROM match_schedule WHERE schedule_num = ?";
+			 //PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt.setInt(1, schedule_num);
+			//SQL문 실행
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				vo = new ScheduleVO();
+				vo.setTeam_category(rs.getInt("team_category"));
+				vo.setSchedule_start(rs.getString("schedule_start"));
+				vo.setSchedule_end(rs.getString("schedule_end"));
+				vo.setSchedule_status(rs.getInt("schedule_status"));
+				vo.setSchedule_team1(rs.getInt("schedule_team1"));
+				vo.setSchedule_team2(rs.getInt("schedule_team2"));
+			}
+		}catch(Exception e) {
+			throw new Exception (e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		return vo;
+	}
+	//경기 일정 수정
+	public void modifySchedule(ScheduleVO vo) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int regmatch=0;
+		String sql=null;
+		
+		try {
+			//커넥션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			//SQL문 작성
+			sql="UPDATE match_schedule SET team_category=?,schedule_start=?,schedule_end=?,schedule_status=?,"
+					+ " schedule_team1=?,schedule_team2=?,schedule_regmatch=? WHERE schedule_num = ?";
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt.setInt(1, vo.getTeam_category());
+			pstmt.setString(2, vo.getSchedule_start());
+			pstmt.setString(3, vo.getSchedule_end());
+			pstmt.setInt(4, vo.getSchedule_status());
+			pstmt.setInt(5, vo.getSchedule_team1());
+			pstmt.setInt(6, vo.getSchedule_team2());
+			if(vo.getSchedule_status() == 3) {
+				regmatch = 0;
+			}
+			pstmt.setInt(7, regmatch);
+			pstmt.setInt(8, vo.getSchedule_num());
+			//SQL문 실행
+			pstmt.executeUpdate();
+		}catch(Exception e){
+			throw new Exception(e);
+		}finally{
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+	}
+	//경기 일정 삭제
+	public  void deleteSchedule(int schedule_num) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			//커넥션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			//SQL문 작성
+			sql = "DELETE FROM match_schedule WHERE schedule_num = ?";
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt.setInt(1, schedule_num);
+			//SQL문 작성
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally{
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+	}
+	//경기 상세 조회
+	public ScheduleVO selectDetail(int schedule_num) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		ResultSet rs2 = null;
+		ScheduleVO vo = null;
+		String sql = null;
+
+		try {
+			//커넥션풀로부터 커넥션할당
+			conn = DBUtil.getConnection();
+			//SQL문 작성 
+			sql = "SELECT * FROM match_schedule JOIN match_result USING(schedule_num) WHERE schedule_num = ?";
+			//PreaparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt.setInt(1, schedule_num);
+			//SQL문 실행
+			rs = pstmt.executeQuery();
+			if(!rs.next()) {//경기결과가 아직 없는경우(종료된 경기가 아닌경우)
+				//SQL문 작성
+				sql = "SELECT * FROM match_schedule  WHERE schedule_num = ?";
+				//PreparedStatement 객체 생성
+				pstmt2 = conn.prepareStatement(sql);
+				//?에 데이터 바인딩
+				pstmt2.setInt(1, schedule_num);
+				//SQL문 실행
+				rs2 = pstmt2.executeQuery();
+				if(rs2.next()) {
+					vo = new ScheduleVO();
+					vo.setSchedule_num(rs.getInt("schedule_num"));
+					vo.setTeam_category(rs.getInt("team_category"));
+					vo.setSchedule_start(StringUtil.DetailDateFormats(rs.getString("schedule_start")));
+					vo.setSchedule_status(rs.getInt("schedule_status"));
+					vo.setSchedule_team1(rs.getInt("schedule_team1"));
+					vo.setSchedule_team2(rs.getInt("schedule_team2"));
+				}
+			}else if(rs.next()) {
+					vo = new ScheduleVO();
+				vo.setSchedule_num(rs.getInt("schedule_num"));
+				vo.setTeam_category(rs.getInt("team_category"));
+				vo.setSchedule_start(StringUtil.DetailDateFormats(rs.getString("schedule_start")));
+				vo.setSchedule_status(rs.getInt("schedule_status"));
+				vo.setSchedule_team1(rs.getInt("schedule_team1"));
+				vo.setSchedule_team2(rs.getInt("schedule_team2"));
+				vo.setResult_team1Score(rs.getInt("result_team1Score"));
+				vo.setResult_team2Score(rs.getInt("result_team2Score"));
+				
+			}
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs2, pstmt2, conn);
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		return vo;
 	}
 }

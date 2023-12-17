@@ -111,8 +111,8 @@ $(function() {
 			 	  	<c:if test="${schedule.team_category == 0}">
 				 	<table>
 				 		<tr>
-				 			<c:if test="${!empty user_num && user_auth == 9}">
-								<th>경기 수정</th>
+				 			<c:if test="${!empty user_num && user_auth == 9 && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
+								<th>일정 수정</th>
 		  					 </c:if>
 				 			<th>경기 시간</th>
 				 			<th>경기 팀1</th>
@@ -126,10 +126,11 @@ $(function() {
 					 		</c:if>
 					 		<th>팀2 사진</th>
 				 			<th>경기 팀2</th>
+				 			<th>경기 상세</th>
 				 		</tr>
 				 		<tr>	
-				 			<c:if test="${!empty user_num && user_auth == 9}">
-								<td><input type="button" value="경기 수정" onclick="location.href='modifyScheduleForm.do?num=${schedule.schedule_num}'"></td>
+				 			<c:if test="${!empty user_num && user_auth == 9  && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
+								<td><input type="button" value="일정 수정" onclick="location.href='modifyScheduleForm.do?num=${schedule.schedule_num}'"></td>
 		   					</c:if>
 				 			<td>${schedule.schedule_time}</td>
 				 			<td>${schedule.team1_name}</td>
@@ -150,6 +151,7 @@ $(function() {
 				 			</c:if>
 				 			<td>${schedule.team2_photo}</td>
 				 			<td>${schedule.team2_name}</td>
+				 			<td><input type="button" value="경기 상세" onclick="location.href='detailSchedule.do?num=${schedule.schedule_num}'"></td>
 				 		</tr>
 				 	</table>
 				 	</c:if>
@@ -164,8 +166,8 @@ $(function() {
 			 	  	<c:if test="${schedule.team_category == 1}">
 				 	<table>
 				 		<tr>
-				 		<c:if test="${!empty user_num && user_auth == 9}">
-								<th>경기 수정</th>
+				 		<c:if test="${!empty user_num && user_auth == 9  && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
+								<th>일정 수정</th>
 		  					 </c:if>
 				 			<th>경기 시간</th>
 				 			<th>경기 팀1</th>
@@ -179,10 +181,11 @@ $(function() {
 					 		</c:if>
 					 		<th>팀2 사진</th>
 				 			<th>경기 팀2</th>
+				 			<th>경기 상세</th>
 				 		</tr>
 				 		<tr>
-				 			<c:if test="${!empty user_num && user_auth == 9}">
-								<td><input type="button" value="경기 수정" onclick="location.href='modifyScheduleForm.do?num=${schedule.schedule_num}'"></td>
+				 			<c:if test="${!empty user_num && user_auth == 9  && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
+								<td><input type="button" value="일정 수정" onclick="location.href='modifyScheduleForm.do?num=${schedule.schedule_num}'"></td>
 		   					</c:if>
 				 			<td>${schedule.schedule_time}</td>
 				 			<td>${schedule.team1_name}</td>
@@ -203,6 +206,7 @@ $(function() {
 				 			</c:if>
 				 			<td>${schedule.team2_photo}</td>
 				 			<td>${schedule.team2_name}</td>
+				 			<td><input type="button" value="경기 상세" onclick="location.href='detailSchedule.do?num=${schedule.schedule_num}'"></td>
 				 		</tr>
 				 	</table>
 				 	</c:if>
@@ -217,8 +221,8 @@ $(function() {
 			 	  	<c:if test="${schedule.team_category == 2}">
 				 	<table>
 				 		<tr>
-				 		<c:if test="${!empty user_num && user_auth == 9}">
-								<th>경기 수정</th>
+				 		<c:if test="${!empty user_num && user_auth == 9  && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
+								<th>일정 수정</th>
 		  					 </c:if>
 				 			<th>경기 시간</th>
 				 			<th>경기 팀1</th>
@@ -232,11 +236,12 @@ $(function() {
 					 		</c:if>
 					 		<th>팀2 사진</th>
 				 			<th>경기 팀2</th>
+				 			<th>경기 상세</th>
 				 		</tr>
 				 		<tr>
 				 		
-				 			<c:if test="${!empty user_num && user_auth == 9}">
-								<td><input type="button" value="경기 수정" onclick="location.href='modifyScheduleForm.do?num=${schedule.schedule_num}'"></td>
+				 			<c:if test="${!empty user_num && user_auth == 9  && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
+								<td><input type="button" value="일정 수정" onclick="location.href='modifyScheduleForm.do?num=${schedule.schedule_num}'"></td>
 		   					</c:if>
 				 			<td>${schedule.schedule_time}</td>
 				 			<td>${schedule.team1_name}</td>
@@ -257,6 +262,7 @@ $(function() {
 				 			</c:if>
 				 			<td>${schedule.team2_photo}</td>
 				 			<td>${schedule.team2_name}</td>
+				 			<td><input type="button" value="경기 상세" onclick="location.href='detailSchedule.do?num=${schedule.schedule_num}'"></td>
 				 		</tr>
 				 	</table>
 				 	</c:if>
@@ -271,8 +277,8 @@ $(function() {
 			 	  	<c:if test="${schedule.team_category == 3}">
 				 	<table>
 				 		<tr>
-				 		<c:if test="${!empty user_num && user_auth == 9}">
-								<th>경기 수정</th>
+				 		<c:if test="${!empty user_num && user_auth == 9  && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
+								<th>일정 수정</th>
 		  					 </c:if>
 				 			<th>경기 시간</th>
 				 			<th>경기 팀1</th>
@@ -286,11 +292,12 @@ $(function() {
 					 		</c:if>
 					 		<th>팀2 사진</th>
 				 			<th>경기 팀2</th>
+				 			<th>경기 상세</th>
 				 		</tr>
 				 		<tr>
 				 		
-				 			<c:if test="${!empty user_num && user_auth == 9}">
-								<td><input type="button" value="경기 수정" onclick="location.href='modifyScheduleForm.do?num=${schedule.schedule_num}'"></td>
+				 			<c:if test="${!empty user_num && user_auth == 9  && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
+								<td><input type="button" value="일정 수정" onclick="location.href='modifySchedule.do?num=${schedule.schedule_num}'"></td>
 		   					</c:if>
 				 			<td>${schedule.schedule_time}</td>
 				 			<td>${schedule.team1_name}</td>
@@ -311,6 +318,7 @@ $(function() {
 				 			</c:if>
 				 			<td>${schedule.team2_photo}</td>
 				 			<td>${schedule.team2_name}</td>
+				 			<td><input type="button" value="경기 상세" onclick="location.href='detailSchedule.do?num=${schedule.schedule_num}'"></td>
 				 		</tr>
 				 	</table>
 				 	</c:if>

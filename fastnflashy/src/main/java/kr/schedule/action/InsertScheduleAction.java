@@ -33,9 +33,11 @@ public class InsertScheduleAction implements Action{
 		schedule.setSchedule_team1(Integer.parseInt(request.getParameter("schedule_team1")));
 		schedule.setSchedule_team2(Integer.parseInt(request.getParameter("schedule_team2")));
 		
+		//입력한 경기 시작일 또는 경기 종료일이 이미 경기일정에 존재할경우
 		ScheduleDAO dao = ScheduleDAO.getInstance();
-		int check = dao.checkInsert(schedule.getSchedule_start(),schedule.getSchedule_end());
-		if(check != 1) {
+		//유효성 체크
+		int check = dao.checkInsert(schedule);
+		if(check == 0) {
 		dao.insertSchedule(schedule);
 		
 				//Refresh 정보를 응답 헤더에 추가
@@ -44,8 +46,21 @@ public class InsertScheduleAction implements Action{
 				request.setAttribute("accessUrl", "insertScheduleForm.do");
 				
 				return "/WEB-INF/views/common/notice.jsp";
+		}else if(check  == 1) {
+			request.setAttribute("checkMsg","입력한 경기 시작일 또는 경기 종료일이 이미 경기일정에 존재합니다.");
+			return"/WEB-INF/views/match/check.jsp";
+		}else if(check  == 2) {
+			request.setAttribute("checkMsg","선택한 종목에 맞지 않는 팀을 입력했습니다.");
+			return"/WEB-INF/views/match/check.jsp";
+		}else if(check  == 3) {
+			request.setAttribute("checkMsg","선택하신 팀번호 중에 존재하지 않는 번호가 존재합니다.");
+			return"/WEB-INF/views/match/check.jsp";
+		}else {
+			request.setAttribute("checkMsg","오류");
+			return "/WEB-INF/views/match/check.jsp";
 		}
-		return"/WEB-INF/views/match/check.jsp";
+		
+		
 	}
 
 }
