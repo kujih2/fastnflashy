@@ -256,8 +256,10 @@ public class ScheduleDAO {
 						score1 = random.nextInt(4);//0~3
 						if(score1==3) {//배구는 5판 3선 무승부가 없음.(team1의 승리)
 							score2 =random.nextInt(3);//0~2
+							result = 0;
 						}else{//팀2의 승리
 							score2=3;
+							result = 1;
 						}	
 					}else if(ctg == 3) {//농구
 						score1 = random.nextInt(100);//0~99
@@ -592,8 +594,12 @@ public class ScheduleDAO {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
+		PreparedStatement pstmt4 = null;
 		ResultSet rs = null;
 		ResultSet rs2 = null;
+		ResultSet rs3 = null;
+		ResultSet rs4 = null;
 		ScheduleVO vo = null;
 		String sql = null;
 
@@ -617,23 +623,63 @@ public class ScheduleDAO {
 				pstmt2.setInt(1, schedule_num);
 				//SQL문 실행
 				rs2 = pstmt2.executeQuery();
-				if(rs2.next()) {
+				if(!rs2.next()) {//경기 결과가 없다면(종료된 경기가 아님)
 					vo = new ScheduleVO();
 					vo.setSchedule_num(rs.getInt("schedule_num"));
 					vo.setTeam_category(rs.getInt("team_category"));
 					vo.setSchedule_start(StringUtil.DetailDateFormats(rs.getString("schedule_start")));
 					vo.setSchedule_status(rs.getInt("schedule_status"));
+					
+					int team1 = (rs.getInt("schedule_team1"));
 					vo.setSchedule_team1(rs.getInt("schedule_team1"));
+					int team2 = (rs.getInt("schedule_team2"));
 					vo.setSchedule_team2(rs.getInt("schedule_team2"));
+					
+					sql="SELECT team_name,team_photo FROM match_team WHERE team_num = ?";
+					pstmt3 = conn.prepareStatement(sql);
+					pstmt3.setInt(1, team1);
+					rs3 = pstmt3.executeQuery();
+					if(rs3.next()) {
+						vo.setTeam1_name(rs3.getString("team_name"));
+						vo.setTeam1_photo(rs3.getString("team_photo"));
+					}
+					sql="SELECT team_name,team_photo FROM match_team WHERE team_num = ?";
+					pstmt4 = conn.prepareStatement(sql);
+					pstmt4.setInt(1, team2);
+					rs4 = pstmt4.executeQuery();
+					if(rs4.next()) {
+						vo.setTeam2_name(rs4.getString("team_name"));
+						vo.setTeam2_photo(rs4.getString("team_photo"));
+						}
 				}
-			}else if(rs.next()) {
+			}else if(rs.next()) {//경기결과가 있다면(종료된 경기 일때)
 					vo = new ScheduleVO();
 				vo.setSchedule_num(rs.getInt("schedule_num"));
 				vo.setTeam_category(rs.getInt("team_category"));
 				vo.setSchedule_start(StringUtil.DetailDateFormats(rs.getString("schedule_start")));
 				vo.setSchedule_status(rs.getInt("schedule_status"));
+				int team1 = (rs.getInt("schedule_team1"));
 				vo.setSchedule_team1(rs.getInt("schedule_team1"));
+				int team2 = (rs.getInt("schedule_team2"));
 				vo.setSchedule_team2(rs.getInt("schedule_team2"));
+				
+				sql="SELECT team_name,team_photo FROM match_team WHERE team_num = ?";
+				pstmt2 = conn.prepareStatement(sql);
+				pstmt2.setInt(1, team1);
+				rs2 = pstmt2.executeQuery();
+				if(rs2.next()) {
+					vo.setTeam1_name(rs2.getString("team_name"));
+					vo.setTeam1_photo(rs2.getString("team_photo"));
+				}
+				sql="SELECT team_name,team_photo FROM match_team WHERE team_num = ?";
+				pstmt3 = conn.prepareStatement(sql);
+				pstmt3.setInt(1, team2);
+				rs3 = pstmt3.executeQuery();
+				if(rs3.next()) {
+					vo.setTeam2_name(rs3.getString("team_name"));
+					vo.setTeam2_photo(rs3.getString("team_photo"));
+					}
+				
 				vo.setResult_team1Score(rs.getInt("result_team1Score"));
 				vo.setResult_team2Score(rs.getInt("result_team2Score"));
 				
@@ -641,9 +687,79 @@ public class ScheduleDAO {
 		}catch(Exception e) {
 			throw new Exception(e);
 		}finally {
+			DBUtil.executeClose(rs4, pstmt4, conn);
+			DBUtil.executeClose(rs3, pstmt3, conn);
 			DBUtil.executeClose(rs2, pstmt2, conn);
 			DBUtil.executeClose(rs, pstmt, conn);
 		}
 		return vo;
+	}
+	//해당 경기의 팀1과 팀2가  최근 경기한 전적
+	public List<ScheduleVO> recentResultSchedule(int schedule_num) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
+		ResultSet rs = null;
+		ResultSet rs2 = null;
+		ResultSet rs3 = null;
+		String sql = null;  
+		List<ScheduleVO> list = null;
+		
+		try {
+			//커넥션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			//SQL문 작성
+			sql = "SELECT * FROM match_schedule JOIN match_result USING(schedule_num) WHERE"
+					+ " (schedule_team1 = (select schedule_team1 from match_schedule where schedule_num = ?) OR schedule_team2 = (select schedule_team1 from match_schedule where schedule_num = ?))"
+					+ " AND (schedule_team1 = (select schedule_team2 from match_schedule where schedule_num = ?) OR schedule_team2 = (select schedule_team2 from match_schedule where schedule_num = ?))"
+					+ " ORDER BY schedule_start DESC";
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt.setInt(1, schedule_num);
+			pstmt.setInt(2, schedule_num);
+			pstmt.setInt(3, schedule_num);
+			pstmt.setInt(4, schedule_num);
+			//SQL문 실행
+			rs = pstmt.executeQuery();
+			list = new ArrayList<ScheduleVO>();
+			while(rs.next()) {
+				ScheduleVO vo = new ScheduleVO();
+				int team1 = (rs.getInt("schedule_team1"));
+				vo.setSchedule_team1(rs.getInt("schedule_team1"));
+				int team2 = (rs.getInt("schedule_team2"));
+				vo.setSchedule_team2(rs.getInt("schedule_team2"));
+				
+				sql="SELECT team_name,team_photo FROM match_team WHERE team_num = ?";
+				pstmt2 = conn.prepareStatement(sql);
+				pstmt2.setInt(1, team1);
+				rs2 = pstmt2.executeQuery();
+				if(rs2.next()) {
+					vo.setTeam1_name(rs2.getString("team_name"));
+					vo.setTeam1_photo(rs2.getString("team_photo"));
+				}
+				sql="SELECT team_name,team_photo FROM match_team WHERE team_num = ?";
+				pstmt3 = conn.prepareStatement(sql);
+				pstmt3.setInt(1, team2);
+				rs3 = pstmt3.executeQuery();
+				if(rs3.next()) {
+					vo.setTeam2_name(rs3.getString("team_name"));
+					vo.setTeam2_photo(rs3.getString("team_photo"));
+					}
+				vo.setResult_team1Score(rs.getInt("result_team1Score"));
+				vo.setResult_team2Score(rs.getInt("result_team2Score"));
+				vo.setResult_match(rs.getInt("result_match"));
+				
+				list.add(vo);
+			}
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs3, pstmt3, conn);
+			DBUtil.executeClose(rs2, pstmt2, conn);
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		return list;
 	}
 }

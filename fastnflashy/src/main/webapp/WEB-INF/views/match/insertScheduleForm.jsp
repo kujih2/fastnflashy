@@ -95,8 +95,8 @@ $(function(){
 			}
 		}//end of for
 		//시작일 또는 종료일의 길이가 12자리보다 짧을 때
-		if($('#schedule_start').val().length != 12 || $('#schedule_end').val().length != 12 ){
-			alert('년월일시분의 형식 12자리로 적을것. ex)202312110900');
+		if($('#schedule_start').val().length != 12 && isNaN($('#schedule_start').val()) || $('#schedule_end').val().length != 12 && isNaN($('#schedule_end').val()) ){
+			alert('년월일시분의 형식 12자리 숫자로만 적을것. ex)202312110900');
 			return false;
 		}
 		//시작일이 종료일 보다 클 경우 return false
