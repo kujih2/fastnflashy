@@ -14,8 +14,8 @@ public class BoardVO {
 	private String filename;		//파일명
 	private String ip;				//작성자 ip주소
 	private int mem_num;			//작성자 회원번호
-	
-	private String id;				//회원 아이디
+	   
+	private String mem_id;			//회원 아이디
 	private String photo;			//회원 프로필 사진
 	
 	
@@ -85,11 +85,12 @@ public class BoardVO {
 	public void setMem_num(int mem_num) {
 		this.mem_num = mem_num;
 	}
-	public String getId() {
-		return id;
+	
+	public String getMem_id() {
+		return mem_id;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setMem_id(String mem_id) {
+		this.mem_id = mem_id;
 	}
 	public String getPhoto() {
 		return photo;

@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.oreilly.servlet.MultipartRequest;
-
+  
 import kr.board.dao.BoardDAO;
 import kr.board.vo.BoardVO;
 import kr.controller.Action;
@@ -31,7 +31,6 @@ public class BoardWriteAction implements Action{
 		board.setIp(request.getRemoteAddr());
 		board.setFilename(multi.getFilesystemName("filename"));
 		board.setMem_num(user_num);
-		
 		
 		BoardDAO dao = BoardDAO.getInstance();
 		dao.insertBoard(board);

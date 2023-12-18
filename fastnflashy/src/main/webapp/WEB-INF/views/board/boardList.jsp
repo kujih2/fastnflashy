@@ -60,8 +60,8 @@
 				<c:forEach var="board" items="${list}">
 				<tr>
 					<td>${board.board_num}</td>
-					<td><a href="boardDetail.do?board_num=${board.board_num}"><b>${board.board_category}</b>${board.title}</a></td><%--카테고리가 실제 종목명으로 표시되게 / 제목 누르면 detail페이지로 링크  --%>
-					<td>${board.id}</td>
+					<td><a href="boardDetail.do?board_num=${board.board_num}"><b>[${board.board_category}]</b>${board.title}</a></td>
+					<td>${board.mem_id}</td>
 					<td>${board.reg_date}</td>
 					<td>${board.hit}</td>
 					<td></td><%--좋아요 + 싫어요 처리 보류 --%>

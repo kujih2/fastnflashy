@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+    
 import kr.board.dao.BoardDAO;
 import kr.board.vo.BoardVO;
 import kr.controller.Action;
@@ -29,14 +29,15 @@ public class BoardListAction implements Action{
 		
 		List<BoardVO> list = null;
 		if(count>0) {
-			list = dao.getListBoard(page.getStartRow(), page.getEndRow(), keyfield, keyword);
+			list = dao.getListBoard(page.getStartRow(), page.getEndRow(),keyfield,keyword);
 			
 		}
 		
 		request.setAttribute("count", count);
 		request.setAttribute("list", list);
 		request.setAttribute("page", page.getPage());
-				
+		
+		
 		
 		return "/WEB-INF/views/board/boardList.jsp";
 	}
