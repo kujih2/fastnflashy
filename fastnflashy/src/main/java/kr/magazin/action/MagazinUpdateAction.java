@@ -17,7 +17,7 @@ public class MagazinUpdateAction implements Action{
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
 		Integer user_num = (Integer)session.getAttribute("user_num");
-		if(user_num==null) {//로그인 안된 경우
+		if(user_num == null) {//로그인 안된 경우
 			return "redirect:/member/loginForm.do";
 		}
 		Integer user_auth = (Integer)session.getAttribute("user_auth");
@@ -27,34 +27,37 @@ public class MagazinUpdateAction implements Action{
 		
 		MultipartRequest multi = FileUtil.createFile(request);
 		int mg_board_num = Integer.parseInt(multi.getParameter("mg_board_num"));
-		String photo1 = multi.getFilesystemName("photo1");
-		String photo2 = multi.getFilesystemName("photo2");
+		int sports_category = Integer.parseInt(multi.getParameter("sports_category"));
+		String mg_photo1 = multi.getFilesystemName("mg_photo1");
+		String mg_photo2 = multi.getFilesystemName("mg_photo2");
 		
 		MagazinDAO dao = MagazinDAO.getInstance();
 		//수정전 데이터 반환
 		MagazinVO db_magazin = dao.getMagazin(mg_board_num);
 		if(user_num != db_magazin.getMem_num()) {
-			//번호 불일치
-			FileUtil.removeFile(request, photo1);
-			FileUtil.removeFile(request, photo2);
+			//로그인한 회원번호와 작성자 회원번호가 불일치
+			FileUtil.removeFile(request, mg_photo1);
+			FileUtil.removeFile(request, mg_photo2);
 			return "/WEB-INF/views/common/notice.jsp";
-		}
+	}
 		
 		//로그인한 회원번호와 작성자 회원번호 일치
 		MagazinVO magazin = new MagazinVO();
 		magazin.setMg_board_num(mg_board_num);
-		magazin.setMg_title(multi.getParameter("title"));
-		magazin.setMg_content(multi.getParameter("content"));
-		magazin.setMg_photo1(photo1);
-		magazin.setMg_photo2(photo2);
+		magazin.setSports_category(sports_category);
+		magazin.setMg_title(multi.getParameter("mg_title"));
+		magazin.setMg_content(multi.getParameter("mg_content"));
+		magazin.setMg_ip(request.getRemoteAddr());
+		magazin.setMg_photo1(mg_photo1);
+		magazin.setMg_photo2(mg_photo2);
 		
 		//글 수정
 		dao.updateMagazin(magazin);
 		
-		if(photo1!=null) {
+		if(mg_photo1!=null) {//새 파일로 교체할 때 원래 파일 제거
 			FileUtil.removeFile(request, db_magazin.getMg_photo1());
 		}
-		if(photo2!=null) {
+		if(mg_photo2!=null) {//새 파일로 교체할 때 원래 파일 제거
 			FileUtil.removeFile(request, db_magazin.getMg_photo2());
 		}
 		

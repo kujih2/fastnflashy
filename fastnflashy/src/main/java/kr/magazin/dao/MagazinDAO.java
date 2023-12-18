@@ -190,18 +190,22 @@ public class MagazinDAO {
 		}
 	}
 	//파일 삭제
-	public void deleteImage(int mg_board_num, int photo_num)throws Exception{
+	public void deletePhoto(int mg_board_num,String mg_photo1,String mg_photo2)throws Exception{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
+		String sub_sql = "";
 		
 		try {
 			conn = DBUtil.getConnection();
-			sql = "UPDATE magazin_board SET mg_photo1='', "
-				+ "mg_photo2='' WHERE mg_board_num=? AND photo_num=?";
+			
+			if(mg_photo1 != null) {
+				sub_sql += "mg_photo1=''";
+			}else sub_sql += "mg_photo2=''";
+			
+			sql = "UPDATE magazin_board SET " + sub_sql + " WHERE mg_board_num=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, mg_board_num);
-			pstmt.setInt(2, photo_num);
 			pstmt.executeUpdate();
 			
 		}catch(Exception e) {
@@ -219,23 +223,34 @@ public class MagazinDAO {
 		int cnt = 0;
 		
 		try {
+			//커넥션풀로부터 커넥션 할당
 			conn = DBUtil.getConnection();
 			
-			if(magazin.getMg_photo2()!=null) {
+			if(magazin.getMg_photo1()!=null) {
+				sub_sql += ",mg_photo1=?";
+			}else if(magazin.getMg_photo2()!=null) {
 				sub_sql += ",mg_photo2=?";
 			}
+			//SQL문 작성
 			sql ="UPDATE magazin_board SET sports_category=?,mg_title=?,mg_content=?,"
-			   + "mg_modyfy_date=SYSDATE,mg_photo1=?" + sub_sql + "WHERE mg_board_num=?";
+			   + "mg_modify_date=SYSDATE," + sub_sql + "WHERE mg_board_num=?";
+			//PreparedStatement 객체 생성
 			pstmt = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
 			pstmt.setInt(++cnt, magazin.getSports_category());
 			pstmt.setString(++cnt, magazin.getMg_title());
 			pstmt.setString(++cnt, magazin.getMg_content());
-			pstmt.setString(++cnt, magazin.getMg_photo1());
+			pstmt.setString(++cnt, magazin.getMg_ip());
+			if(magazin.getMg_photo1() != null) {
+				pstmt.setString(++cnt, magazin.getMg_photo1());
+			} 
 			if(magazin.getMg_photo2() != null) {
 				pstmt.setString(++cnt, magazin.getMg_photo2());
 			}
-			pstmt.setInt(++cnt, magazin.getMem_num());
+			pstmt.setInt(++cnt, magazin.getMg_board_num());
+			//SQL문 실행
 			pstmt.executeUpdate();
+			
 		}catch(Exception e) {
 			throw new Exception(e);
 		}finally {

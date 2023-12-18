@@ -24,6 +24,7 @@ public class MagazinUpdateFormAction implements Action{
 		}
 		//로그인한 회원번호 작성자 번호 체크
 		int mg_board_num = Integer.parseInt(request.getParameter("mg_board_num"));
+		
 		MagazinDAO dao = MagazinDAO.getInstance();
 		MagazinVO db_magazin = dao.getMagazin(mg_board_num);
 		

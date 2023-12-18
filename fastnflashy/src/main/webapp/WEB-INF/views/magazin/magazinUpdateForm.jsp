@@ -31,31 +31,6 @@ $(function(){
 			}	
 		}
 	});
-	$('.file_del').click(function(){
-		let choice = confirm('삭제하시겠습니까?');
-		if(choice){
-			$.ajax({
-				url:'deletePhoto.do',
-				type:'post',
-				data:{mg_board_num:${magazin.mg_board_num}},
-				dataType:'json',
-				success:function(param){
-					if(param.result == 'logout'){
-						alert('로그인 후 사용하세요');
-					}else if(param.result == 'success'){
-						$('#file_detail').hide();
-					}else if(param.result == 'wrongAccess'){
-						alert('잘못된 접속입니다.');
-					}else{
-						alert('파일 삭제 오류 발생');
-					}
-				},
-				error:function(){
-					alert('네트워크 오류 발생');	
-				}
-			});
-		}
-	});
 });
 </script>
 </head>
@@ -66,13 +41,14 @@ $(function(){
 	<div class="content-main">
 		<form action="magazinUpdate.do" method="post"
 		       enctype="multipart/form-data" id="magazinUpdate_form" >
+		<input type="hidden" name="mg_board_num" value="${magazin.mg_board_num}">       
 		       
 			<select id="sports_category" name="sports_category" size="1" class="align-left">
 				<option value="0" ${magazin.sports_category == 0 ? 'selected' : '0'}>카테고리</option>
-				<option value="1" ${magazin.sports_category == 1 ? 'selected' : '1'}>축구</option>
-				<option value="2" ${magazin.sports_category == 2 ? 'selected' : '2'}>야구</option>
-				<option value="3" ${magazin.sports_category == 3 ? 'selected' : '3'}>배구</option>
-				<option value="4" ${magazin.sports_category == 4 ? 'selected' : '4'}>농구</option>
+				<option value="1" ${magazin.sports_category == 1 ? 'selected' : '0'}>축구</option>
+				<option value="2" ${magazin.sports_category == 2 ? 'selected' : '0'}>야구</option>
+				<option value="3" ${magazin.sports_category == 3 ? 'selected' : '0'}>배구</option>
+				<option value="4" ${magazin.sports_category == 4 ? 'selected' : '0'}>농구</option>
 			</select>
 			<ul>
 				<li>
@@ -86,7 +62,7 @@ $(function(){
 				<li>
 					<label for="mg_content">내용</label>
 					<textarea rows="5" cols="30" name="mg_content" id="mg_content"
-								placeholder="내용을 입력하세요">${magazin.mg_title}</textarea>
+								placeholder="내용을 입력하세요">${magazin.mg_content}</textarea>
 				</li>
 			</ul>
 			<hr size="1" noshade="noshade" width="100%">
@@ -103,17 +79,55 @@ $(function(){
 				</li>
 				<li>
 				<c:if test="${!empty magazin.mg_photo1}">
-					<div id="file_detail">
-						<input type="button" value="이미지1삭제" class="file_del">
+					<div class="file_detail">
+						<input type="button" value="이미지1삭제" id="file1" class="file_del">
 						(${magazin.mg_photo1})파일이 등록되어 있습니다.
 					</div>
-					</c:if>
-					<c:if test="${!empty magazin.mg_photo2}">
-					<div id="file_detail">
-						<input type="button" value="이미지2삭제" class="file_del">
-						${magazin.mg_photo2}파일이 등록되어 있습니다.
-					</div>
-					</c:if>		
+				</c:if>
+				<c:if test="${!empty magazin.mg_photo2}">
+				<div class="file_detail">
+					<input type="button" value="이미지2삭제" id="file2" class="file_del">
+					${magazin.mg_photo2}파일이 등록되어 있습니다.
+				</div>
+				</c:if>	
+				<c:if test="${!empty magazin.mg_photo1 or !empty magazin.mg_photo2}">
+				<script type="text/javascript">
+					$(function(){
+						$('.file_del').click(function(){
+							let choice = confirm('삭제하시겠습니까?');
+							let param
+							if($(this).attr('id')=='file1'){
+								param = {mg_board_num:${magazin.mg_board_num},mg_photo1:'${magazin.mg_photo1}'}
+							}else{
+								param = {mg_board_num:${magazin.mg_board_num},mg_photo2:'${magazin.mg_photo2}'}
+							}
+							
+							if(choice){
+								$.ajax({
+									url:'deletePhoto.do',
+									type:'post',
+									data:param,
+									dataType:'json',
+									success:function(param){
+										if(param.result == 'logout'){
+											alert('로그인 후 사용하세요');
+										}else if(param.result == 'success'){
+											$('#file_detail').hide();
+										}else if(param.result == 'wrongAccess'){
+											alert('잘못된 접속입니다.');
+										}else{
+											alert('파일 삭제 오류 발생');
+										}
+									},
+									error:function(){
+										alert('네트워크 오류 발생');	
+									}
+								});
+							}
+						});
+					});
+				</script>                 
+				</c:if>	
 				</li>
 			</ul>
 			<hr size="1" noshade="noshade" width="100%">
