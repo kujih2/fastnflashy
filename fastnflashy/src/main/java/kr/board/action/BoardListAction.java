@@ -15,15 +15,18 @@ public class BoardListAction implements Action{
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
+		
+		
 		String pageNum = request.getParameter("pageNum");
 		if(pageNum == null) pageNum = "1";
 		
 		String keyfield = request.getParameter("keyfield");
 		String keyword = request.getParameter("keyword");
 		
+		
 		BoardDAO dao = BoardDAO.getInstance();
 		int count = dao.getBoardCount(keyfield, keyword);
-		
+	
 		//페이지 처리
 		PageUtil page = new PageUtil(keyfield, keyword, Integer.parseInt(pageNum),count,20,10,"boardList.do");
 		
@@ -33,10 +36,13 @@ public class BoardListAction implements Action{
 			
 		}
 		
+		//int liketotal = dao.selectDislikeCount(board_num) + dao.selectLikeCount(board_num);//형변환 처리 해줘야하나?
+		//System.out.println(board_num);
+		
 		request.setAttribute("count", count);
 		request.setAttribute("list", list);
 		request.setAttribute("page", page.getPage());
-		
+		//request.setAttribute("liketotal", liketotal);
 		
 		
 		return "/WEB-INF/views/board/boardList.jsp";

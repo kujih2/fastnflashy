@@ -9,9 +9,10 @@ $(function(){
 			},
 			dataType:'json',
 			success:function(param){
-			//	if(param.result == 'logout'){  -초기 설정 불러오는데 로그인 후 좋아요 눌러주세요는 안맞지않나?-'
-			//		alert('로그인 후 좋아요 눌러주세요');
-			//	}else {
+				if(param.result == 'logout'){ 
+					$('#likecount').text(param.likecount);
+					$('#dislikecount').text(param.dislikecount);
+				}else {
 					var likebutton =  '.likeicon[data-num="' + param.board_num + '"][data-likestatus="1"]';
 					var dislikebutton = '.likeicon[data-num="' + param.board_num + '"][data-likestatus="2"]';
 					if(param.status=='Liked'){//초기값 좋아요 선택되어 있는것
@@ -22,8 +23,9 @@ $(function(){
 						$(likebutton).attr('src', '../images/like.png');
 						$(dislikebutton).attr('src', '../images/dislike.png');
 					}
-			//		}
-			
+					
+					
+				}
 				displayLike(param)
 				
 			},
@@ -75,6 +77,12 @@ $(function(){
 		}else if(param.status == 'Disliked'){//싫어요 선택
 			output = '../images/like.png';
 			output2 = '../images/disliked.png';
+		}else if(param.status == 'CancelLike'){
+			output = '../images/like.png';
+			output2 - '../images/dislike.png';
+		}else if(param.status == 'CancelDislike'){
+			output = '../images/like.png';
+			output2 = '../images/dislike.png';
 		}
 		//문서 객체에 설정
 		$('#fav_like').attr('src', output);

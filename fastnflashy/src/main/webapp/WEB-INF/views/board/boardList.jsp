@@ -60,11 +60,20 @@
 				<c:forEach var="board" items="${list}">
 				<tr>
 					<td>${board.board_num}</td>
-					<td><a href="boardDetail.do?board_num=${board.board_num}"><b>[${board.board_category}]</b>${board.title}</a></td>
+				
+					<td><a href="boardDetail.do?board_num=${board.board_num}">
+					<b>[
+					<c:if test="${board.board_category == 1}">축구</c:if>
+					<c:if test="${board.board_category == 2}">야구</c:if>
+					<c:if test="${board.board_category == 3}">배구</c:if>
+					<c:if test="${board.board_category == 4}">농구</c:if>
+					]</b>
+					${board.title}</a></td>
+				
 					<td>${board.mem_id}</td>
 					<td>${board.reg_date}</td>
 					<td>${board.hit}</td>
-					<td></td><%--좋아요 + 싫어요 처리 보류 --%>
+					<td></td><%--${board.liketotal } 좋아요 + 싫어요 처리 보류 --%>
 				</tr>
 				</c:forEach>
 			</table>

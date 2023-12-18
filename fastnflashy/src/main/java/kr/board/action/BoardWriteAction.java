@@ -26,7 +26,7 @@ public class BoardWriteAction implements Action{
 		MultipartRequest multi = FileUtil.createFile(request);
 		BoardVO board = new BoardVO();
 		board.setTitle(multi.getParameter("title"));
-		board.setBoard_category(Integer.parseInt(multi.getParameter("category")));
+		board.setBoard_category(Integer.parseInt(multi.getParameter("board_category")));
 		board.setContent(multi.getParameter("content"));
 		board.setIp(request.getRemoteAddr());
 		board.setFilename(multi.getFilesystemName("filename"));

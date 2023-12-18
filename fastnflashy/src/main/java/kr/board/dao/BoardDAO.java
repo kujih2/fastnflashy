@@ -143,6 +143,8 @@ public class BoardDAO {
 				board.setHit(rs.getInt("hit"));
 				board.setReg_date(rs.getDate("reg_date"));
 				board.setMem_id(rs.getString("mem_id"));
+				board.setBoard_category(rs.getInt("board_category"));
+				
 				
 				list.add(board);
 			}
@@ -310,7 +312,6 @@ public class BoardDAO {
 				// 댓글 삭제
 				
 				// 부모글 삭제
-				
 				sql = "DELETE FROM board WHERE board_num=?";
 				pstmt3 = conn.prepareStatement(sql);
 				pstmt3.setInt(1, board_num);

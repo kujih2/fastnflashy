@@ -48,11 +48,11 @@ public class BoardGetLikeAction implements Action{
 				mapAjax.put("status", "noLike");
 				
 			}	
-			mapAjax.put("likecount", dao.selectLikeCount(board_num));
-			mapAjax.put("dislikecount", dao.selectDislikeCount(board_num));
 			
 		}
-	
+		mapAjax.put("likecount", dao.selectLikeCount(board_num));
+		mapAjax.put("dislikecount", dao.selectDislikeCount(board_num));
+		
 		//JSON 문자열 생성
 		ObjectMapper mapper = new ObjectMapper();
 		String ajaxData = mapper.writeValueAsString(mapAjax);
