@@ -6,7 +6,7 @@
 <div id="main_nav">
 	<ul>
 		<li>
-			fast&amp;flashy
+			<a href="${pageContext.request.contextPath}/main/main.do">fast&amp;flashy</a>
 		</li>
 		<li>
 			<a href="${pageContext.request.contextPath}/magazin/magazinList.do">매거진</a>
