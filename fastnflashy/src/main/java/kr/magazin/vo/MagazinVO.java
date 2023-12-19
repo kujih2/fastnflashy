@@ -18,6 +18,15 @@ public class MagazinVO {
 	private String mem_name;//회원 이름
 	private String mem_email;//회원 이메일
 	private String mem_photo;//회원 사진
+	private String mem_pw;//회원 비밀번호
+	
+	//비밀번호 일치여부 체크
+	public boolean isCheckedPassword(String userPasswd) {
+		if(mem_pw.equals(userPasswd)) {
+			return true;
+		}
+		return false;
+	}
 	
 	public int getMg_board_num() {
 		return mg_board_num;
@@ -104,6 +113,12 @@ public class MagazinVO {
 	}
 	public void setMem_photo(String mem_photo) {
 		this.mem_photo = mem_photo;
+	}
+	public String getMem_pw() {
+		return mem_pw;
+	}
+	public void setMem_pw(String mem_pw) {
+		this.mem_pw = mem_pw;
 	}
 	
 	

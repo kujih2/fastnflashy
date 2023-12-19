@@ -228,12 +228,13 @@ public class MagazinDAO {
 			
 			if(magazin.getMg_photo1()!=null) {
 				sub_sql += ",mg_photo1=?";
-			}else if(magazin.getMg_photo2()!=null) {
-				sub_sql += ",mg_photo2=?";
 			}
+			if(magazin.getMg_photo2()!=null) {
+				sub_sql += ",mg_photo2=?";
+			};
 			//SQL문 작성
 			sql ="UPDATE magazin_board SET sports_category=?,mg_title=?,mg_content=?,"
-			   + "mg_modify_date=SYSDATE," + sub_sql + "WHERE mg_board_num=?";
+			   + "mg_ip=?,mg_modify_date=SYSDATE" + sub_sql + " WHERE mg_board_num=?";
 			//PreparedStatement 객체 생성
 			pstmt = conn.prepareStatement(sql);
 			//?에 데이터 바인딩
@@ -258,6 +259,37 @@ public class MagazinDAO {
 		}
 	}
 	//관리자 - 칼럼 삭제
+	public void magazinDelete(int mg_board_num)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			//커넥션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			//오토커밋해제
+			conn.setAutoCommit(false);
+			
+			//좋아요 삭제
+			
+			//댓글 삭제
+			
+			//부모글 삭제
+			sql = "DELECT FROM magazin_board WHERE mg_board_num=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, mg_board_num);
+			pstmt.executeUpdate();
+			
+			//모든SQL 성공
+			conn.commit();
+		}catch(Exception e) {
+			//하나라도 실패시
+			conn.rollback();
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+	}
 	//칼럼 반응 등록
 	//칼럼 반응 개수
 	//댓글 등록

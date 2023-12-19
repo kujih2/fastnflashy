@@ -98,8 +98,10 @@ $(function(){
 							let param
 							if($(this).attr('id')=='file1'){
 								param = {mg_board_num:${magazin.mg_board_num},mg_photo1:'${magazin.mg_photo1}'}
+									alert('삭제완료');
 							}else{
 								param = {mg_board_num:${magazin.mg_board_num},mg_photo2:'${magazin.mg_photo2}'}
+									alert('삭제완료');
 							}
 							
 							if(choice){
