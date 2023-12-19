@@ -30,7 +30,7 @@ window.onload=function(){
 		<h2>[관리자] 칼럼삭제</h2>
 		<form id="delete_form" action="magazinDelete.do" method="post" class="align-center">
 			<input type="hidden" name="mg_board_num" value="${mg_board_num}">
-			<h3>비밀번호를 입력하세요</h3>
+			<h3>비밀번호 입력</h3>
 			<ul>
 				<li>
 					<label for="mem_pw"></label>
@@ -39,9 +39,9 @@ window.onload=function(){
 				</li>
 			</ul>
 				<div class="align-center">
-					<input type="submit" value="삭제">
+					<input type="submit" value="삭제" id="delete_btn">
 					<input type="button" value="취소"
-							onclick="locatrion.href='magazinDetail.do'">
+							onclick="'magazinDetail.do?mg_board_num=${magazin.mg_board_num}'">
 				</div>
 		</form>
 	</div>

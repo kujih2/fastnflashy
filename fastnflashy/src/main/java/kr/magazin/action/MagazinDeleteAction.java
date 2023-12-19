@@ -7,6 +7,8 @@ import javax.servlet.http.HttpSession;
 import kr.controller.Action;
 import kr.magazin.dao.MagazinDAO;
 import kr.magazin.vo.MagazinVO;
+import kr.member.dao.MemberDAO;
+import kr.member.vo.MemberVO;
 import kr.util.FileUtil;
 
 public class MagazinDeleteAction implements Action{
@@ -27,14 +29,16 @@ public class MagazinDeleteAction implements Action{
 		int mg_board_num = Integer.parseInt(request.getParameter("mg_board_num"));
 		String mem_pw = request.getParameter("mem_pw");
 		
-		MagazinDAO dao = MagazinDAO.getInstance();
-		MagazinVO db_magazin = dao.getMagazin(mg_board_num);
+		MemberDAO dao = MemberDAO.getInstance();
+		MemberVO db_vo = dao.checkMember((String)session.getAttribute("user_id"));
 		boolean check = false;
-		if(db_magazin!=null) {
-			check = db_magazin.isCheckedPassword(mem_pw);
+		if(db_vo!=null) {
+			check = db_vo.isCheckedPassword(mem_pw);
 		}
+		MagazinDAO magazinDao = MagazinDAO.getInstance();
+		MagazinVO db_magazin = magazinDao.getMagazin(mg_board_num);
 		if(check) {
-			dao.magazinDelete(mg_board_num);
+			magazinDao.magazinDelete(mg_board_num);
 		}
 		request.setAttribute("check", check);
 		

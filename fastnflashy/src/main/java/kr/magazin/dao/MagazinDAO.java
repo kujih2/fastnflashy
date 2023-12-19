@@ -275,7 +275,7 @@ public class MagazinDAO {
 			//댓글 삭제
 			
 			//부모글 삭제
-			sql = "DELECT FROM magazin_board WHERE mg_board_num=?";
+			sql = "DELETE FROM magazin_board WHERE mg_board_num=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, mg_board_num);
 			pstmt.executeUpdate();
