@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import kr.board.vo.BoardReplyVO;
+import kr.magazin.vo.MagazinReplyVO;
 import kr.magazin.vo.MagazinVO;
 import kr.util.DBUtil;
 import kr.util.StringUtil;
@@ -293,8 +295,77 @@ public class MagazinDAO {
 	//칼럼 반응 등록
 	//칼럼 반응 개수
 	//댓글 등록
+	public void insertReplyMagazin(MagazinReplyVO magazinReply)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			//커넥션풀 로드
+			conn = DBUtil.getConnection();
+			//SQL 작성
+			sql = "INSERT INTO magazin_reply (mg_re_num,"
+				+ "mg_re_content,mg_re_ip,mem_num,mg_board_num) "
+				+ "VALUES (magazin_reply_seq.nextval,?,?,?,?)";
+			//PreparedStatement 객체
+			pstmt = conn.prepareStatement(sql);
+			//?데이터 바인딩
+			pstmt.setString(1, magazinReply.getMg_re_content());
+			pstmt.setString(2, magazinReply.getMg_re_ip());
+			pstmt.setInt(3, magazinReply.getMem_num());
+			pstmt.setInt(4, magazinReply.getMg_board_num());
+			//SQL 실행
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+		
+	}
 	//댓글 개수
+	public int getReplyMagazinCount(int mg_board_num)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int count = 0;
+		
+		try {
+			//커넥션풀 커넥션 할당
+			conn = DBUtil.getConnection();
+			//SQL문 작성
+			sql = "SELECT COUNT(*) FROM zboard_reply JOIN zmember "
+				+ "USING(mem_num) WHERE board_num=?";
+			//PreparedStatement 객체
+			pstmt = conn.prepareStatement(sql);
+			//?데이터 바인딩
+			pstmt.setInt(1, mg_board_num);
+			//SQL 실행
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		
+		return count;
+	}
 	//댓글 목록
+	public List<MagazinReplyVO> getListReplyMagazin(int start,int end,
+									int mg_board_num)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<MagazinReplyVO> list = null;
+		String sql = null;
+		
+		return list;
+	}
+	
 	//댓글 상세
 	//댓글 수정
 	//댓글 삭제

@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/magazin.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/magazin.reply.js"></script>
 <script type="text/javascript">
 window.onload=function(){
 	let categoryValue = "";
@@ -89,7 +90,37 @@ window.onload=function(){
 				${magazin.mem_email}
 		</ul>
 		<hr size="1" noshade="noshade" width="100%">
-		
+		<!-- 관심달기 영역 -->
+		<hr size="1" noshade="noshade" width="100%">
+		<!-- 댓글 시작 -->
+		<div id="reply_div">
+			<span class="re-title">댓글 달기</span>
+			<form id="re_form">
+				<input type="hidden" name="mg_board_num"
+					value="${magazin.mg_board_num}" id="mg_board_num">
+				<textarea rows="3" cols="50" name="mg_re_content"
+					id="mg_re_content" class="rep-content"
+					<c:if test="${empty user_num}">disabled="disabled"</c:if>><c:if test="${empty user_num}">로그인해야 작성가능합니다.</c:if></textarea>	
+				<c:if test="${!empty user_num}">
+				<div id="re_first">
+					<span class="letter-count">300/300</span>
+				</div>
+				<div id="re_second" class="align-right">
+					<input type="submit" value="전송">
+				</div>
+				</c:if>	
+			</form>
+		</div>
+		<!-- 댓글 목록 출력 시작 -->
+		<div id="output"></div>
+		<div class="paging-button" style="display:none;">
+			<input type="button" value="다음글 보기">
+		</div>
+		<div id="loading" style="display:none;">
+			<img src="${pageContext.request.contextPath}/images/loading.gif'">
+		</div>
+		<!-- 댓글 목록 출력 끝 -->
+		<!-- 댓글 끝 -->
 	</div>
 </div>
 </body>

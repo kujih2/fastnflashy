@@ -30,5 +30,3 @@ public class MagazinDetailAction implements Action{
 	}
 
 }
-
-//magazin.setMg_content(StringUtil.shortWords(10, magazin.getMg_content()));

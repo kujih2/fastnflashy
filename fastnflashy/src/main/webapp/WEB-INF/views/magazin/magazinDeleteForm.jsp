@@ -41,7 +41,7 @@ window.onload=function(){
 				<div class="align-center">
 					<input type="submit" value="삭제" id="delete_btn">
 					<input type="button" value="취소"
-							onclick="'magazinDetail.do?mg_board_num=${magazin.mg_board_num}'">
+							onclick="location.href='magazinList.do'">
 				</div>
 		</form>
 	</div>
