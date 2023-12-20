@@ -203,24 +203,17 @@ public class ScheduleDAO {
 		PreparedStatement pstmt3 = null;
 		PreparedStatement pstmt4 = null;
 		PreparedStatement pstmt5 = null;
-		PreparedStatement pstmt6 = null;
-		PreparedStatement pstmt7 = null;
-		PreparedStatement pstmt8 = null;
-		PreparedStatement pstmt9 = null;
 		
 		String sql = null;
 		String sub_sql = "";
 		String sub_sql2 = "";
 		ResultSet rs = null;
 		ResultSet rs2 = null;
-		ResultSet rs3 = null;
-		ResultSet rs4 = null;
 		int score1 = 0;
 		int score2 = 0;
 		int result = 0;
 		int num =0;//경기 번호를 담을 변수
 		int ctg =0;//종목을 담을 변수
-		String odds2 ="";
 		try {
 			//커넥션풀로부터 커넥션 할당
 			conn = DBUtil.getConnection();

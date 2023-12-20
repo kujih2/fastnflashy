@@ -100,4 +100,35 @@ public class TeamDAO {
 		}
 		return list;
 	}
+	//팀 전체 조회
+	public List<TeamVO> selectTeams(int team_category) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		List<TeamVO> list = null;
+		
+		try {
+			//커넥션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			//SQL문 작성
+			sql = "SELECT * FROM match_team WHERE team_category= ?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1, team_category);
+			rs = pstmt.executeQuery();
+			list = new ArrayList<TeamVO>();
+			while(rs.next()) {
+				TeamVO team = new TeamVO();
+				team.setTeam_num(rs.getInt("team_num"));
+				team.setTeam_name(rs.getString("team_name"));
+				team.setTeam_photo(rs.getString("team_photo"));
+				list.add(team);
+			}
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		return list;
+	}
 }

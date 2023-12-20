@@ -9,7 +9,7 @@
 			<a href="${pageContext.request.contextPath}/match/teamRank.do?team_category=0">기록/순위</a>
 		</li>
 		<li>
-			<a href="${pageContext.request.contextPath}/match/teamRank.do?team_category=0">팀/구단</a>
+			<a href="${pageContext.request.contextPath}/match/teamList.do?team_category=0">팀/구단</a>
 		</li>
 		
 	</ul>
