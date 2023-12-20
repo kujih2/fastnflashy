@@ -16,6 +16,15 @@ public class BookedInfoVO {
 	private String booked_email;	//예매자 이메일
 	private String booked_ip;		//예매자 IP
 	private int booked_price;		//표가격
+	private int count_of_book;		//예매한 표 개수
+	
+	
+	public int getCount_of_book() {
+		return count_of_book;
+	}
+	public void setCount_of_book(int count_of_book) {
+		this.count_of_book = count_of_book;
+	}
 	public int getSchedule_num() {
 		return schedule_num;
 	}

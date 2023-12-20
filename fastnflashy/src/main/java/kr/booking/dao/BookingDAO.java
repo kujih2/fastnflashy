@@ -151,7 +151,7 @@ public class BookingDAO {
 		
 		try {
 			conn = DBUtil.getConnection();
-			sql = "SELECT * FROM BOOKED_SEAT WHERE schedule_num=?";
+			sql = "SELECT * FROM BOOKED_SEAT WHERE schedule_num=? AND seat_status=1";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1,schedule_num);
 			rs = pstmt.executeQuery();
@@ -179,7 +179,7 @@ public class BookingDAO {
 		
 		try {
 			conn = DBUtil.getConnection();
-			sql = "SELECT * FROM BOOKED_SEAT WHERE schedule_num=?";
+			sql = "SELECT * FROM BOOKED_SEAT WHERE schedule_num=? AND seat_status=1";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1,schedule_num);
 			rs = pstmt.executeQuery();
@@ -249,7 +249,8 @@ public class BookingDAO {
 		ResultSet rs = null;
 		String sql = null;
 		Integer seatId = null;
-		Integer num = 0;//패키지 번호 저장
+		Integer num = null;//패키지 번호 저장
+		int cnt = 0;
 		
 		try {
 			conn = DBUtil.getConnection();
@@ -270,7 +271,11 @@ public class BookingDAO {
 			sql = "INSERT INTO booked_seat (schedule_num,seat_id,seat_col,seat_row) VALUES(?,?,?,?)";
 			pstmt3 = conn.prepareStatement(sql);
 			
-			sql = "INSERT INTO booked_info (booked_num,booked_package,seat_id,mem_num,booked_name,booked_email,booked_ip,booked_price) VALUES(booked_info_seq.nextval,?,?,?,?,?,?,?)";
+			if(num!=null) {
+				sql = "INSERT INTO booked_info (booked_num,booked_package,seat_id,mem_num,booked_name,booked_email,booked_ip,booked_price) VALUES(booked_info_seq.nextval,?,?,?,?,?,?,?)";
+			}else {
+				sql = "INSERT INTO booked_info (booked_num,seat_id,mem_num,booked_name,booked_email,booked_ip,booked_price) VALUES(booked_info_seq.nextval,?,?,?,?,?,?)";
+			}
 			pstmt4 = conn.prepareStatement(sql);
 			
 			for(int i=0;i<list.size();i++) {
@@ -287,14 +292,16 @@ public class BookingDAO {
 				pstmt3.setInt(4,vo.getSeat_row());
 				pstmt3.addBatch();
 				
-				
-				pstmt4.setInt(1, num);
-				pstmt4.setInt(2,seatId);
-				pstmt4.setInt(3,vo.getUser_num());
-				pstmt4.setString(4, vo.getBooked_name());
-				pstmt4.setString(5, vo.getBooked_email());
-				pstmt4.setString(6, vo.getBooked_ip());
-				pstmt4.setInt(7, vo.getBooked_price());
+				cnt=0;
+				if(num!=null) {
+					pstmt4.setInt(++cnt, num);
+				}
+				pstmt4.setInt(++cnt,seatId);
+				pstmt4.setInt(++cnt,vo.getUser_num());
+				pstmt4.setString(++cnt, vo.getBooked_name());
+				pstmt4.setString(++cnt, vo.getBooked_email());
+				pstmt4.setString(++cnt, vo.getBooked_ip());
+				pstmt4.setInt(++cnt, vo.getBooked_price());
 				pstmt4.addBatch();
 				
 				if(i%1000==0) {
@@ -319,16 +326,103 @@ public class BookingDAO {
 		
 	}
 	
-	//나의 예매정보 불러오기
-	public List<BookedInfoVO> getMyBook(int user_num,int schedule_num) throws Exception{
+	//나의 예매정보 리스트 불러오기1
+	public List<BookedInfoVO> getMyBookList1(int user_num) throws Exception{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		ResultSet rs = null;
-		List<BookedInfoVO> list = null;
+		List<BookedInfoVO> list1 = new ArrayList<BookedInfoVO>();
 		
 		try {
+			conn = DBUtil.getConnection();
+			sql = "SELECT * FROM booked_seat JOIN(SELECT * FROM(SELECT booked_num,booked_package,seat_id,mem_num,booked_regdate,booked_name,booked_email,booked_ip,booked_price,nvl(booked_package,1)*1 as cnt FROM booked_info WHERE booked_package IS NULL UNION ALL SELECT * FROM booked_info JOIN (SELECT MIN(booked_num) booked_num, count(*) cnt FROM booked_info WHERE booked_package IS NOT NULL GROUP BY booked_package) USING(BOOKED_NUM)) WHERE mem_num=?) USING(seat_id) ORDER BY booked_regdate DESC";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, user_num);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BookedInfoVO vo = new BookedInfoVO();
+				vo.setSeat_status(rs.getInt("seat_status"));
+				vo.setBooked_regdate(rs.getDate("booked_regdate"));
+				vo.setBooked_num(rs.getInt("booked_num"));
+				vo.setCount_of_book(rs.getInt("cnt"));
+				vo.setBooked_package(rs.getInt("booked_package"));
+				list1.add(vo);
+			}
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		
+		return list1;
 			
+	}
+	//나의 예매정보 리스트 불러오기2
+	public List<ScheduleVO> getMyBookList2(int user_num) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		ResultSet rs = null;
+		List<ScheduleVO> list2 = new ArrayList<ScheduleVO>();
+		
+		try {
+			conn = DBUtil.getConnection();
+			sql = "SELECT sch.schedule_start,team1.team_name team_name1,team2.team_name team_name2 FROM (SELECT * FROM (SELECT * FROM booked_seat JOIN(SELECT * FROM(SELECT booked_num,booked_package,seat_id,mem_num,booked_regdate,booked_name,booked_email,booked_ip,booked_price,nvl(booked_package,1)*1 as cnt FROM booked_info WHERE booked_package IS NULL UNION ALL SELECT * FROM booked_info JOIN (SELECT MIN(booked_num) booked_num, count(*) cnt FROM booked_info WHERE booked_package IS NOT NULL GROUP BY booked_package) USING(BOOKED_NUM)) WHERE mem_num=?) USING(seat_id)) JOIN match_schedule USING(schedule_num)) sch JOIN match_team team1 ON sch.schedule_team1 = team1.team_num JOIN match_team team2 ON sch.schedule_team2 = team2.team_num";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, user_num);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				ScheduleVO vo = new ScheduleVO();
+				vo.setSchedule_start(rs.getString(1));
+				vo.setTeam1_name(rs.getString(2));
+				vo.setTeam2_name(rs.getString(3));
+				list2.add(vo);
+			}
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		
+		return list2;
+	}
+	
+	//예매 상세정보 불러오기1
+	public List<BookedInfoVO> getMyBookDetail1(int booked_num, int booked_package) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		String sub_sql ="";
+		ResultSet rs = null;
+		List<BookedInfoVO> list = new ArrayList<BookedInfoVO>();
+		
+		try {
+			conn = DBUtil.getConnection();
+			if(booked_package==0) sub_sql = " WHERE booked_num=?";
+			if(booked_package!=0) sub_sql = " WHERE booked_package=?";
+			sql = "SELECT * FROM booked_seat JOIN booked_info USING(seat_id)"+sub_sql;
+			pstmt = conn.prepareStatement(sql);
+			if(booked_package==0) {
+				pstmt.setInt(1, booked_num);
+			}else {
+				pstmt.setInt(1, booked_package);
+			}
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BookedInfoVO vo = new BookedInfoVO();
+				vo.setBooked_regdate(rs.getDate("booked_regdate"));
+				vo.setSeat_status(rs.getInt("seat_status"));
+				vo.setBooked_num(rs.getInt("booked_num"));
+				vo.setBooked_package(rs.getInt("booked_package"));
+				vo.setSeat_col(rs.getString("seat_col"));
+				vo.setSeat_row(rs.getInt("seat_row"));
+				vo.setBooked_price(rs.getInt("booked_price"));
+				vo.setBooked_email(rs.getString("booked_email"));
+				vo.setBooked_name(rs.getString("booked_name"));
+				
+				list.add(vo);
+			}
 		}catch(Exception e) {
 			throw new Exception(e);
 		}finally {
@@ -336,7 +430,73 @@ public class BookingDAO {
 		}
 		
 		return list;
+	}
+	public ScheduleVO getMyBookDetail2(int booked_num)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		ResultSet rs = null;
+		ScheduleVO schedule = null;
+		try {
+			conn = DBUtil.getConnection();
+			sql="SELECT sch.schedule_start, team1.team_name team_name1, team2.team_name team_name2 FROM (SELECT * FROM booked_seat JOIN booked_info USING(seat_id) JOIN match_schedule USING(schedule_num) WHERE booked_num = ?) sch JOIN match_team team1 ON sch.schedule_team1 = team1.team_num JOIN match_team team2 ON sch.schedule_team2 = team2.team_num";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, booked_num);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				schedule = new ScheduleVO();
+				schedule.setSchedule_start(rs.getString(1));
+				schedule.setTeam1_name(rs.getString(2));
+				schedule.setTeam2_name(rs.getString(3));
+			}
+		}catch(Exception e){
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		return schedule;
+	}
+	
+	//예매 취소하기
+	public void deleteBooking(int booked_num, int booked_package) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		String sql = null;
+		String sub_sql = "";
+		if(booked_package==0)sub_sql=" WHERE booked_num=?";
+		if(booked_package!=0)sub_sql=" WHERE booked_package=?";
+		try {
+			conn = DBUtil.getConnection();
+			conn.setAutoCommit(false);
 			
+			sql = "SELECT * FROM booked_info"+sub_sql;
+			pstmt = conn.prepareStatement(sql);
+			if(booked_package==0) {
+				pstmt.setInt(1, booked_num);
+			}else {
+				pstmt.setInt(1, booked_package);
+			}
+			rs = pstmt.executeQuery();
+			
+			sql = "UPDATE booked_seat SET seat_status=0 WHERE seat_id=?";
+			pstmt2 = conn.prepareStatement(sql);
+			while(rs.next()) {
+				pstmt2.setInt(1, rs.getInt("seat_id"));
+				pstmt2.executeUpdate();
+			}
+			
+			conn.commit();
+			
+			
+		}catch(Exception e) {
+			conn.rollback();
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+		
 	}
 	
 	
