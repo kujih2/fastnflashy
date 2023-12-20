@@ -18,6 +18,7 @@ public class BoardVO {
 	private String mem_id;			//회원 아이디
 	private String photo;			//회원 프로필 사진
 	
+	private int net_likes;			//좋아요 싫어요 합산 값
 	
 	public int getBoard_num() {
 		return board_num;
@@ -98,6 +99,13 @@ public class BoardVO {
 	public void setPhoto(String photo) {
 		this.photo = photo;
 	}
+	public int getNet_likes() {
+		return net_likes;
+	}
+	public void setNet_likes(int net_likes) {
+		this.net_likes = net_likes;
+	}
+	
 	
 	
 	

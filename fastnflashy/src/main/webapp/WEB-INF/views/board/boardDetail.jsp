@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/css/style.css">
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/boardLike.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/boardReply.js"></script>
 </head>
 <body>
 <div class="page-main">
@@ -42,7 +43,7 @@
 		</p>
 		<hr size="1" noshade="noshade" width="100%">
 		<ul class="detail-sub">
-			<%--    좋아요 --%>
+			<%-- 좋아요 싫어요 --%>
 			<li class="align-right">
 				<img id="fav_like" class="likeicon" data-num="${board.board_num}" data-likestatus="1"
 								src="${pageContext.request.contextPath }/images/like.png" width="50">
@@ -68,11 +69,15 @@
 				<input type="button" value="삭제" id="delete_btn">
 				<script type="text/javascript">
 					let delete_btn = document.getElementById('delete_btn');
+					let boardNum = ${board.board_num};
 					//이벤트 연결
 					delete_btn.onclick=function(){
+						
 						let choice = confirm('삭제하시겠습니까?');
 						if(choice){
-							location.replace('boardDelete.do?board_num=${board.board_num}');
+							<%--location.replace('boardDelete.do?board_num=${board.board_num}'); --%>
+							location.replace ('boardDeleteConfirm.do?board_num=${board.board_num}');
+
 						}
 					};
 				</script>
@@ -81,8 +86,33 @@
 			
 		</ul>
 		<%--댓글 PART --%>
+		<div id="reply_div">
+			<span class="re-title">댓글 달기</span>
+			<form id="re_form">
+				<input type="hidden" name="board_num" value="${board.board_num}" id="board_num">
+				<textarea rows="3" cols="50" name="re_content" id="re_content" class="rep-content"
+				<c:if test="${empty user_num}">disabled="disabled"</c:if>><c:if test="${empty user_num}">로그인해야 작성할 수 있습니다.</c:if></textarea>
+				<c:if test="${!empty user_num}">
+					<div id="re_first">
+						<span class="letter-count">300/300</span>
+					</div>
+					<div id="re_second" class="align-right">
+						<input type="submit" value="전송">
+					</div>
+				</c:if>
+			</form>
+		</div>
+		<!-- 댓글 목록 출력 시작 -->
+		<div id="output"></div>
+		<div class="paging-button" style="display:none;">
+			<input type="button" value="다음글 보기">
+		</div>
+		<div id="loading" style="display:none;">
+			<img src="${pageContext.request.contextPath}/images/loading.gif" width="50" height="50">
+		</div>
+		<!-- 댓글 목록 출력 끝 -->
 		
-		<%-- 작업 필요함 --%>
+		<%-- 댓글 끝--%>
 	</div>
 </div>
 </body>

@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kr.board.vo.BoardLikeVO;
+import kr.board.vo.BoardReplyVO;
 import kr.board.vo.BoardVO;
 import kr.util.DBUtil;
+import kr.util.DurationFromNow;
 import kr.util.StringUtil;
 
 public class BoardDAO {
@@ -121,9 +123,13 @@ public class BoardDAO {
 				else if(keyfield.equals("3")) sub_sql += "WHERE content LIKE ? ";
 			}
 			//SQL문 작성
-			sql = "SELECT * FROM (SELECT a.*, rownum rnum FROM "
-					+ "(SELECT * FROM board JOIN member USING(mem_num) " 
-					+ sub_sql + " ORDER BY board_num DESC)a) WHERE rnum >= ? AND rnum <= ?" ;
+			sql = "SELECT a.*, " 
+				    + "(SELECT SUM(CASE WHEN like_status = 1 THEN 1 ELSE 0 END) - " 
+				    	    +  "SUM(CASE WHEN like_status = 2 THEN 1 ELSE 0 END) FROM board_like WHERE board_num = a.board_num) AS net_likes " 
+				    	+" FROM (SELECT b.*, rownum rnum FROM " 
+				    	    +" (SELECT * FROM board JOIN member USING(mem_num)" + sub_sql + "ORDER BY board_num DESC) b) a " 
+				    	+" WHERE a.rnum >= ? AND a.rnum <= ?";
+
 			//PreparedStatement 객체 생성
 			pstmt = conn.prepareStatement(sql);
 			if(keyword != null && !"".equals(keyword)) {
@@ -144,18 +150,16 @@ public class BoardDAO {
 				board.setReg_date(rs.getDate("reg_date"));
 				board.setMem_id(rs.getString("mem_id"));
 				board.setBoard_category(rs.getInt("board_category"));
-				
+				board.setNet_likes(rs.getInt("net_likes"));
 				
 				list.add(board);
 			}
-					
 		}catch(Exception e) {
+			conn.rollback();
 			throw new Exception(e);
 		}finally {
 			DBUtil.executeClose(rs, pstmt, conn);
 		}
-		
-		
 		return list;
 	}
 	
@@ -326,6 +330,39 @@ public class BoardDAO {
 			} finally {
 				DBUtil.executeClose(null, pstmt3, conn);
 			}
+		}
+		
+		//하루 작성 글 갯수 제한 메서드
+		public int boardCountByUsernumInSameDay(BoardVO board)throws Exception{
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql = null;
+			int count = 0;
+			
+			try {
+				//커네견풀로부터 커넥션 할당
+				conn = DBUtil.getConnection();
+				//SQL문 작성
+				sql = "SELECT COUNT(*) FROM board"
+						+ " WHERE mem_num = ?"
+						+ " AND TO_DATE(reg_date, 'YYYY-MM-DD') = TO_DATE(SYSDATE, 'YYYY-MM-DD')";
+				//PreparedStatement 객체 생성
+				pstmt = conn.prepareStatement(sql);
+				//?에 데이터 바인딩
+				pstmt.setInt(1, board.getMem_num());
+				//SQL문 실행
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					count = rs.getInt(1);
+				}
+			}catch(Exception e) {
+				throw new Exception(e);
+			}finally {
+				DBUtil.executeClose(null, pstmt, conn);
+			}
+			
+			return count;
 		}
 
 	/*
@@ -510,7 +547,42 @@ public class BoardDAO {
 		return count;
 	}
 	
-	
+	//좋아요/싫어요 개수 삽산
+	public int totalLikeCount(int board_num)throws Exception{
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int totallike = 0;
+		
+		try {
+			//커넥션풀로부터 커넥션을 할당
+			conn = DBUtil.getConnection();
+			//SQL문 작성
+			sql = "SELECT "
+				  +"(SELECT COUNT(*) FROM board_like WHERE board_num = ? AND like_status = 1) - "
+				  +"(SELECT COUNT(*) FROM board_like WHERE board_num = ? AND like_status = 2) AS net_likes "
+				+ " FROM dual";
+
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt.setInt(1, board_num);
+			pstmt.setInt(2, board_num);
+			//SQL문 실행
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				totallike = rs.getInt(1);
+			}
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		
+		return totallike;
+	}
 	//좋아요 테이블에서 STATUS 읽어주는 메서드 하나 필요?
 	
 	
@@ -588,11 +660,204 @@ public class BoardDAO {
 	 */
 	
 	//댓글 등록
+	public void insertReplyBoard(BoardReplyVO boardReply)throws Exception{
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			//커넥션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			//SQL문 작성
+			sql = "INSERT INTO board_reply (re_num,re_content,re_ip,mem_num,board_num)"
+					+ " VALUES (board_reply_seq.nextval,?,?,?,?)";
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt.setString(1, boardReply.getRe_content());
+			pstmt.setString(2, boardReply.getRe_ip());
+			pstmt.setInt(3, boardReply.getMem_num());
+			pstmt.setInt(4, boardReply.getBoard_num());
+			//SQL문 실행
+			pstmt.executeUpdate();
+			
+					
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+	}
+
 	//댓글 개수
+	public int getReplyBoardCount(int board_num)throws Exception{
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int count = 0;
+		
+		try {
+			//커넥션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			//SQL문 작성
+			sql = "SELECT COUNT(*) FROM board_reply JOIN member USING(mem_num) WHERE board_num=?";
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt.setInt(1, board_num);
+			//SQL문 실행
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		
+		return count;
+	}
 	//댓글 목록
-	//댓글 상세(댓글 수정, 삭제 시 작성자 회원번호 체크 용도로 사용(
+	public List<BoardReplyVO> getListReplyBoard(int start,int end,int board_num)throws Exception{
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<BoardReplyVO> list = null;
+		String sql = null;
+		
+		try {
+			//커넥ㄱ션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			//SQL문 작성
+			sql = "SELECT * FROM (SELECT a.*, rownum rnum FROM (SELECT * FROM board_reply JOIN member "
+					+ "USING (mem_num) WHERE board_num=? ORDER BY re_num DESC)a) WHERE rnum >= ? AND rnum <= ?";
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt.setInt(1, board_num);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
+			//SQL문 실행
+			rs = pstmt.executeQuery();
+			list = new ArrayList<BoardReplyVO>();
+			while(rs.next()) {
+				BoardReplyVO reply = new BoardReplyVO();
+				reply.setRe_num(rs.getInt("re_num"));
+
+				//날짜 -> 1분전, 1시간전, 1일전 형식의 문자열로 변환
+				reply.setRe_date(DurationFromNow.getTimeDiffLabel(rs.getString("re_date")));
+				if(rs.getString("re_modifydate")!=null) {
+					reply.setRe_modifydate(DurationFromNow.getTimeDiffLabel(rs.getString("re_modifydate")));
+				}
+				
+				reply.setRe_content(StringUtil.useBrNoHtml(rs.getString("re_content")));
+				reply.setBoard_num(rs.getInt("board_num"));
+				reply.setMem_num(rs.getInt("mem_num"));
+				reply.setId(rs.getString("mem_id"));
+				
+				list.add(reply);
+			}
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		
+		
+		
+		return list;
+	}
+	//댓글 상세(댓글 수정, 삭제 시 작성자 회원번호 체크 용도로 사용)
+	public BoardReplyVO getReplyBoard(int re_num)throws Exception{
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		BoardReplyVO reply = null;
+		
+		try {
+			//커넥션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			//SQL문 작성
+			sql = "SELECT * FROM board_reply WHERE re_num=?";
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt.setInt(1, re_num);
+			//SQL문 실행
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				reply = new BoardReplyVO();
+				reply.setRe_num(rs.getInt("re_num"));
+				reply.setMem_num(rs.getInt("mem_num"));
+						
+			}
+		}catch(Exception e){
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		
+		
+		return reply;
+	}
 	//댓글 수정
+	public void updateReplyBoard(BoardReplyVO reply)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			//커넥션풀로부터 커넥션을 할당
+			conn = DBUtil.getConnection();
+			//SQL문 작성
+			sql = "UPDATE board_reply SET re_content=?,re_modifydate=SYSDATE,re_ip=? WHERE re_num=?";
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt.setString(1, reply.getRe_content());
+			pstmt.setString(2, reply.getRe_ip());
+			pstmt.setInt(3, reply.getRe_num());
+			//SQL문 실행
+			pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+	}
 	//댓글 삭제
+	public void deleteReplyBoard(int re_num)throws Exception{
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			//커넥션풀로부터 커네션 할당
+			conn = DBUtil.getConnection();
+			//SQL문 작성
+			sql = "DELETE FROM board_reply WHERE re_num=?";
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt.setInt(1, re_num);
+			//SQL문 실행
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			throw new Exception(e);
+			
+		}finally {
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+	}
 	
 }
 

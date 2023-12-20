@@ -73,7 +73,7 @@
 					<td>${board.mem_id}</td>
 					<td>${board.reg_date}</td>
 					<td>${board.hit}</td>
-					<td></td><%--${board.liketotal } 좋아요 + 싫어요 처리 보류 --%>
+					<td>${board.net_likes}</td><%-- 좋아요 + 싫어요 처리 보류 --%>
 				</tr>
 				</c:forEach>
 			</table>
