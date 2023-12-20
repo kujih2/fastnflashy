@@ -201,15 +201,26 @@ public class ScheduleDAO {
 		PreparedStatement pstmt = null;
 		PreparedStatement pstmt2 = null;
 		PreparedStatement pstmt3 = null;
+		PreparedStatement pstmt4 = null;
+		PreparedStatement pstmt5 = null;
+		PreparedStatement pstmt6 = null;
+		PreparedStatement pstmt7 = null;
+		PreparedStatement pstmt8 = null;
+		PreparedStatement pstmt9 = null;
 		
 		String sql = null;
+		String sub_sql = "";
+		String sub_sql2 = "";
 		ResultSet rs = null;
 		ResultSet rs2 = null;
+		ResultSet rs3 = null;
+		ResultSet rs4 = null;
 		int score1 = 0;
 		int score2 = 0;
 		int result = 0;
 		int num =0;//경기 번호를 담을 변수
 		int ctg =0;//종목을 담을 변수
+		String odds2 ="";
 		try {
 			//커넥션풀로부터 커넥션 할당
 			conn = DBUtil.getConnection();
@@ -224,6 +235,7 @@ public class ScheduleDAO {
 			while(rs.next()) {
 				num = rs.getInt("schedule_num");
 				ctg = rs.getInt("team_category");
+				
 				sql="SELECT * FROM match_result WHERE schedule_num =?";
 				pstmt2=conn.prepareStatement(sql);
 				pstmt2.setInt(1, num);
@@ -235,11 +247,11 @@ public class ScheduleDAO {
 						score2 = random.nextInt(7);
 						
 						if(score1>score2) {
-							result = 0;
+							result = 0;//team1
 						}else if(score1<score2) {
-							result = 1;
+							result = 1;//team2
 						}else if(score1 == score2) {
-							result = 2;
+							result = 2;//team1,team2
 						}
 					}else if(ctg == 1) {//야구 일때
 						score1 = random.nextInt(13);//0~12
@@ -251,6 +263,7 @@ public class ScheduleDAO {
 						}else if(score1<score2) {
 							result = 1;
 						}else if(score1 == score2) {
+							result = 2;
 						}
 					}else if(ctg == 2) {//배구 일때
 						score1 = random.nextInt(4);//0~3
@@ -261,15 +274,15 @@ public class ScheduleDAO {
 							score2=3;
 							result = 1;
 						}	
-					}else if(ctg == 3) {//농구
-						score1 = random.nextInt(100);//0~99
-						score2 = random.nextInt(100);
-						
+					}else if(ctg == 3) {//농구 무승부 없다.
+						 do{
+							score1 = random.nextInt(100);//0~99
+							score2 = random.nextInt(100);
+						}while(score1 == score2);
 						if(score1>score2) {
 							result = 0;
 						}else if(score1<score2) {
 							result = 1;
-						}else if(score1 == score2) {
 						}
 					}
 					
@@ -282,7 +295,30 @@ public class ScheduleDAO {
 					pstmt3.setInt(4, result);
 					
 					pstmt3.executeUpdate();
+					
+					if(result==0) {
+						sub_sql += "team_win=team_win+1";//1팀 승
+						sub_sql2 += "team_lose2=team_lose2+1";//2팀 패
+					}else if(result==1) {
+						sub_sql += "team_lose2=team_lose2+1";//1팀 패
+						sub_sql2 += "team_win=team_win+1";//2팀 승
+					}else{
+						sub_sql += "team_draw=team_draw+1";//1팀 승
+						sub_sql2 += "team_draw=team_draw+1";//2팀 승
+					}
+			
+					sql = "UPDATE match_team SET " + sub_sql + " WHERE team_num = ?";//1팀
+					pstmt4 = conn.prepareStatement(sql);
+					pstmt4.setInt(1, rs.getInt("schedule_team1"));
+					pstmt4.executeUpdate();
+					
+					sql = "UPDATE match_team SET " + sub_sql2 + " WHERE team_num = ?";//2팀
+					pstmt5 = conn.prepareStatement(sql);
+					pstmt5.setInt(1, rs.getInt("schedule_team2"));
+					pstmt5.executeUpdate();
+					
 				}
+				
 				
 			}
 			//모든 SQL문이 정상적으로 수행
@@ -623,17 +659,17 @@ public class ScheduleDAO {
 				pstmt2.setInt(1, schedule_num);
 				//SQL문 실행
 				rs2 = pstmt2.executeQuery();
-				if(!rs2.next()) {//경기 결과가 없다면(종료된 경기가 아님)
+				if(rs2.next()) {
 					vo = new ScheduleVO();
-					vo.setSchedule_num(rs.getInt("schedule_num"));
-					vo.setTeam_category(rs.getInt("team_category"));
-					vo.setSchedule_start(StringUtil.DetailDateFormats(rs.getString("schedule_start")));
-					vo.setSchedule_status(rs.getInt("schedule_status"));
+					vo.setSchedule_num(rs2.getInt("schedule_num"));
+					vo.setTeam_category(rs2.getInt("team_category"));
+					vo.setSchedule_start(StringUtil.DetailDateFormats(rs2.getString("schedule_start")));
+					vo.setSchedule_status(rs2.getInt("schedule_status"));
 					
-					int team1 = (rs.getInt("schedule_team1"));
-					vo.setSchedule_team1(rs.getInt("schedule_team1"));
-					int team2 = (rs.getInt("schedule_team2"));
-					vo.setSchedule_team2(rs.getInt("schedule_team2"));
+					int team1 = (rs2.getInt("schedule_team1"));
+					vo.setSchedule_team1(rs2.getInt("schedule_team1"));
+					int team2 = (rs2.getInt("schedule_team2"));
+					vo.setSchedule_team2(rs2.getInt("schedule_team2"));
 					
 					sql="SELECT team_name,team_photo FROM match_team WHERE team_num = ?";
 					pstmt3 = conn.prepareStatement(sql);
@@ -652,7 +688,8 @@ public class ScheduleDAO {
 						vo.setTeam2_photo(rs4.getString("team_photo"));
 						}
 				}
-			}else if(rs.next()) {//경기결과가 있다면(종료된 경기 일때)
+			}
+			else{//종료된 경기라면
 					vo = new ScheduleVO();
 				vo.setSchedule_num(rs.getInt("schedule_num"));
 				vo.setTeam_category(rs.getInt("team_category"));
@@ -682,7 +719,6 @@ public class ScheduleDAO {
 				
 				vo.setResult_team1Score(rs.getInt("result_team1Score"));
 				vo.setResult_team2Score(rs.getInt("result_team2Score"));
-				
 			}
 		}catch(Exception e) {
 			throw new Exception(e);
@@ -750,6 +786,7 @@ public class ScheduleDAO {
 				vo.setResult_team1Score(rs.getInt("result_team1Score"));
 				vo.setResult_team2Score(rs.getInt("result_team2Score"));
 				vo.setResult_match(rs.getInt("result_match"));
+				vo.setSchedule_start(StringUtil.DetailDateFormats(rs.getString("schedule_start")));
 				
 				list.add(vo);
 			}

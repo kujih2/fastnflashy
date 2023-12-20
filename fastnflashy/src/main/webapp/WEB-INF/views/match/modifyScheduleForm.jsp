@@ -121,6 +121,7 @@ $(function(){
 <body>
 <div class="page-main">
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
+	<jsp:include page="/WEB-INF/views/match/matchHeader.jsp"/>
 	<div class="content-main">
 		<h2>경기일정 수정</h2>
 		<c:forEach var="ableDate" items="${ableDateList}">

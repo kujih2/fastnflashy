@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>경기 일정</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/match.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -83,6 +84,7 @@ $(function() {
 <body>
 <div class="page-main">
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
+<jsp:include page="/WEB-INF/views/match/matchHeader.jsp"/>
 <div class="content-main">
 	<h2>경기 일정</h2>
 		<div class="align-right">

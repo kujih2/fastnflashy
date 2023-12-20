@@ -1,5 +1,7 @@
 package kr.schedule.vo;
 
+import kr.team.vo.TeamVO;
+
 public class ScheduleVO {
 	private int schedule_num;        //경기 번호
 	private int team_category;		 //경기 종목(축구:0,야구:1,배구:2,농구:3)	
@@ -20,6 +22,8 @@ public class ScheduleVO {
 	private int result_team1Score;	//팀1의 점수
 	private int result_team2Score;	//팀2의 점수
 	private int result_match;		//경기 결과(0:팀1의 승리,1:팀2의 승리,2:무승부)
+	
+	TeamVO teamVO;
 	
 	public int getSchedule_num() {
 		return schedule_num;
