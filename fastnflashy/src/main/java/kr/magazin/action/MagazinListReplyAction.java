@@ -16,7 +16,7 @@ import kr.magazin.dao.MagazinDAO;
 import kr.magazin.vo.MagazinReplyVO;
 import kr.util.PageUtil;
 
-public class ListMagazinReplyAction implements Action{
+public class MagazinListReplyAction implements Action{
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {

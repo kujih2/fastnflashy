@@ -22,8 +22,8 @@ create table magazin_reply (
  mg_re_num number not null, -- 칼럼 댓글 고유번호
  mg_isdeleted number(1) default 0 not null, -- 댓글 삭제여부 0:기본값, 1:삭제
  mg_re_content varchar2(900) not null,
- mg_re_reg_date date default sysdate not null,
- mg_re_modify_date date,
+ mg_re_date date default sysdate not null,
+ mg_re_modifydate date,
  mg_re_ip varchar2(40) not null,
  mg_board_num number not null, -- 칼럼 게시글 고유번호
  mem_num number not null, -- 회원 고유번호

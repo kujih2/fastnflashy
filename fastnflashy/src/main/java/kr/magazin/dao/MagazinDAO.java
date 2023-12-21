@@ -6,10 +6,10 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.board.vo.BoardReplyVO;
 import kr.magazin.vo.MagazinReplyVO;
 import kr.magazin.vo.MagazinVO;
 import kr.util.DBUtil;
+import kr.util.DurationFromNow;
 import kr.util.StringUtil;
 
 public class MagazinDAO {
@@ -264,6 +264,7 @@ public class MagazinDAO {
 	public void magazinDelete(int mg_board_num)throws Exception{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
 		String sql = null;
 		
 		try {
@@ -275,12 +276,15 @@ public class MagazinDAO {
 			//좋아요 삭제
 			
 			//댓글 삭제
-			
-			//부모글 삭제
-			sql = "DELETE FROM magazin_board WHERE mg_board_num=?";
+			sql = "DELETE FROM magazin_reply WHERE mg_board_num=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, mg_board_num);
 			pstmt.executeUpdate();
+			//부모글 삭제
+			sql = "DELETE FROM magazin_board WHERE mg_board_num=?";
+			pstmt2 = conn.prepareStatement(sql);
+			pstmt2.setInt(1, mg_board_num);
+			pstmt2.executeUpdate();
 			
 			//모든SQL 성공
 			conn.commit();
@@ -289,10 +293,12 @@ public class MagazinDAO {
 			conn.rollback();
 			throw new Exception(e);
 		}finally {
+			DBUtil.executeClose(null, pstmt2, null);
 			DBUtil.executeClose(null, pstmt, conn);
 		}
 	}
 	//칼럼 반응 등록
+	
 	//칼럼 반응 개수
 	//댓글 등록
 	public void insertReplyMagazin(MagazinReplyVO magazinReply)throws Exception{
@@ -335,8 +341,8 @@ public class MagazinDAO {
 			//커넥션풀 커넥션 할당
 			conn = DBUtil.getConnection();
 			//SQL문 작성
-			sql = "SELECT COUNT(*) FROM zboard_reply JOIN zmember "
-				+ "USING(mem_num) WHERE board_num=?";
+			sql = "SELECT COUNT(*) FROM magazin_reply JOIN member "
+				+ "USING(mem_num) WHERE mg_board_num=?";
 			//PreparedStatement 객체
 			pstmt = conn.prepareStatement(sql);
 			//?데이터 바인딩
@@ -363,11 +369,110 @@ public class MagazinDAO {
 		List<MagazinReplyVO> list = null;
 		String sql = null;
 		
+		try {
+			//커넥션풀로부터 커넥션할당
+			conn = DBUtil.getConnection();
+			//SQL 작성
+			sql = "SELECT * FROM (SELECT a.*, rownum rnum FROM "
+				+ "(SELECT * FROM magazin_reply JOIN member "
+				+ "USING (mem_num) WHERE mg_board_num=? "
+				+ "ORDER BY mg_re_num DESC)a) WHERE rnum >= ? AND rnum <=?";
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			//?데이터 바인딩
+			pstmt.setInt(1, mg_board_num);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
+			//SQL 실행
+			rs = pstmt.executeQuery();
+			list = new ArrayList<MagazinReplyVO>();
+			while(rs.next()) {
+				MagazinReplyVO reply = new MagazinReplyVO();
+				reply.setMg_re_num(rs.getInt("mg_re_num"));
+				//날짜 -> 1분전, 1시간전, 1일전 형식의 문자열로 변환
+				reply.setMg_re_date(
+						DurationFromNow.getTimeDiffLabel(
+							 rs.getString("mg_re_date")));
+				if(rs.getString("mg_re_modifydate")!=null) {
+					reply.setMg_re_modifydate(
+						DurationFromNow.getTimeDiffLabel(
+								rs.getString("mg_re_modifydate")));
+				}
+				reply.setMg_re_content(StringUtil.useBrNoHtml(
+								rs.getString("mg_re_content")));
+				reply.setMg_board_num(rs.getInt("mg_board_num"));
+				reply.setMem_num(rs.getInt("mem_num"));
+				reply.setMem_id(rs.getString("mem_id"));
+				
+				list.add(reply);
+			}
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
 		return list;
 	}
 	
 	//댓글 상세
+	public MagazinReplyVO getReplyMagazin(int mg_re_num)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		MagazinReplyVO reply = null;
+		String sql = null;
+		
+		try {
+			//커넥션풀로부터 커넥션할당
+			conn = DBUtil.getConnection();
+			//SQL작성
+			sql = "SELECT * FROM magazin_reply WHERE mg_re_num=?";
+			//PreparedStatement 객체
+			pstmt = conn.prepareStatement(sql);
+			//?데이터 바인딩
+			pstmt.setInt(1, mg_re_num);
+			//SQL실행 결과과행을 resultSet에 담음
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				reply = new MagazinReplyVO();
+				reply.setMg_re_num(rs.getInt("mg_re_num"));
+				reply.setMem_num(rs.getInt("mem_num"));
+			}	
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		return reply;
+	}
+	
 	//댓글 수정
+	public void magazinUpdateReplay(MagazinReplyVO reply)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			//커넥션풀 로드
+			conn = DBUtil.getConnection();
+			//SQL문
+			sql = "UPDATE magazin_reply SET mg_re_content=?,"
+				+ "mg_re_modifydate=SYSDATE,mg_re_ip=? WHERE mg_re_num=?";
+			//PreparedStatement 객체
+			pstmt = conn.prepareStatement(sql);
+			//?데이터 바인딩
+			pstmt.setString(1, reply.getMg_re_content());
+			pstmt.setString(2, reply.getMg_re_ip());
+			pstmt.setInt(3, reply.getMg_re_num());
+			//SQL문 실행
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+		
+	}
 	//댓글 삭제
 	//댓글 좋아요, 싫어요
 	

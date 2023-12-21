@@ -13,7 +13,7 @@ import kr.controller.Action;
 import kr.magazin.dao.MagazinDAO;
 import kr.magazin.vo.MagazinReplyVO;
 
-public class WriteMagazinReplyAction implements Action{
+public class MagazinWriteReplyAction implements Action{
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
