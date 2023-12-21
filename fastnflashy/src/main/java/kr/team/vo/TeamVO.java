@@ -10,6 +10,7 @@ public class TeamVO {
 	private String team_photo;
 	private String team_odds2; //승률
 	private int team_rank;//순위
+	private int team_playCount;//경기수
 	
 	public int getTeam_num() {
 		return team_num;
@@ -64,6 +65,12 @@ public class TeamVO {
 	}
 	public void setTeam_rank(int team_rank) {
 		this.team_rank = team_rank;
+	}
+	public int getTeam_playCount() {
+		return team_playCount;
+	}
+	public void setTeam_playCount(int team_playCount) {
+		this.team_playCount = team_playCount;
 	}
 	
 	

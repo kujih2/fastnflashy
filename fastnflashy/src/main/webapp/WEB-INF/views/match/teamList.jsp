@@ -23,7 +23,7 @@ $(function(){
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <jsp:include page="/WEB-INF/views/match/matchHeader.jsp"/>
 <div class="content-main">
-	<h2>팀/구딘</h2>
+	<h2>팀/구단</h2>
 	
 	<div class="align-center">
 			<input type="button" name="category" class="category" value="축구" data-num="0">
@@ -42,6 +42,7 @@ $(function(){
 		 	</c:forEach>
 		 </div>
 </div>
+<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </div>
 </body>
 </html>

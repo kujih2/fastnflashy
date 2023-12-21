@@ -13,8 +13,13 @@
 $(function(){
     //이벤트 연결
     $('.category').click(function(){
-    	location.href='teamRank.do?team_category='+$(this).attr('data-num');
+    	location.href='teamRank.do?team_category='+$(this).attr('data-num')+'&rank=team_odds2';
     });
+    $('.rankButton').click(function(){
+    	location.href='teamRank.do?team_category='+$('#team_category').val()+'&rank='+$(this).attr('data-rank');
+    });
+    	
+    
 });
 </script>
 </head>
@@ -36,26 +41,28 @@ $(function(){
 		 		<tr>
 		 			<th>순위</th>
 		 			<th>팀명</th>
-		 			<th>팀사진</th>
-		 			<th>승률</th>
-		 			<th>승</th>
-		 			<th>패</th>
-		 			<th>무</th>
+		 			<th>경기수</th>
+		 			<th><a href="#" class="rankButton"  data-rank="team_odds2">승률</a></th>
+		 			<th><a href="#" class="rankButton"  data-rank="team_win">승</a></th>
+		 			<th><a href="#" class="rankButton"  data-rank="team_lose2">패</a></th>
+		 			<th><a href="#" class="rankButton"  data-rank="team_draw">무</a></th>
 		 		</tr>
 		 		<c:forEach var="teamRank" items="${rankList}">
 			 		<tr>
 			 			<th>${teamRank.team_rank}</th>
-			 			<th>${teamRank.team_name}</th>
-			 			<th>${teamRank.team_photo}</th>
+			 			<th>${teamRank.team_photo}${teamRank.team_name}</th>
+			 			<th>${teamRank.team_playCount}</th>
 			 			<th>${teamRank.team_odds2}</th>
 			 			<th>${teamRank.team_win}</th>
 			 			<th>${teamRank.team_lose2}</th>
 			 			<th>${teamRank.team_draw}</th>
 			 		</tr>
+			 		<input type="hidden" id="team_category" value="${teamRank.team_category}">
 		 		</c:forEach>
 		 	</table>
 		 </div>
 </div>
+<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </div>
 </body>
 </html>
