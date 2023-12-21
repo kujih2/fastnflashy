@@ -8,8 +8,9 @@ padding:0;
 ===========================*/
 #booking_sub_nav{
 	padding:0 10px 0 310px;
-	height: 20px;
+	height: 40px;
 	background-color:white;
+	
 }
 #booking_sub_nav ul{
 	list-style:none;

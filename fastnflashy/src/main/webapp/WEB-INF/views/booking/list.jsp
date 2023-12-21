@@ -33,12 +33,28 @@
 				<div>
 					${match.schedule_start}<br>
 					${match.schedule_team1} VS ${match.schedule_team2}<br>
-					${match.team_category}
+					<c:choose>
+						<c:when test="${match.team_category==0}">
+						축구
+						</c:when>
+						<c:when test="${match.team_category==1}">
+						야구
+						</c:when>
+						<c:when test="${match.team_category==2}">
+						배구
+						</c:when>
+						<c:when test="${match.team_category==3}">
+						농구
+						</c:when>
+					</c:choose>
+					
 				</div>
 				<input type="button" value="예매가능" onclick="location.href='bookingForm.do?schedule_num=${match.schedule_num}'">
 				</c:forEach>
 			</div>
 		</div>
+		<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+		
 	</div>
 </body>
 </html>

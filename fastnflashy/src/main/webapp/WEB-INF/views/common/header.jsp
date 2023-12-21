@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- header 시작 -->
 
+<div id="blackbar"></div>
 <div id="main_nav">
 	<ul>
 		<li>
@@ -19,12 +20,6 @@
 		</li>
 		<li>
 			<a href="${pageContext.request.contextPath}/booking/list.do">예매</a>
-		</li>
-		<li>
-			<a href="${pageContext.request.contextPath}/item/adminList.do">이벤트</a>
-		</li>
-		<li>
-			<a href="${pageContext.request.contextPath}/item/adminList.do">고객센터</a>
 		</li>
 		<c:if test="${!empty user_num && user_auth == 9}">
 		
