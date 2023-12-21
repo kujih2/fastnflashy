@@ -76,7 +76,7 @@
 						let choice = confirm('삭제하시겠습니까?');
 						if(choice){
 							<%--location.replace('boardDelete.do?board_num=${board.board_num}'); --%>
-							location.replace ('boardDeleteConfirm.do?board_num=${board.board_num}');
+							location.replace ('boardDeleteConfirmForm.do?board_num=${board.board_num}');
 
 						}
 					};
@@ -114,6 +114,7 @@
 		
 		<%-- 댓글 끝--%>
 	</div>
+	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </div>
 </body>
 </html>

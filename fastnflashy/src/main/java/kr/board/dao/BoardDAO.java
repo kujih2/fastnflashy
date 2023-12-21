@@ -61,12 +61,13 @@ public class BoardDAO {
 	}
 
 	//전체 레코드수/검색 레코드 수
-	public int getBoardCount(String keyfield,String keyword)throws Exception{
+	public int getBoardCount(String keyfield,String keyword,int categoryNum)throws Exception{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
 		String sub_sql = "";
+		String cate_sql = "";
 		int count = 0;
 		
 		try {
@@ -75,17 +76,41 @@ public class BoardDAO {
 			
 			if(keyword != null && !"".equals(keyword)) {
 				//검색 처리
-				if(keyfield.equals("1")) sub_sql += "WHERE title LIKE ?";
-				else if(keyfield.equals("2")) sub_sql += "WHERE mem_id LIKE ?";
-				else if(keyfield.equals("3")) sub_sql += "WHERE content LIKE ?";
+				if(keyfield.equals("1")) sub_sql += "WHERE title LIKE ? ";
+				else if(keyfield.equals("2")) sub_sql += "WHERE mem_id LIKE ? ";
+				else if(keyfield.equals("3")) sub_sql += "WHERE content LIKE ? ";
+				
+				if(categoryNum > 0) {
+					//카테고리별 정렬
+					cate_sql += "AND board_category=?";
+					
+				}
+			}
+			if(keyword == null || "".equals(keyword)) {
+				if(categoryNum > 0) {
+					//카테고리별 정렬
+					cate_sql += "WHERE board_category=?";
+					
+				}
 			}
 			//SQL문 작성
-			sql = "SELECT COUNT(*) FROM board JOIN member USING(mem_num) " + sub_sql;
+			sql = "SELECT COUNT(*) FROM board JOIN member USING(mem_num) " + sub_sql + cate_sql ;
+			
+			
 			//PreparedStatement 객체 생성
 			pstmt = conn.prepareStatement(sql);
+
 			if(keyword != null && !"".equals(keyword)) {
 				pstmt.setString(1, "%"+keyword+"%");
+				if(categoryNum > 0) {
+					 pstmt.setInt(2, categoryNum);
+				}
 			}
+			
+			 if(categoryNum > 0) {
+			        pstmt.setInt(1, categoryNum);
+			    }
+			
 			//SQL문 실행
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
@@ -102,7 +127,7 @@ public class BoardDAO {
 	}
 	
 	//전체 글/검색 글 목록
-	public List<BoardVO> getListBoard(int start,int end,String keyfield,String keyword)throws Exception{
+	public List<BoardVO> getListBoard(int start,int end,String keyfield,String keyword,int categoryNum)throws Exception{
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -110,6 +135,7 @@ public class BoardDAO {
 		List<BoardVO> list = null;
 		String sql = null;
 		String sub_sql = "";
+		String cate_sql = "";
 		int cnt = 0;
 		
 		try {
@@ -121,20 +147,42 @@ public class BoardDAO {
 				if(keyfield.equals("1")) sub_sql += "WHERE title LIKE ? ";
 				else if(keyfield.equals("2")) sub_sql += "WHERE mem_id LIKE ? ";
 				else if(keyfield.equals("3")) sub_sql += "WHERE content LIKE ? ";
+				
+				if(categoryNum > 0) {
+					//카테고리별 정렬
+					cate_sql += "AND board_category=?";
+					
+				}
+			}
+			if(keyword == null || "".equals(keyword)) {
+				if(categoryNum > 0) {
+					//카테고리별 정렬
+					cate_sql += "WHERE board_category=?";
+					
+				}
 			}
 			//SQL문 작성
 			sql = "SELECT a.*, " 
 				    + "(SELECT SUM(CASE WHEN like_status = 1 THEN 1 ELSE 0 END) - " 
 				    	    +  "SUM(CASE WHEN like_status = 2 THEN 1 ELSE 0 END) FROM board_like WHERE board_num = a.board_num) AS net_likes " 
 				    	+" FROM (SELECT b.*, rownum rnum FROM " 
-				    	    +" (SELECT * FROM board JOIN member USING(mem_num)" + sub_sql + "ORDER BY board_num DESC) b) a " 
+				    	    +" (SELECT * FROM board JOIN member USING(mem_num)" + sub_sql + cate_sql +"ORDER BY board_num DESC) b) a " 
 				    	+" WHERE a.rnum >= ? AND a.rnum <= ?";
 
 			//PreparedStatement 객체 생성
 			pstmt = conn.prepareStatement(sql);
+			
 			if(keyword != null && !"".equals(keyword)) {
 				pstmt.setString(++cnt, "%"+keyword+"%");
+				if(categoryNum > 0) {
+					 pstmt.setInt(++cnt, categoryNum);
+				}
 			}
+			
+			 if(categoryNum > 0) {
+			        pstmt.setInt(++cnt, categoryNum);
+			    }
+			
 			pstmt.setInt(++cnt, start);
 			pstmt.setInt(++cnt, end);
 			
@@ -155,7 +203,6 @@ public class BoardDAO {
 				list.add(board);
 			}
 		}catch(Exception e) {
-			conn.rollback();
 			throw new Exception(e);
 		}finally {
 			DBUtil.executeClose(rs, pstmt, conn);

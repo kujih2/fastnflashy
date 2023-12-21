@@ -18,12 +18,12 @@
 				<c:if test="${empty user_num}">disabled="disabled"</c:if>
 			>
 		</div>
-		<div> <%-- 카테고리 버튼 --%>
-			<input type="button" value="전체">  <%--비동기 구현으로 특정 카테고리만 List에 뽑는걸 원함 --%>
-			<input type="button" value="축구">
-			<input type="button" value="야구">
-			<input type="button" value="배구">
-			<input type="button" value="농구">
+		<div class="list-space"> <%-- 카테고리 버튼 --%>
+			<input type="button" value="전체" onclick="location.href='boardList.do'">  
+			<input type="button" value="축구" onclick="location.href='boardList.do?categoryNum=1'">
+			<input type="button" value="야구" onclick="location.href='boardList.do?categoryNum=2'">
+			<input type="button" value="배구" onclick="location.href='boardList.do?categoryNum=3'">
+			<input type="button" value="농구" onclick="location.href='boardList.do?categoryNum=4'">
 		</div>
 		<form id="search_form" action="boardList.do" method="get">
 			<ul class="search">
@@ -82,6 +82,7 @@
 		
 	
 	</div>
+	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </div>
 	
 	

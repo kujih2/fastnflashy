@@ -8,13 +8,13 @@ import kr.board.dao.BoardDAO;
 import kr.board.vo.BoardVO;
 import kr.controller.Action;
 
-public class BoardDeleteConfirmAction implements Action{
+public class BoardDeleteConfirmFormAction implements Action{
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
 		Integer user_num = (Integer)session.getAttribute("user_num");
-		if(user_num == null) {
+		if(user_num == null) {//로그인 하지 않은 상태
 			return "redirect:/member/loginForm.do";
 		}
 		
@@ -27,6 +27,7 @@ public class BoardDeleteConfirmAction implements Action{
 			return "/WEB-INF/views/common/notice.jsp";
 		}
 		
+		request.setAttribute("board_num", board_num);
 		
 		return "/WEB-INF/views/board/boardDeleteConfirm.jsp";
 	}

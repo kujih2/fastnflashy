@@ -29,15 +29,15 @@ $(function(){
 					let output = '<div class="item">';
 					output += '<h4>' + item.id + '</h4>';
 					output += '<div class="sub-item">';
-					output += '<p>' + item.re_content + '</p>';
-					
+					output += '<p>' + item.re_content + '</p>';//이부분에 관리자에 의한 문구 추가하면 될듯?
+										
 					if(item.re_modifydate){
 						output += '<span class = "modify-date">최근 수정일 : ' + item.re_modifydate + '</span>';
 					}else{
 						output += '<span class = "modify-date">등록일 : ' + item.re_date + '</span>';
 					}
 					//로그인 한 회원번호와 작성자의 회원번호 일치 여부 체크
-					if(param.user_num==item.mem_nm){//로그인한 회원번호와 작성자 회원번호 일치
+					if(param.user_num==item.mem_num){//로그인한 회원번호와 작성자 회원번호 일치
 						output += ' <input type="button" data-renum="' + item.re_num + '" value="수정" class="modify-btn">';
 						output += ' <input type="button" data-renum="' + item.re_num + '" value="삭제" class="delete-btn">';
 					}

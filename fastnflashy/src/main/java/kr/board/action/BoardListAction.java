@@ -23,9 +23,22 @@ public class BoardListAction implements Action{
 		String keyfield = request.getParameter("keyfield");
 		String keyword = request.getParameter("keyword");
 		
+		//카테고리 버튼 처리 PART
+		
+		int categoryNum = 0; // 기본값 설정
+		String categoryNumParam = request.getParameter("categoryNum");
+		
+		if (categoryNumParam != null) {
+		    try {
+		        categoryNum = Integer.parseInt(categoryNumParam);
+		    } catch(NumberFormatException e) {
+		        // 유효하지 않은 값의 경우 기본값 사용
+		        categoryNum = 0;
+		    }
+		}
 		
 		BoardDAO dao = BoardDAO.getInstance();
-		int count = dao.getBoardCount(keyfield, keyword);
+		int count = dao.getBoardCount(keyfield, keyword,categoryNum);
 		BoardVO board = new BoardVO();
 		int board_num = board.getBoard_num();
 		
@@ -34,7 +47,7 @@ public class BoardListAction implements Action{
 		
 		List<BoardVO> list = null;
 		if(count>0) {
-			list = dao.getListBoard(page.getStartRow(), page.getEndRow(),keyfield,keyword);
+			list = dao.getListBoard(page.getStartRow(), page.getEndRow(),keyfield,keyword,categoryNum);
 			
 		}
 		
@@ -45,6 +58,7 @@ public class BoardListAction implements Action{
 		request.setAttribute("page", page.getPage());
 		request.setAttribute("totallike", totallike);
 		
+		//request.setAttribute("categoryNum", categoryNum);
 		
 		return "/WEB-INF/views/board/boardList.jsp";
 	}
