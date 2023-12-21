@@ -23,6 +23,7 @@ $(function(){
 	
 	let booked_nums = $('.booked_num');
 	let booked_packages = $('.booked_package')
+	let status = $('.status');
 	
 	$('#cancel').click(function(){
 		let choice = confirm('취소하시겠습니까?');
@@ -30,6 +31,9 @@ $(function(){
 			window.location.href = "deleteBooking.do?booked_num="+booked_nums[0].textContent+"&booked_package="+booked_packages[0].value;
 		}
 	});
+	if(status[0].textContent==='취소됨'){
+		$('#cancel').hide()
+	}
 	
 	
 });
@@ -66,7 +70,7 @@ $(function(){
 			<td class="price">${book.booked_price}</td>
 			<td>${book.booked_name}</td>
 			<td>${book.booked_email}</td>
-			<td><c:if test="${book.seat_status==1}">취소가능</c:if><c:if test="${book.seat_status==0}">취소됨</c:if></td>
+			<td class="status"><c:if test="${book.seat_status==1}">취소가능</c:if><c:if test="${book.seat_status==0}">취소됨</c:if></td>
 		</tr>
 		</c:forEach>
 	</table>

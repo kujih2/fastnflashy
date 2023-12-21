@@ -484,8 +484,9 @@ public class BookingDAO {
 			pstmt2 = conn.prepareStatement(sql);
 			while(rs.next()) {
 				pstmt2.setInt(1, rs.getInt("seat_id"));
-				pstmt2.executeUpdate();
+				pstmt2.addBatch();
 			}
+			pstmt2.executeBatch();
 			
 			conn.commit();
 			
