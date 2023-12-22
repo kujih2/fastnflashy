@@ -33,6 +33,7 @@
  	float:left;
 	width:55%;
 	height:500px;
+	margin-top:-200px;
 	margin-left:50px;
 	border:1px solid black;
 }
@@ -50,7 +51,7 @@
 	margin-left:66.5%; 
 	margin-top: 20px;
 	border:1px solid black;
-	margin-bottom:300px;
+	margin-bottom:100px;
 }
 </style>
 </head>
