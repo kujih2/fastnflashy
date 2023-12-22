@@ -91,6 +91,8 @@ window.onload=function(){
 		</ul>
 		<hr size="1" noshade="noshade" width="100%">
 		<!-- 관심달기 영역 -->
+		
+		<!-- 관심달기 끝 -->
 		<hr size="1" noshade="noshade" width="100%">
 		<!-- 댓글 시작 -->
 		<div id="reply_div">
@@ -122,6 +124,7 @@ window.onload=function(){
 		<!-- 댓글 목록 출력 끝 -->
 		<!-- 댓글 끝 -->
 	</div>
+	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </div>
 </body>
 </html>

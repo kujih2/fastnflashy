@@ -15,7 +15,7 @@ window.onload=function(){
 	//이벤트 연결
 	myForm.onsubmit=function(){
 		let keyword = document.getElementById('keyword');
-		if(keyword.value.trim()==''{
+		if(keyword.value.trim()==''){
 			alert('검색어를 입력하세요');
 			keyword.value = '';
 			keyword.focus();
@@ -34,8 +34,10 @@ window.onload=function(){
 		<c:if test="${!empty user_num && user_auth == 2}">
 			<input type="button" value="칼럼쓰기"
 				onclick="location.href='magazinWriteForm.do'">
-		</c:if>		
+		</c:if>	
 		</div>
+		<h4 class="align-left">헤드라인</h4>
+		
 		<h4 class="align-left">최신 칼럼</h4>
 		<form id="search_form" action="magazinList.do" method="get">
 			<ul class="search align-right">
@@ -55,7 +57,7 @@ window.onload=function(){
 			</ul>
 		</form>
 		<c:if test="${count == 0}">
-		<div class="result-displzy">
+		<div class="result-display">
 			작성된 칼럼이 없습니다.			
 		</div>
 		</c:if>
@@ -71,6 +73,7 @@ window.onload=function(){
 		<div class="align-center">${page}</div>
 		</c:if>
 	</div>
+	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </div>
 </body>
 </html>

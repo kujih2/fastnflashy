@@ -85,7 +85,7 @@ public class MagazinDAO {
 		return count;
 	}
 	//전체글/검색 글 목록
-	public List<MagazinVO> getListMagazin(int start, int end,String keyfield,String keyword)throws Exception{
+	public List<MagazinVO> getListMagazin(int start, int end,String keyfield,String keyword,int sports_category)throws Exception{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -103,14 +103,18 @@ public class MagazinDAO {
 				else if(keyfield.equals("2")) sub_sql += "WHERE mem_name LIKE ?";
 				else if(keyfield.equals("3")) sub_sql += "WHERE mg_content LIKE ?";
 			}
+			if(sports_category < 0) {
+
+			}
 			
 			sql = "SELECT * FROM (SELECT a.*, rownum rnum FROM "
-				+ "(SELECT *FROM magazin_board JOIN member_detail USING(mem_num) " + sub_sql
+				+ "(SELECT * FROM magazin_board JOIN member_detail USING(mem_num) " + sub_sql
 				+ "ORDER BY mg_board_num DESC)a) WHERE rnum >= ? AND rnum <= ?";
 			pstmt = conn.prepareStatement(sql);
 			if(keyword != null && !"".equals(keyword)) {
 				pstmt.setString(++cnt, "%"+keyword+"%");
 			}
+			
 			pstmt.setInt(++cnt, start);
 			pstmt.setInt(++cnt, end);
 			
@@ -134,6 +138,7 @@ public class MagazinDAO {
 		
 		return list;
 	}
+	
 	//글상세
 	public MagazinVO getMagazin(int mg_board_num)throws Exception{
 		Connection conn = null;
@@ -474,6 +479,29 @@ public class MagazinDAO {
 		
 	}
 	//댓글 삭제
+	public void magazinDeleteReply(int mg_re_num)throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			//커넥션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			//SQL작성
+			sql = "DELETE FROM magazin_reply WHERE mg_re_num=?";
+			//PreparedStatement 객체
+			pstmt = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt.setInt(1, mg_re_num);
+			//SQL 실행
+			pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+	}
 	//댓글 좋아요, 싫어요
 	
 }

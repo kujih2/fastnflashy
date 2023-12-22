@@ -4,7 +4,7 @@
 <div id ="magazin_nav">
 	<ul class="align-center">
 		<li>
-			<a href="${pageContext.request.contextPath}/magazin/soccer.do">축구</a>
+			<a href="${pageContext.request.contextPath}/magazin/magazinList.do?sports_category=1">축구</a>
 		</li>
 		<li>
 			<a href="${pageContext.request.contextPath}/magazin/baseball.do">야구</a>
