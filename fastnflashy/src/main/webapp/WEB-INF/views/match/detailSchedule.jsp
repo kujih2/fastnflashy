@@ -42,19 +42,18 @@
 	</div>
 	<div class="align-center">
 	 <h2>최근 양팀의 경기</h2>
+	 <c:if test="${!empty recentResultList}">
 		<c:forEach var="recentMatch" items="${recentResultList}">
-			<c:if test="${!empty recentMatch}">
-				${recentMatch.schedule_start}${recentMatch.team1_name} <span <c:if test="${recentMatch.result_match == 1}">style="color:gray;"</c:if>>${recentMatch.result_team1Score}</span> 
-				: <span <c:if test="${recentMatch.result_match == 0}">style="color:gray;"</c:if>>${recentMatch.result_team2Score}</span> ${recentMatch.team2_name}<br>
-			</c:if>
-			<c:if test="${empty recentMatch}">
-				경기한 전적이 없습니다.
-			</c:if>
+				${recentMatch.team1_name} ${recentMatch.team1_photo}<span <c:if test="${recentMatch.result_match == 1}">style="color:gray;"</c:if>>${recentMatch.result_team1Score}</span> 
+				${recentMatch.schedule_start} <span <c:if test="${recentMatch.result_match == 0}">style="color:gray;"</c:if>>${recentMatch.result_team2Score}</span> ${recentMatch.team2_photo} ${recentMatch.team2_name}<br>
 		</c:forEach>
+	</c:if>
+	<c:if test="${empty recentResultList}">
+		<h5>최근 양팀의 경기 전적이 없습니다.</h5>
+	</c:if>
 	</div>
-	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </div>
-	
+	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </div>
 </body>
 </html>

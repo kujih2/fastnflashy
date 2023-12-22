@@ -88,6 +88,14 @@ public class StringUtil {
 		
 		return new_date;
 	}
+	public static String DetailDateFormats2(String date) {
+		String new_date = "";
+		new_date += date.substring(2, 4) + ".";
+		new_date += date.substring(4, 6) + ".";
+		new_date += date.substring(6, 8);
+		
+		return new_date;
+	}
 }
 
 

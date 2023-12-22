@@ -34,8 +34,8 @@ $(function(){
 		 <div class="align-center">
 		 	<c:forEach var="teamList" items="${teamList}">
 		 	<div>
-		 	<a href="#">
-		 		${teamList.team_photo}
+		 	<a href="teamDetail.do?team_num=${teamList.team_num}&team_category=${teamList.team_category}">
+		 		<img src="${pageContext.request.contextPath}/images/teams/${teamList.team_photo}">
 		 		${teamList.team_name}
 		 		</a>
 		 	</div>

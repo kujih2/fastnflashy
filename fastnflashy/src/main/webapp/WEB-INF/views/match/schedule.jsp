@@ -136,7 +136,7 @@ $(function() {
 		   					</c:if>
 				 			<td>${schedule.schedule_time}</td>
 				 			<td>${schedule.team1_name}</td>
-				 			<td>${schedule.team1_photo}</td>
+				 			<td><img src="${pageContext.request.contextPath}/images/teams/${schedule.team1_photo}"></td>
 				 			<c:if test="${schedule.schedule_status==0}">
 					 			<td>${schedule.result_team1Score}</td>
 					 			<td>종료</td>
@@ -151,7 +151,7 @@ $(function() {
 				 			<c:if test="${schedule.schedule_status==3}">
 					 			<td>경기취소</td>
 				 			</c:if>
-				 			<td>${schedule.team2_photo}</td>
+				 			<td><img src="${pageContext.request.contextPath}/images/teams/${schedule.team2_photo}"></td>
 				 			<td>${schedule.team2_name}</td>
 				 			<td><input type="button" value="경기 상세" onclick="location.href='detailSchedule.do?num=${schedule.schedule_num}'"></td>
 				 		</tr>
@@ -191,7 +191,7 @@ $(function() {
 		   					</c:if>
 				 			<td>${schedule.schedule_time}</td>
 				 			<td>${schedule.team1_name}</td>
-				 			<td>${schedule.team1_photo}</td>
+				 			<td><img src="${pageContext.request.contextPath}/images/teams/${schedule.team1_photo}"></td>
 				 			<c:if test="${schedule.schedule_status==0}">
 					 			<td>${schedule.result_team1Score}</td>
 					 			<td>종료</td>
@@ -206,7 +206,7 @@ $(function() {
 				 			<c:if test="${schedule.schedule_status==3}">
 					 			<td>경기취소</td>
 				 			</c:if>
-				 			<td>${schedule.team2_photo}</td>
+				 			<td><img src="${pageContext.request.contextPath}/images/teams/${schedule.team2_photo}"></td>
 				 			<td>${schedule.team2_name}</td>
 				 			<td><input type="button" value="경기 상세" onclick="location.href='detailSchedule.do?num=${schedule.schedule_num}'"></td>
 				 		</tr>
@@ -247,7 +247,7 @@ $(function() {
 		   					</c:if>
 				 			<td>${schedule.schedule_time}</td>
 				 			<td>${schedule.team1_name}</td>
-				 			<td>${schedule.team1_photo}</td>
+				 			<td><img src="${pageContext.request.contextPath}/images/teams/${schedule.team1_photo}"></td>
 				 			<c:if test="${schedule.schedule_status==0}">
 					 			<td>${schedule.result_team1Score}</td>
 					 			<td>종료</td>
@@ -262,7 +262,7 @@ $(function() {
 				 			<c:if test="${schedule.schedule_status==3}">
 					 			<td>경기취소</td>
 				 			</c:if>
-				 			<td>${schedule.team2_photo}</td>
+				 			<td><img src="${pageContext.request.contextPath}/images/teams/${schedule.team2_photo}"></td>
 				 			<td>${schedule.team2_name}</td>
 				 			<td><input type="button" value="경기 상세" onclick="location.href='detailSchedule.do?num=${schedule.schedule_num}'"></td>
 				 		</tr>
@@ -303,7 +303,7 @@ $(function() {
 		   					</c:if>
 				 			<td>${schedule.schedule_time}</td>
 				 			<td>${schedule.team1_name}</td>
-				 			<td>${schedule.team1_photo}</td>
+				 			<td><img src="${pageContext.request.contextPath}/images/teams/${schedule.team1_photo}"></td>
 				 			<c:if test="${schedule.schedule_status==0}">
 					 			<td>${schedule.result_team1Score}</td>
 					 			<td>종료</td>
@@ -318,7 +318,7 @@ $(function() {
 				 			<c:if test="${schedule.schedule_status==3}">
 					 			<td>경기취소</td>
 				 			</c:if>
-				 			<td>${schedule.team2_photo}</td>
+				 			<td><img src="${pageContext.request.contextPath}/images/teams/${schedule.team2_photo}"></td>
 				 			<td>${schedule.team2_name}</td>
 				 			<td><input type="button" value="경기 상세" onclick="location.href='detailSchedule.do?num=${schedule.schedule_num}'"></td>
 				 		</tr>

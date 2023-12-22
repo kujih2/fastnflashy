@@ -12,6 +12,13 @@ public class TeamVO {
 	private int team_rank;//순위
 	private int team_playCount;//경기수
 	
+	private int player_num;
+	private String player_name;
+	private String player_backnum;
+	private String player_height;
+	private String player_photo;
+	private String player_position;
+	private String player_age;
 	public int getTeam_num() {
 		return team_num;
 	}
@@ -71,6 +78,48 @@ public class TeamVO {
 	}
 	public void setTeam_playCount(int team_playCount) {
 		this.team_playCount = team_playCount;
+	}
+	public int getPlayer_num() {
+		return player_num;
+	}
+	public void setPlayer_num(int player_num) {
+		this.player_num = player_num;
+	}
+	public String getPlayer_name() {
+		return player_name;
+	}
+	public void setPlayer_name(String player_name) {
+		this.player_name = player_name;
+	}
+	public String getPlayer_backnum() {
+		return player_backnum;
+	}
+	public void setPlayer_backnum(String player_backnum) {
+		this.player_backnum = player_backnum;
+	}
+	public String getPlayer_height() {
+		return player_height;
+	}
+	public void setPlayer_height(String player_height) {
+		this.player_height = player_height;
+	}
+	public String getPlayer_photo() {
+		return player_photo;
+	}
+	public void setPlayer_photo(String player_photo) {
+		this.player_photo = player_photo;
+	}
+	public String getPlayer_position() {
+		return player_position;
+	}
+	public void setPlayer_position(String player_position) {
+		this.player_position = player_position;
+	}
+	public String getPlayer_age() {
+		return player_age;
+	}
+	public void setPlayer_age(String player_age) {
+		this.player_age = player_age;
 	}
 	
 	
