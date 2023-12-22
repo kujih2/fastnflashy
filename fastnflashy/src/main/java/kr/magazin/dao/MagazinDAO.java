@@ -13,7 +13,7 @@ import kr.util.DurationFromNow;
 import kr.util.StringUtil;
 
 public class MagazinDAO {
-	//싱글턴 패턴ㅁ
+	//싱글턴 패턴
 	private static MagazinDAO instance = new MagazinDAO();
 	
 	public static MagazinDAO getInstance() {
@@ -85,7 +85,7 @@ public class MagazinDAO {
 		return count;
 	}
 	//전체글/검색 글 목록
-	public List<MagazinVO> getListMagazin(int start, int end,String keyfield,String keyword,int sports_category)throws Exception{
+	public List<MagazinVO> getListMagazin(int start, int end,String keyfield,String keyword)throws Exception{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -102,9 +102,6 @@ public class MagazinDAO {
 				if(keyfield.equals("1")) sub_sql += "WHERE mg_title LIKE ?";
 				else if(keyfield.equals("2")) sub_sql += "WHERE mem_name LIKE ?";
 				else if(keyfield.equals("3")) sub_sql += "WHERE mg_content LIKE ?";
-			}
-			if(sports_category < 0) {
-
 			}
 			
 			sql = "SELECT * FROM (SELECT a.*, rownum rnum FROM "

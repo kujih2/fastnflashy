@@ -17,7 +17,7 @@ public class MagaiznDeleteReplyAction implements Action{
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		//전송된 데이터 인코딩ㅁ
+		//전송된 데이터 인코딩
 		request.setCharacterEncoding("utf-8");
 		//전송된 데이터 반환
 		int mg_re_num = Integer.parseInt(request.getParameter("mg_re_num"));

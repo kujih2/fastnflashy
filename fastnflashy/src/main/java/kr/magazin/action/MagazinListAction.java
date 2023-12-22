@@ -28,7 +28,7 @@ public class MagazinListAction implements Action{
 		
 		List<MagazinVO> list = null;
 		if(count > 0) {
-			//list = dao.getListMagazin(page.getStartRow(), page.getEndRow(), keyfield, keyword);
+			list = dao.getListMagazin(page.getStartRow(), page.getEndRow(), keyfield, keyword);
 		}
 		request.setAttribute("count", count);
 		request.setAttribute("list", list);

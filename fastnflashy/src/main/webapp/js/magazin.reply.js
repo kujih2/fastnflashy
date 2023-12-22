@@ -3,7 +3,7 @@ $(function(){
 	let currentPage;
 	let count;
 	
-	//댓글목록ㅁ
+	//댓글목록
 	function selectReplyList(pageNum){
 		currentPage = pageNum;
 		
