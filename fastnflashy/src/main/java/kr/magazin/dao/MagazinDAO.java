@@ -50,7 +50,7 @@ public class MagazinDAO {
 		}
 	}
 	//전체 레코드수/검색 레코드 수
-	public int getMagazinCount(String keyfield,String keyword)throws Exception{
+	public int getMagazinCount(String keyfield,String keyword,int sports_category)throws Exception{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -66,11 +66,31 @@ public class MagazinDAO {
 				if(keyfield.equals("1")) sub_sql += "WHERE mg_title LIKE ?";
 				else if(keyfield.equals("2")) sub_sql += "WHERE mem_name LIKE ?";
 				else if(keyfield.equals("3")) sub_sql += "WHERE mg_content LIKE ?";
+				
+				if(sports_category > 0) {
+					//카테고리별 정렬
+					sub_sql += "AND sports_category=?";
+				}
+			}else {	
+				if(sports_category > 0) {
+					//카테고리별 정렬
+					sub_sql += "WHERE sports_category=?";
+				}
 			}
+			//SQL 작성
 			sql = "SELECT COUNT(*) FROM magazin_board JOIN member_detail USING(mem_num) " + sub_sql;
+			//preparedStatement 객체
 			pstmt = conn.prepareStatement(sql);
+			
 			if(keyword != null && !"".equals(keyword)) {
 				pstmt.setString(1, "%"+keyword+"%");
+				if(sports_category > 0) {
+					pstmt.setInt(2, sports_category);
+				}
+			}else {
+				if(sports_category > 0) {
+					pstmt.setInt(1, sports_category);
+				}
 			}
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
@@ -85,7 +105,7 @@ public class MagazinDAO {
 		return count;
 	}
 	//전체글/검색 글 목록
-	public List<MagazinVO> getListMagazin(int start, int end,String keyfield,String keyword)throws Exception{
+	public List<MagazinVO> getListMagazin(int start, int end,String keyfield,String keyword, int sports_category)throws Exception{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -102,6 +122,12 @@ public class MagazinDAO {
 				if(keyfield.equals("1")) sub_sql += "WHERE mg_title LIKE ?";
 				else if(keyfield.equals("2")) sub_sql += "WHERE mem_name LIKE ?";
 				else if(keyfield.equals("3")) sub_sql += "WHERE mg_content LIKE ?";
+			}
+			if(sports_category > 0) {
+				if(sports_category == 1) sub_sql += "WHERE sports_category= 1";
+				else if(sports_category == 2) sub_sql += "WHERE sports_category= 2";
+				else if(sports_category == 3) sub_sql += "WHERE sports_category= 3";
+				else if(sports_category == 4) sub_sql += "WHERE sports_category= 4";
 			}
 			
 			sql = "SELECT * FROM (SELECT a.*, rownum rnum FROM "

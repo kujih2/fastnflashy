@@ -3,6 +3,7 @@ create table magazin_board (
  mg_board_num number not null, -- 칼럼 게시글 고유번호
  mg_title varchar2(150) not null,
  sports_category number(9) default 0 not null, -- 축구:0,야구:1,배구:2,농구:3
+ mg_headline number(1) default 0 not null, -- 0:일반 칼럼, 1:헤드라인 칼럼
  mg_content clob not null,
  mg_hit number(9) default 0 not null,
  mg_reg_date date default sysdate not null,

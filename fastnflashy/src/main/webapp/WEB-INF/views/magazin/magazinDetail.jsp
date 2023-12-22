@@ -56,20 +56,21 @@ window.onload=function(){
 			<c:if test="${user_auth == 9}">
 			<input type="button" value="[관리자]칼럼삭제" id="delete_but"
 					onclick="location.href='magazinDeleteForm.do?mg_board_num=${magazin.mg_board_num}'">
-			
+			<input type="button" value="헤드라인 올리기" id="headline_but"
+					onclick="location.href='magazinAdminHaedLine.do?mg_board_num=${magazin.mg_board_num}'">
 			</c:if>
 			</li>
 		</ul>
 		<hr size="1" noshade="noshade" width="100%"><br>
 		<div class="align-center">
-			<img src="${pageContext.request.contextPath}/upload/${magazin.mg_photo1}" class="detail-img">
+			<img src="${pageContext.request.contextPath}/upload/magazin/${magazin.mg_photo1}" class="detail-img">
 		</div>
 		<p class="align-center">
 			${magazin.mg_content}
 		</p><br>
 		<c:if test="${!empty magazin.mg_photo2}">
 			<div class="align-center">
-				<img src="${pageContext.request.contextPath}/upload/${magazin.mg_photo2}" class="detail-img">
+				<img src="${pageContext.request.contextPath}/upload/magazin/${magazin.mg_photo2}" class="detail-img">
 			</div>
 		</c:if>
 		<p>

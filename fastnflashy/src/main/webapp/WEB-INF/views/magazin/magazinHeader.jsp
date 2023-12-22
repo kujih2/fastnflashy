@@ -7,15 +7,15 @@
 			<a href="${pageContext.request.contextPath}/magazin/magazinList.do?sports_category=1">축구</a>
 		</li>
 		<li>
-			<a href="${pageContext.request.contextPath}/magazin/baseball.do">야구</a>
+			<a href="${pageContext.request.contextPath}/magazin/magazinList.do?sports_category=2">야구</a>
 		<li>
 			<a href="${pageContext.request.contextPath}/magazin/magazinList.do">홈</a>
 		</li>
 		<li>
-			<a href="${pageContext.request.contextPath}/magazin/volleyball.do">배구</a>
+			<a href="${pageContext.request.contextPath}/magazin/magazinList.do?sports_category=3">배구</a>
 		</li>
 		<li>
-			<a href="${pageContext.request.contextPath}/magazin/basketball.do">농구</a>
+			<a href="${pageContext.request.contextPath}/magazin/magazinList.do?sports_category=4">농구</a>
 		</li>
 	</ul>
 </div>

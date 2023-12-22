@@ -37,9 +37,27 @@ window.onload=function(){
 		</c:if>	
 		</div>
 		<h4 class="align-left">헤드라인</h4>
-		
+		<c:if test="${count == 0}">
+		<div class="result-display">
+			작성된 칼럼이 없습니다.			
+		</div>
+		</c:if>
+		<c:if test="${count > 0}">
+		<table>
+			<c:if test="${a}">
+			<c:forEach var="magazin" items="${list}">
+			<tr>
+				<td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><img src="${pageContext.request.contextPath}/upload/magazin/${magazin.mg_photo1}" width="150" height="100"></a></td>
+				<td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><b>${magazin.mg_title}</b><br><br>${magazin.mg_content}</a></td>
+			</tr>
+			</c:forEach>
+			</c:if>
+		</table>
+		<div class="align-center">${page}</div>
+		</c:if>
 		<h4 class="align-left">최신 칼럼</h4>
 		<form id="search_form" action="magazinList.do" method="get">
+			<input type="hidden" name="sports_category" value="${param.sports_category}">
 			<ul class="search align-right">
 				<li>
 					<select name="keyfield">
@@ -65,7 +83,7 @@ window.onload=function(){
 		<table>
 			<c:forEach var="magazin" items="${list}">
 			<tr>
-				<td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><img src="${pageContext.request.contextPath}/upload/${magazin.mg_photo1}" width="150" height="100"></a></td>
+				<td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><img src="${pageContext.request.contextPath}/upload/magazin/${magazin.mg_photo1}" width="150" height="100"></a></td>
 				<td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><b>${magazin.mg_title}</b><br><br>${magazin.mg_content}</a></td>
 			</tr>
 			</c:forEach>
