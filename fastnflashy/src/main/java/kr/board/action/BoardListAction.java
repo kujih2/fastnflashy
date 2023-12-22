@@ -37,13 +37,15 @@ public class BoardListAction implements Action{
 		    }
 		}
 		
+		System.out.println(keyfield+","+keyword+","+categoryNum);
+		
 		BoardDAO dao = BoardDAO.getInstance();
 		int count = dao.getBoardCount(keyfield, keyword,categoryNum);
 		BoardVO board = new BoardVO();
 		int board_num = board.getBoard_num();
 		
 		//페이지 처리
-		PageUtil page = new PageUtil(keyfield, keyword, Integer.parseInt(pageNum),count,20,10,"boardList.do");
+		PageUtil page = new PageUtil(keyfield, keyword, Integer.parseInt(pageNum),count,20,10,"boardList.do","&categoryNum="+categoryNum);
 		
 		List<BoardVO> list = null;
 		if(count>0) {

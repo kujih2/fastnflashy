@@ -107,7 +107,7 @@ $(function(){
 		//기본 이벤트 제걱
 		event.preventDefault();
 	});
-	//댓글 자성 폼 초기화
+	//댓글 작성 폼 초기화
 	function initForm(){
 		$('textarea').val('');
 		$('#re_first .letter-count').text('300/300');
@@ -127,7 +127,7 @@ $(function(){
 				$('#re_first .letter-count').text(remain);
 			}else{
 				//수정폼 글자수
-				$('#mre_firrst .letter-count').text(remain);
+				$('#mre_first .letter-count').text(remain);
 			}
 		}
 	});
@@ -135,7 +135,7 @@ $(function(){
 	$(document).on('click','.modify-btn',function(){
 		//댓글 번호
 		let re_num = $(this).attr('data-renum');
-		//댓글 내요ㅛㅇ
+		//댓글 내용
 		let content = $(this).parent().find('p').html().replace(/<br>/gi,'\n');
 												//g:지정문자열 모두, i:대소문자 무시
 		//댓글 수정폼 UI
