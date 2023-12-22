@@ -13,7 +13,7 @@ import kr.util.DurationFromNow;
 import kr.util.StringUtil;
 
 public class MagazinDAO {
-	//싱글턴 패턴
+	//싱글턴 패턴ㅁ
 	private static MagazinDAO instance = new MagazinDAO();
 	
 	public static MagazinDAO getInstance() {
