@@ -10,6 +10,7 @@ import kr.booking.dao.BookingDAO;
 import kr.booking.vo.BookedInfoVO;
 import kr.controller.Action;
 import kr.schedule.vo.ScheduleVO;
+import kr.util.PageUtil;
 
 public class ListOfMyBookingAction implements Action{
 
@@ -20,12 +21,21 @@ public class ListOfMyBookingAction implements Action{
 		if(user_num==null) {//로그인이 되지 않은 경우
 			return "redirect:/member/loginForm.do";
 		}
+		
+		String pageNum = request.getParameter("pageNum");
+		if(pageNum == null) pageNum = "1";
+		
 		BookingDAO dao = BookingDAO.getInstance();
-		List<BookedInfoVO> list1 = dao.getMyBookList1(user_num);
-		List<ScheduleVO> list2 = dao.getMyBookList2(user_num);
+		int count = dao.getBookingCount(user_num);
+		//페이지처리
+		PageUtil page = new PageUtil(Integer.parseInt(pageNum),count,10,10,"listOfMyBooking.do");
+		List<BookedInfoVO> list1 = dao.getMyBookList1(user_num,page.getStartRow(),page.getEndRow());
+		List<ScheduleVO> list2 = dao.getMyBookList2(user_num,page.getStartRow(),page.getEndRow());
+		
 		
 		request.setAttribute("list1",list1);
 		request.setAttribute("list2",list2);
+		request.setAttribute("page", page.getPage());
 		
 		
 		return "/WEB-INF/views/booking/listOfMyBooking.jsp";

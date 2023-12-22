@@ -326,8 +326,34 @@ public class BookingDAO {
 		
 	}
 	
+	//나의 예매정보 리스트 수
+	public int getBookingCount(int mem_num) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int count = 0;
+		
+		try {
+			conn = DBUtil.getConnection();
+			sql = "SELECT COUNT(*) FROM booked_info WHERE mem_num=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, mem_num);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		return count;
+	}
+	
 	//나의 예매정보 리스트 불러오기1
-	public List<BookedInfoVO> getMyBookList1(int user_num) throws Exception{
+	public List<BookedInfoVO> getMyBookList1(int user_num, int start, int end) throws Exception{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
@@ -336,9 +362,11 @@ public class BookingDAO {
 		
 		try {
 			conn = DBUtil.getConnection();
-			sql = "SELECT * FROM booked_seat JOIN(SELECT * FROM(SELECT booked_num,booked_package,seat_id,mem_num,booked_regdate,booked_name,booked_email,booked_ip,booked_price,nvl(booked_package,1)*1 as cnt FROM booked_info WHERE booked_package IS NULL UNION ALL SELECT * FROM booked_info JOIN (SELECT MIN(booked_num) booked_num, count(*) cnt FROM booked_info WHERE booked_package IS NOT NULL GROUP BY booked_package) USING(BOOKED_NUM)) WHERE mem_num=?) USING(seat_id) ORDER BY booked_regdate DESC";
+			sql = "SELECT * FROM (SELECT a.*, rownum rnum FROM (SELECT * FROM booked_seat JOIN(SELECT * FROM(SELECT booked_num,booked_package,seat_id,mem_num,booked_regdate,booked_name,booked_email,booked_ip,booked_price,nvl(booked_package,1)*1 as cnt FROM booked_info WHERE booked_package IS NULL UNION ALL SELECT * FROM booked_info JOIN (SELECT MIN(booked_num) booked_num, count(*) cnt FROM booked_info WHERE booked_package IS NOT NULL GROUP BY booked_package) USING(BOOKED_NUM)) WHERE mem_num=?) USING(seat_id) ORDER BY booked_regdate DESC)a) WHERE rnum >= ? AND rnum <= ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, user_num);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				BookedInfoVO vo = new BookedInfoVO();
@@ -359,7 +387,7 @@ public class BookingDAO {
 			
 	}
 	//나의 예매정보 리스트 불러오기2
-	public List<ScheduleVO> getMyBookList2(int user_num) throws Exception{
+	public List<ScheduleVO> getMyBookList2(int user_num,int start, int end) throws Exception{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
@@ -368,9 +396,11 @@ public class BookingDAO {
 		
 		try {
 			conn = DBUtil.getConnection();
-			sql = "SELECT sch.schedule_start,team1.team_name team_name1,team2.team_name team_name2 FROM (SELECT * FROM (SELECT * FROM booked_seat JOIN(SELECT * FROM(SELECT booked_num,booked_package,seat_id,mem_num,booked_regdate,booked_name,booked_email,booked_ip,booked_price,nvl(booked_package,1)*1 as cnt FROM booked_info WHERE booked_package IS NULL UNION ALL SELECT * FROM booked_info JOIN (SELECT MIN(booked_num) booked_num, count(*) cnt FROM booked_info WHERE booked_package IS NOT NULL GROUP BY booked_package) USING(BOOKED_NUM)) WHERE mem_num=?) USING(seat_id)) JOIN match_schedule USING(schedule_num)) sch JOIN match_team team1 ON sch.schedule_team1 = team1.team_num JOIN match_team team2 ON sch.schedule_team2 = team2.team_num";
+			sql = "SELECT * FROM (SELECT a.*, rownum rnum FROM (SELECT sch.schedule_start,team1.team_name team_name1,team2.team_name team_name2 FROM (SELECT * FROM (SELECT * FROM booked_seat JOIN(SELECT * FROM(SELECT booked_num,booked_package,seat_id,mem_num,booked_regdate,booked_name,booked_email,booked_ip,booked_price,nvl(booked_package,1)*1 as cnt FROM booked_info WHERE booked_package IS NULL UNION ALL SELECT * FROM booked_info JOIN (SELECT MIN(booked_num) booked_num, count(*) cnt FROM booked_info WHERE booked_package IS NOT NULL GROUP BY booked_package) USING(BOOKED_NUM)) WHERE mem_num=?) USING(seat_id)) JOIN match_schedule USING(schedule_num)) sch JOIN match_team team1 ON sch.schedule_team1 = team1.team_num JOIN match_team team2 ON sch.schedule_team2 = team2.team_num)a) WHERE rnum >= ? AND rnum <= ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, user_num);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				ScheduleVO vo = new ScheduleVO();

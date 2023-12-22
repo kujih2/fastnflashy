@@ -53,6 +53,8 @@ List<ScheduleVO> list2 = (List<ScheduleVO>)request.getAttribute("list2");
 
 %>
 		</table>
+		<div class="align-center">${page}</div>
+		
 
 		</div>
 	</div>

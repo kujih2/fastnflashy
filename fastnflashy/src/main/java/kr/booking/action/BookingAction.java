@@ -29,11 +29,8 @@ public class BookingAction implements Action{
 		List<BookedInfoVO> list = new ArrayList<BookedInfoVO>();
 		
 		int seatOfNum = Integer.parseInt(request.getParameter("num_of_seat"));
-		System.out.println("seatOfNum : " + seatOfNum);
 		String[] colNames = request.getParameterValues("colName");
-		System.out.println("colNames : " + colNames.length);
 	    String[] rowNameValues = request.getParameterValues("rowName");
-	    System.out.println("rowNameValues : " + rowNameValues.length);
 	    int[] rowNames = new int[rowNameValues.length];
 	    if(rowNameValues !=null) {
 	    	for(int i=0;i <rowNameValues.length;i++) {

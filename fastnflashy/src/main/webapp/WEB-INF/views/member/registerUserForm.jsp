@@ -71,7 +71,7 @@ $(function(){
 		let items = document.querySelectorAll('.input-check');
 		let	gender1Checked = document.getElementById('gender1').checked;
 		let	gender2Checked = document.getElementById('gender2').checked;
-		if(!gender1Checked || !gender2Checked){
+		if(!gender1Checked && !gender2Checked){
 			alert('성별 선택은 필수')
 			document.getElementById('gender1').focus();
 			return false;
@@ -164,14 +164,14 @@ $(function(){
 				<li>
 					<label for="zipcode">우편번호</label>
 					<input type="text" name="zipcode" id="zipcode" 
-					 maxlength="5" autocomplete="off" class="input-check">
+					 maxlength="5" autocomplete="off" class="input-check" readonly>
 					<input type="button" onclick="execDaumPostcode()"
 					                                value="우편번호 찾기"> 
 				</li>
 				<li>
 					<label for="address1">주소</label>
 					<input type="text" name="address1" id="address1" 
-					  maxlength="30" class="input-check">
+					  maxlength="30" class="input-check" readonly>
 				</li>
 				<li>
 					<label for="address2">나머지 주소</label>
