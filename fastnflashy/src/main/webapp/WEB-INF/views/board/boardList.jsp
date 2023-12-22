@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>게시판 메인 리스트</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/css/style.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/css/YSCstyle.css">
 </head>
 <body>
 <div class="page-main">
@@ -26,6 +27,7 @@
 			<input type="button" value="농구" onclick="location.href='boardList.do?categoryNum=4'">
 		</div>
 		<form id="search_form" action="boardList.do" method="get">
+			<input type="hidden" name="categoryNum" value="${param.categoryNum}">
 			<ul class="search">
 				<li>
 					<select name="keyfield">

@@ -67,7 +67,6 @@ public class BoardDAO {
 		ResultSet rs = null;
 		String sql = null;
 		String sub_sql = "";
-		String cate_sql = "";
 		int count = 0;
 		
 		try {
@@ -82,20 +81,18 @@ public class BoardDAO {
 				
 				if(categoryNum > 0) {
 					//카테고리별 정렬
-					cate_sql += "AND board_category=?";
+					sub_sql += "AND board_category=? ";
 					
 				}
-			}
-			if(keyword == null || "".equals(keyword)) {
+			}else {
+			//if(keyword == null || "".equals(keyword)) {
 				if(categoryNum > 0) {
 					//카테고리별 정렬
-					cate_sql += "WHERE board_category=?";
-					
+					sub_sql += "WHERE board_category=? ";
 				}
 			}
 			//SQL문 작성
-			sql = "SELECT COUNT(*) FROM board JOIN member USING(mem_num) " + sub_sql + cate_sql ;
-			
+			sql = "SELECT COUNT(*) FROM board JOIN member USING(mem_num) " + sub_sql;
 			
 			//PreparedStatement 객체 생성
 			pstmt = conn.prepareStatement(sql);
@@ -105,18 +102,19 @@ public class BoardDAO {
 				if(categoryNum > 0) {
 					 pstmt.setInt(2, categoryNum);
 				}
-			}
+			}else {
 			
-			 if(categoryNum > 0) {
-			        pstmt.setInt(1, categoryNum);
-			    }
+				if(categoryNum > 0) {
+				        pstmt.setInt(1, categoryNum);
+				    }
+			}
 			
 			//SQL문 실행
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				count = rs.getInt(1);
 			}
-			
+			System.out.println("count DAO : " + count);
 		}catch(Exception e) {
 			throw new Exception(e);
 		}finally {
@@ -135,7 +133,6 @@ public class BoardDAO {
 		List<BoardVO> list = null;
 		String sql = null;
 		String sub_sql = "";
-		String cate_sql = "";
 		int cnt = 0;
 		
 		try {
@@ -150,14 +147,14 @@ public class BoardDAO {
 				
 				if(categoryNum > 0) {
 					//카테고리별 정렬
-					cate_sql += "AND board_category=?";
+					sub_sql += "AND board_category=? ";
 					
 				}
-			}
-			if(keyword == null || "".equals(keyword)) {
+			}else {
+			//if(keyword == null || "".equals(keyword)) {
 				if(categoryNum > 0) {
 					//카테고리별 정렬
-					cate_sql += "WHERE board_category=?";
+					sub_sql += "WHERE board_category=? ";
 					
 				}
 			}
@@ -166,7 +163,7 @@ public class BoardDAO {
 				    + "(SELECT SUM(CASE WHEN like_status = 1 THEN 1 ELSE 0 END) - " 
 				    	    +  "SUM(CASE WHEN like_status = 2 THEN 1 ELSE 0 END) FROM board_like WHERE board_num = a.board_num) AS net_likes " 
 				    	+" FROM (SELECT b.*, rownum rnum FROM " 
-				    	    +" (SELECT * FROM board JOIN member USING(mem_num)" + sub_sql + cate_sql +"ORDER BY board_num DESC) b) a " 
+				    	    +" (SELECT * FROM board JOIN member USING(mem_num)" + sub_sql  +"ORDER BY board_num DESC) b) a " 
 				    	+" WHERE a.rnum >= ? AND a.rnum <= ?";
 
 			//PreparedStatement 객체 생성
@@ -177,14 +174,15 @@ public class BoardDAO {
 				if(categoryNum > 0) {
 					 pstmt.setInt(++cnt, categoryNum);
 				}
+			}else {
+			
+				 if(categoryNum > 0) {
+				        pstmt.setInt(++cnt, categoryNum);
+				    }
 			}
-			
-			 if(categoryNum > 0) {
-			        pstmt.setInt(++cnt, categoryNum);
-			    }
-			
 			pstmt.setInt(++cnt, start);
 			pstmt.setInt(++cnt, end);
+			  
 			
 			//SQL문 실행
 			rs = pstmt.executeQuery();
@@ -346,6 +344,7 @@ public class BoardDAO {
 		public void deleteBoard(int board_num) throws Exception {
 			Connection conn = null;
 			PreparedStatement pstmt = null;
+			PreparedStatement pstmt2 = null;
 			PreparedStatement pstmt3 = null;
 			String sql = null;
 
@@ -361,21 +360,26 @@ public class BoardDAO {
 				pstmt.setInt(1, board_num);
 				pstmt.executeUpdate();
 				// 댓글 삭제
-				
+				sql = "DELETE FROM board_reply WHERE board_num=?";
+				pstmt2 = conn.prepareStatement(sql);
+				pstmt2.setInt(1, board_num);
+				pstmt2.executeUpdate();
 				// 부모글 삭제
 				sql = "DELETE FROM board WHERE board_num=?";
 				pstmt3 = conn.prepareStatement(sql);
 				pstmt3.setInt(1, board_num);
 				pstmt3.executeUpdate();
-				// 모든 SQL문 실행이 성공하면 conn.commit();
-				
+
+				// 모든 SQL문 실행이 성공하면 
 				conn.commit();
 			} catch (Exception e) {
 				// 하나라도 SQL문이 실패하면
 				conn.rollback();
 				throw new Exception(e);
 			} finally {
-				DBUtil.executeClose(null, pstmt3, conn);
+				DBUtil.executeClose(null, pstmt3, null);
+				DBUtil.executeClose(null, pstmt2, null);
+				DBUtil.executeClose(null, pstmt, conn);
 			}
 		}
 		

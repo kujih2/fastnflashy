@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>게시글 상세 정보</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/css/style.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/css/YSCstyle.css">
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/boardLike.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/boardReply.js"></script>
@@ -35,7 +36,7 @@
 		<hr size="1" noshade="noshade" width="100%">
 		<c:if test="${!empty board.filename}">
 		<div class="align-center">
-			<img src="${pageContext.request.contextPath}/upload/${board.filename}" class="detail-img">
+			<img src="${pageContext.request.contextPath}/upload/${board.filename}" class="detail-img" width="100" height="100">
 		</div>
 		</c:if>
 		<p>
@@ -43,21 +44,25 @@
 		</p>
 		<hr size="1" noshade="noshade" width="100%">
 		<ul class="detail-sub">
+			
+			
+			
 			<%-- 좋아요 싫어요 --%>
-			<li class="align-right">
+			<li class="alignToright align-right">
 				<img id="fav_like" class="likeicon" data-num="${board.board_num}" data-likestatus="1"
 								src="${pageContext.request.contextPath }/images/like.png" width="50">
 				
 				좋아요
-				<span id="likecount"></span>	
+				<span id="likecount" class="likecountcontrol"></span>	
 			</li>
-			<li class="align-left">
+			<li class="alignToleft">
 				<img id="fav_dislike" class="likeicon" data-num="${board.board_num}" data-likestatus="2"
 								src="${pageContext.request.contextPath }/images/dislike.png" width="50">
 				
 				싫어요
-				<span id="dislikecount"></span>	
+				<span id="dislikecount" class="likecountcontrol"></span>	
 			</li>
+			
 			<li>
 				<c:if test="${!empty board.modify_date}">
 					최근 수정일 : ${board.modify_date}
