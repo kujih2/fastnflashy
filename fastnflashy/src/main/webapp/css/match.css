@@ -20,4 +20,10 @@
 	vertical-align:middle;
 	padding-top:8px;
 }
-	
+#profile_image{
+	width:25px;
+}
+
+.footer{
+	clear:both;
+}

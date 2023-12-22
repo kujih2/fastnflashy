@@ -50,7 +50,7 @@ $(function(){
 		 		<c:forEach var="teamRank" items="${rankList}">
 			 		<tr>
 			 			<th>${teamRank.team_rank}</th>
-			 			<th><img src="${pageContext.request.contextPath}/images/teams/${teamRank.team_photo}">${teamRank.team_name}</th>
+			 			<th><img src="${pageContext.request.contextPath}/images/teams/${teamRank.team_photo}" width="30">${teamRank.team_name}</th>
 			 			<th>${teamRank.team_playCount}</th>
 			 			<th>${teamRank.team_odds2}</th>
 			 			<th>${teamRank.team_win}</th>
