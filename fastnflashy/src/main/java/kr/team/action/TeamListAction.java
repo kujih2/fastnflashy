@@ -17,6 +17,7 @@ public class TeamListAction implements Action{
 		TeamDAO dao = TeamDAO.getInstance();
 		List<TeamVO> list = dao.selectTeams(category);
 		
+		request.setAttribute("category", category);
 		request.setAttribute("teamList", list);
 		return "/WEB-INF/views/match/teamList.jsp";
 	}

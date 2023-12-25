@@ -22,6 +22,11 @@ $(function(){
     
 });
 </script>
+<style type="text/css">
+.ranked{
+	background-color:skyblue;
+}
+</style>
 </head>
 <body>
 <div class="page-main">
@@ -30,11 +35,11 @@ $(function(){
 <div class="content-main">
 	<h2>기록/순위</h2>
 	
-	<div class="align-center">
-			<input type="button" name="category" class="category" value="축구" data-num="0">
-		   	<input type="button" name="category" class="category" value="야구" data-num="1">
-		   	<input type="button" name="category" class="category" value="배구" data-num="2">
-		   	<input type="button" name="category" class="category" value="농구" data-num="3">
+	<div class="align-center" style="margin-bottom:30px;">
+			<input type="button" name="category" class="category <c:if test="${category == 0}"> clicked</c:if>" value="축구" data-num="0" >
+		   	<input type="button" name="category" class="category <c:if test="${category == 1}"> clicked</c:if>" value="야구" data-num="1" >
+		   	<input type="button" name="category" class="category <c:if test="${category == 2}"> clicked</c:if>" value="배구" data-num="2" >
+		   	<input type="button" name="category" class="category <c:if test="${category == 3}"> clicked</c:if>" value="농구" data-num="3" >
 		 </div>
 		 <div class="align-center">
 		 	<table>
@@ -42,10 +47,10 @@ $(function(){
 		 			<th>순위</th>
 		 			<th>팀명</th>
 		 			<th>경기수</th>
-		 			<th><a href="#" class="rankButton"  data-rank="team_odds2">승률</a></th>
-		 			<th><a href="#" class="rankButton"  data-rank="team_win">승</a></th>
-		 			<th><a href="#" class="rankButton"  data-rank="team_lose2">패</a></th>
-		 			<th><a href="#" class="rankButton"  data-rank="team_draw">무</a></th>
+		 			<th <c:if test="${rank.equals('team_odds2')}">class="ranked"</c:if>><a href="#" class="rankButton"  data-rank="team_odds2">승률</a></th>
+		 			<th <c:if test="${rank.equals('team_win')}">class="ranked"</c:if>><a href="#" class="rankButton"  data-rank="team_win">승</a></th>
+		 			<th <c:if test="${rank.equals('team_lose2')}">class="ranked"</c:if>><a href="#" class="rankButton"  data-rank="team_lose2">패</a></th>
+		 			<th <c:if test="${rank.equals('team_draw')}">class="ranked"</c:if>><a href="#" class="rankButton"  data-rank="team_draw">무</a></th>
 		 		</tr>
 		 		<c:forEach var="teamRank" items="${rankList}">
 			 		<tr>

@@ -21,6 +21,9 @@ public class TeamRankAction implements Action{
 		dao.updateOdds2();
 		//match_team 전체 조회
 		List<TeamVO> list = dao.selectRank(category,rank);
+		
+		request.setAttribute("category", category);
+		request.setAttribute("rank", rank);
 		request.setAttribute("rankList", list);
 	
 		

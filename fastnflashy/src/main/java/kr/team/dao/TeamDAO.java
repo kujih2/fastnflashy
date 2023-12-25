@@ -186,7 +186,7 @@ public class TeamDAO {
 				conn = DBUtil.getConnection();
 				//SQL문 작성
 				sql = "SELECT * FROM match_schedule JOIN match_result USING (schedule_num)"
-						+ " WHERE schedule_team1 = ? OR schedule_team2 = ?";
+						+ " WHERE schedule_team1 = ? OR schedule_team2 = ? ORDER BY schedule_start DESC";
 				//PreparedStatement 객체 생성
 				pstmt = conn.prepareStatement(sql);
 				//?에 데이터 바인딩

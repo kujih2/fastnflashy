@@ -6,7 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>경기 일정</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/match.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -97,232 +96,160 @@ $(function() {
 	   </div>
 	   <div class="align-center">
 	   <p><input type="text" id="datepicker"></p>
-
-	   
-		   		<input type="button" name="category" class="category" value="전체" data-num="9">
-		   		<input type="button" name="category" class="category" value="축구" data-num="0">
-		   		<input type="button" name="category" class="category" value="야구" data-num="1">
-		   		<input type="button" name="category" class="category" value="배구" data-num="2">
-		   		<input type="button" name="category" class="category" value="농구" data-num="3">
+		   		<input type="button" name="category" class="category <c:if test="${category == 9}"> clicked</c:if>" value="전체" data-num="9">
+		   		<input type="button" name="category" class="category <c:if test="${category == 0}"> clicked</c:if>" value="축구" data-num="0">
+		   		<input type="button" name="category" class="category <c:if test="${category == 1}"> clicked</c:if>" value="야구" data-num="1">
+		   		<input type="button" name="category" class="category <c:if test="${category == 2}"> clicked</c:if>" value="배구" data-num="2">
+		   		<input type="button" name="category" class="category <c:if test="${category == 3}"> clicked</c:if>" value="농구" data-num="3">
 		 </div>
 		  
 		 <c:if test="${!empty scheduleList && (category == 9 || category == 0 )}">
 			 <div class="align-center">
-			 	<h5>축구</h5>
+			 	<div class="category-bar">축구</div>
 			 	  <c:forEach var="schedule" items="${scheduleList}">
 			 	  	<c:if test="${schedule.team_category == 0}">
-				 	<table>
-				 		<tr>
-				 			<c:if test="${!empty user_num && user_auth == 9 && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
-								<th>일정 수정</th>
-		  					 </c:if>
-				 			<th>경기 시간</th>
-				 			<th>경기 팀1</th>
-				 			<th>팀1 사진</th>
-				 			<c:if test="${schedule.schedule_status==0}">
-					 			<th>경기 팀1 점수</th>
-					 		</c:if>
-					 			<th>경기현황</th>
-					 		<c:if test="${schedule.schedule_status==0}">
-					 			<th>경기 팀2 점수</th>
-					 		</c:if>
-					 		<th>팀2 사진</th>
-				 			<th>경기 팀2</th>
-				 			<th>경기 상세</th>
-				 		</tr>
-				 		<tr>	
-				 			<c:if test="${!empty user_num && user_auth == 9  && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
-								<td><input type="button" value="일정 수정" onclick="location.href='modifyScheduleForm.do?num=${schedule.schedule_num}'"></td>
+			 	  	<c:if test="${!empty user_num && user_auth == 9  && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
+								<input type="button" class="btn" value="일정 수정" onclick="location.href='modifyScheduleForm.do?num=${schedule.schedule_num}'">
 		   					</c:if>
+			 	  	<div class="schedule-bar" onclick="location.href='detailSchedule.do?num=${schedule.schedule_num}'">
+				 	<table class="non-border">
+				 		<tr>	
 				 			<td>${schedule.schedule_time}</td>
 				 			<td>${schedule.team1_name}</td>
 				 			<td><img src="${pageContext.request.contextPath}/images/teams/${schedule.team1_photo}" width="70"></td>
 				 			<c:if test="${schedule.schedule_status==0}">
 					 			<td>${schedule.result_team1Score}</td>
-					 			<td>종료</td>
+					 			<td style="color:red">종료</td>
 					 			<td>${schedule.result_team2Score}</td>
 				 			</c:if>
 				 			<c:if test="${schedule.schedule_status==1}">
-					 			<td>진행중</td>
+					 			<td style="color:blue">진행중</td>
 				 			</c:if>
 				 			<c:if test="${schedule.schedule_status==2}">
-					 			<td>예정</td>
+					 			<td style="color:blue">예정</td>
 				 			</c:if>
 				 			<c:if test="${schedule.schedule_status==3}">
-					 			<td>경기취소</td>
+					 			<td style="color:red">경기취소</td>
 				 			</c:if>
 				 			<td><img src="${pageContext.request.contextPath}/images/teams/${schedule.team2_photo}" width="70"></td>
 				 			<td>${schedule.team2_name}</td>
-				 			<td><input type="button" value="경기 상세" onclick="location.href='detailSchedule.do?num=${schedule.schedule_num}'"></td>
 				 		</tr>
 				 	</table>
+				 	</div>
 				 	</c:if>
 				 </c:forEach>
 			 </div>
 		</c:if>
 		
-		<c:if test="${!empty scheduleList && (category == 9 || category == 1)}">
+		<c:if test="${!empty scheduleList && (category == 9 || category == 1 )}">
 			 <div class="align-center">
-			 	<h5>야구</h5>
+			 	<div class="category-bar">야구</div>
 			 	  <c:forEach var="schedule" items="${scheduleList}">
 			 	  	<c:if test="${schedule.team_category == 1}">
-				 	<table>
-				 		<tr>
-				 		<c:if test="${!empty user_num && user_auth == 9  && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
-								<th>일정 수정</th>
-		  					 </c:if>
-				 			<th>경기 시간</th>
-				 			<th>경기 팀1</th>
-				 			<th>팀1 사진</th>
-				 			<c:if test="${schedule.schedule_status==0}">
-					 			<th>경기 팀1 점수</th>
-					 		</c:if>
-					 			<th>경기현황</th>
-					 		<c:if test="${schedule.schedule_status==0}">
-					 			<th>경기 팀2 점수</th>
-					 		</c:if>
-					 		<th>팀2 사진</th>
-				 			<th>경기 팀2</th>
-				 			<th>경기 상세</th>
-				 		</tr>
-				 		<tr>
-				 			<c:if test="${!empty user_num && user_auth == 9  && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
-								<td><input type="button" value="일정 수정" onclick="location.href='modifyScheduleForm.do?num=${schedule.schedule_num}'"></td>
+			 	  	<c:if test="${!empty user_num && user_auth == 9  && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
+								<input type="button" class="btn" value="일정 수정" onclick="location.href='modifyScheduleForm.do?num=${schedule.schedule_num}'">
 		   					</c:if>
+			 	  	<div class="schedule-bar" onclick="location.href='detailSchedule.do?num=${schedule.schedule_num}'">
+				 	<table class="non-border">
+				 		<tr>	
 				 			<td>${schedule.schedule_time}</td>
 				 			<td>${schedule.team1_name}</td>
 				 			<td><img src="${pageContext.request.contextPath}/images/teams/${schedule.team1_photo}" width="70"></td>
 				 			<c:if test="${schedule.schedule_status==0}">
 					 			<td>${schedule.result_team1Score}</td>
-					 			<td>종료</td>
+					 			<td style="color:red">종료</td>
 					 			<td>${schedule.result_team2Score}</td>
 				 			</c:if>
 				 			<c:if test="${schedule.schedule_status==1}">
-					 			<td>진행중</td>
+					 			<td style="color:blue">진행중</td>
 				 			</c:if>
 				 			<c:if test="${schedule.schedule_status==2}">
-					 			<td>예정</td>
+					 			<td style="color:blue">예정</td>
 				 			</c:if>
 				 			<c:if test="${schedule.schedule_status==3}">
-					 			<td>경기취소</td>
+					 			<td style="color:red">경기취소</td>
 				 			</c:if>
 				 			<td><img src="${pageContext.request.contextPath}/images/teams/${schedule.team2_photo}" width="70"></td>
 				 			<td>${schedule.team2_name}</td>
-				 			<td><input type="button" value="경기 상세" onclick="location.href='detailSchedule.do?num=${schedule.schedule_num}'"></td>
 				 		</tr>
 				 	</table>
+				 	</div>
 				 	</c:if>
 				 </c:forEach>
 			 </div>
 		</c:if>
 		
-		 <c:if test="${!empty scheduleList && (category == 9 || category == 2 )}">
+		<c:if test="${!empty scheduleList && (category == 9 || category == 2 )}">
 			 <div class="align-center">
-			 	<h5>배구</h5>
+			 	<div class="category-bar">배구</div>
 			 	  <c:forEach var="schedule" items="${scheduleList}">
 			 	  	<c:if test="${schedule.team_category == 2}">
-				 	<table>
-				 		<tr>
-				 		<c:if test="${!empty user_num && user_auth == 9  && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
-								<th>일정 수정</th>
-		  					 </c:if>
-				 			<th>경기 시간</th>
-				 			<th>경기 팀1</th>
-				 			<th>팀1 사진</th>
-				 			<c:if test="${schedule.schedule_status==0}">
-					 			<th>경기 팀1 점수</th>
-					 		</c:if>
-					 			<th>경기현황</th>
-					 		<c:if test="${schedule.schedule_status==0}">
-					 			<th>경기 팀2 점수</th>
-					 		</c:if>
-					 		<th>팀2 사진</th>
-				 			<th>경기 팀2</th>
-				 			<th>경기 상세</th>
-				 		</tr>
-				 		<tr>
-				 		
-				 			<c:if test="${!empty user_num && user_auth == 9  && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
-								<td><input type="button" value="일정 수정" onclick="location.href='modifyScheduleForm.do?num=${schedule.schedule_num}'"></td>
+			 	  	<c:if test="${!empty user_num && user_auth == 9  && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
+								<input type="button" class="btn" value="일정 수정" onclick="location.href='modifyScheduleForm.do?num=${schedule.schedule_num}'">
 		   					</c:if>
+			 	  	<div class="schedule-bar" onclick="location.href='detailSchedule.do?num=${schedule.schedule_num}'">
+				 	<table class="non-border">
+				 		<tr>	
 				 			<td>${schedule.schedule_time}</td>
 				 			<td>${schedule.team1_name}</td>
 				 			<td><img src="${pageContext.request.contextPath}/images/teams/${schedule.team1_photo}" width="70"></td>
 				 			<c:if test="${schedule.schedule_status==0}">
 					 			<td>${schedule.result_team1Score}</td>
-					 			<td>종료</td>
+					 			<td style="color:red">종료</td>
 					 			<td>${schedule.result_team2Score}</td>
 				 			</c:if>
 				 			<c:if test="${schedule.schedule_status==1}">
-					 			<td>진행중</td>
+					 			<td style="color:blue">진행중</td>
 				 			</c:if>
 				 			<c:if test="${schedule.schedule_status==2}">
-					 			<td>예정</td>
+					 			<td style="color:blue">예정</td>
 				 			</c:if>
 				 			<c:if test="${schedule.schedule_status==3}">
-					 			<td>경기취소</td>
+					 			<td style="color:red">경기취소</td>
 				 			</c:if>
 				 			<td><img src="${pageContext.request.contextPath}/images/teams/${schedule.team2_photo}" width="70"></td>
 				 			<td>${schedule.team2_name}</td>
-				 			<td><input type="button" value="경기 상세" onclick="location.href='detailSchedule.do?num=${schedule.schedule_num}'"></td>
 				 		</tr>
 				 	</table>
+				 	</div>
 				 	</c:if>
 				 </c:forEach>
 			 </div>
 		</c:if>
 		
-		 <c:if test="${!empty scheduleList &&(category == 9 || category == 3 )}">
+		<c:if test="${!empty scheduleList && (category == 9 || category == 3 )}">
 			 <div class="align-center">
-			 	<h5>농구</h5>
+			 	<div class="category-bar">농구</div>
 			 	  <c:forEach var="schedule" items="${scheduleList}">
 			 	  	<c:if test="${schedule.team_category == 3}">
-				 	<table>
-				 		<tr>
-				 		<c:if test="${!empty user_num && user_auth == 9  && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
-								<th>일정 수정</th>
-		  					 </c:if>
-				 			<th>경기 시간</th>
-				 			<th>경기 팀1</th>
-				 			<th>팀1 사진</th>
-				 			<c:if test="${schedule.schedule_status==0}">
-					 			<th>경기 팀1 점수</th>
-					 		</c:if>
-					 			<th>경기현황</th>
-					 		<c:if test="${schedule.schedule_status==0}">
-					 			<th>경기 팀2 점수</th>
-					 		</c:if>
-					 		<th>팀2 사진</th>
-				 			<th>경기 팀2</th>
-				 			<th>경기 상세</th>
-				 		</tr>
-				 		<tr>
-				 		
-				 			<c:if test="${!empty user_num && user_auth == 9  && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
-								<td><input type="button" value="일정 수정" onclick="location.href='modifySchedule.do?num=${schedule.schedule_num}'"></td>
+			 	  	<c:if test="${!empty user_num && user_auth == 9  && schedule.schedule_status == 2 || schedule.schedule_status == 3}">
+								<input type="button" class="btn" value="일정 수정" onclick="location.href='modifyScheduleForm.do?num=${schedule.schedule_num}'">
 		   					</c:if>
+			 	  	<div class="schedule-bar" onclick="location.href='detailSchedule.do?num=${schedule.schedule_num}'">
+				 	<table class="non-border">
+				 		<tr>	
 				 			<td>${schedule.schedule_time}</td>
 				 			<td>${schedule.team1_name}</td>
 				 			<td><img src="${pageContext.request.contextPath}/images/teams/${schedule.team1_photo}" width="70"></td>
 				 			<c:if test="${schedule.schedule_status==0}">
 					 			<td>${schedule.result_team1Score}</td>
-					 			<td>종료</td>
+					 			<td style="color:red">종료</td>
 					 			<td>${schedule.result_team2Score}</td>
 				 			</c:if>
 				 			<c:if test="${schedule.schedule_status==1}">
-					 			<td>진행중</td>
+					 			<td style="color:blue">진행중</td>
 				 			</c:if>
 				 			<c:if test="${schedule.schedule_status==2}">
-					 			<td>예정</td>
+					 			<td style="color:blue">예정</td>
 				 			</c:if>
 				 			<c:if test="${schedule.schedule_status==3}">
-					 			<td>경기취소</td>
+					 			<td style="color:red">경기취소</td>
 				 			</c:if>
 				 			<td><img src="${pageContext.request.contextPath}/images/teams/${schedule.team2_photo}" width="70"></td>
 				 			<td>${schedule.team2_name}</td>
-				 			<td><input type="button" value="경기 상세" onclick="location.href='detailSchedule.do?num=${schedule.schedule_num}'"></td>
 				 		</tr>
 				 	</table>
+				 	</div>
 				 	</c:if>
 				 </c:forEach>
 			 </div>
