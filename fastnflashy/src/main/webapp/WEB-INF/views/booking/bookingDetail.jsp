@@ -46,7 +46,7 @@ $(function(){
 	
 	<div class="content-main">
 	<h2>결제내역</h2>
-	<table>
+	<table class="top-info">
 	<tr>
 		<td>경기날짜</td>
 		<td>${schedule.schedule_start}</td>
@@ -54,7 +54,7 @@ $(function(){
 		<td>${schedule.team1_name}VS${schedule.team2_name}</td>
 	</tr>
 	</table>
-	<table>
+	<table class="middle-info">
 		<tr>
 			<td>예약번호</td>
 			<td>좌석번호</td>
@@ -77,7 +77,7 @@ $(function(){
 	<div class="align-right">
 		<input id="cancel" type="button" value="예매 취소">
 	</div>
-	<table>
+	<table class="total-info">
 		<tr>
 			<td>예매 수수료</td>
 			<td id="fee"></td>

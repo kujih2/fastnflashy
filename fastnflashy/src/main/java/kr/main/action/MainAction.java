@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.booking.dao.BookingDAO;
 import kr.controller.Action;
 import kr.schedule.dao.ScheduleDAO;
 import kr.schedule.vo.ScheduleVO;
@@ -29,6 +30,13 @@ public class MainAction implements Action{
 		//오늘의 모든 경기 조회
 		 List<ScheduleVO> scheduleList = dao.selectSchedule(team_category,date);
 		 request.setAttribute("scheduleList", scheduleList);
+		 
+		
+		//booking
+		BookingDAO dao2 = BookingDAO.getInstance();
+		List<ScheduleVO> list = dao2.getListOfRegistedMatch();
+			
+		request.setAttribute("list",list);
 		
 		//JSP 경로 반환
 		return "/WEB-INF/views/main/main.jsp";

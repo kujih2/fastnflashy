@@ -387,6 +387,23 @@ form[id="cart_order"]{
 	color:red;
 	line-height:1.5;
 }
+.myBookingList{
+	text-align:center;
+	border:none;
+}
+.myBookingList td{
+	border:none;
+}
+.total-info{
+	margin-top:100px;
+	text-align:center;
+}
+.top-info{
+	text-align:center;	
+}
+.middle-info{
+	text-align:center;
+}
 
 
 
