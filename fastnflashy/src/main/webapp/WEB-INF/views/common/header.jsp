@@ -6,8 +6,8 @@
 <div id="blackbar"></div>
 <div id="main_nav">
 	<ul>
-		<li>
-			<a href="${pageContext.request.contextPath}/main/main.do">fast&amp;flashy</a>
+		<li >
+			<a href="${pageContext.request.contextPath}/main/main.do">fast&amp;<br>flashy</a>
 		</li>
 		<li>
 			<a href="${pageContext.request.contextPath}/magazin/magazinList.do">매거진</a>

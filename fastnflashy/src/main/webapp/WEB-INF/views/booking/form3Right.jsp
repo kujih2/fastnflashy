@@ -52,7 +52,7 @@
 		</div>
 	</div>
 	<div class="booking-buttons">
-		<input type="button" value="이전단계" class="toForm2">
-		<input type="button" value="다음단계" class="toForm4">
+		<input type="button" value="이전단계" class="toForm2 toBefore2">
+		<input type="button" value="다음단계" class="toForm4 toNext2">
 	</div>
 </div>

@@ -6,7 +6,7 @@
 	<p>가격</p>
 	<hr
 		style="border: none; height: 3px; background-color: black; width: 80%;">
-	<table>
+	<table class="table-form2">
 		<tr>
 			<td rowspan="3">가격</td>
 			<td>성인</td>

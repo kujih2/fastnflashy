@@ -197,12 +197,11 @@ function updateInputForm(numOfSeat){
 </script>
 </head>
 <body>
-	<div class="content-main">
+<div class="page-main">
 		<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 		<jsp:include page="/WEB-INF/views/booking/bookingHeader.jsp"/>
+	<div class="content-main">
 		<div class="booking-main">
-			<jsp:include page="/WEB-INF/views/booking/bookingFormHeader.jsp" />
-
 		<form id="booking_form" action="booking.do" method="post">
 			<div id="hidden_area">
 				<input type="hidden" name="schedule_num" value="${schedule_num}">
@@ -232,6 +231,9 @@ function updateInputForm(numOfSeat){
 		</form>
 		</div>
 
+	</div>
+			<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+	
 	</div>
 
 </body>

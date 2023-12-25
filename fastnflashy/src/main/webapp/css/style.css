@@ -375,7 +375,18 @@ form[id="cart_order"]{
 	padding:20px 50px 20px 50px;
 	background-color:white;
 }
-
+#footer_logo1{
+	font-size:35px;
+	font-weight:bold;
+	color:red;
+	line-height:0.1;
+}
+#footer_logo2{
+	font-size:35px;
+	font-weight:bold;
+	color:red;
+	line-height:1.5;
+}
 
 
 

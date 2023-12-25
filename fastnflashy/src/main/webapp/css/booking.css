@@ -60,6 +60,9 @@ form{
 .booking-form-right .form1 .schedule-info,
 .booking-form-right .form2 .schedule-info{
 	background:black;
+	text-align:center;
+	font-size:20px;
+
 
 }
 .booking-form-right .form1 .schedule-info p,
@@ -85,4 +88,144 @@ form{
 }
 .booked-seat{
 	background:grey;
+}
+.booking-ctg-btn{
+	width:80px;
+	height:30px;
+	background:white;
+	border-radius:3px;
+	border:1px solid black;
+	cursor:pointer;
+}
+.each-match{
+	border:1px solid black;
+	border-radius:3px;
+	width:180px;
+	height:100px;
+	margin:10px 10px 10px 5px;
+		display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+}
+.each-match-btn-cover{
+	width:182px;
+	height:50px;
+	text-align: center;
+}
+.each-match-btn{
+	width:182px;
+	height:25px;
+	background:skyblue;
+	cursor:pointer;
+	border-radius:3px;
+	border:none;
+	margin:0 10px 10px 5px;
+}
+.seat{
+	width:500px;
+}
+.seat td{
+	width:33px;
+}
+.listOfSeat{
+	overflow:auto;
+	height:50px;
+}
+#listOfSeat{
+	height:200px;
+	overflow:auto;
+	padding-left:20px;
+}
+.my-select-info1{
+	float:left;
+	font-weight:bold;
+	margin-left:10px;
+}
+.my-select-info2{
+	float:right;
+	font-size:10px;
+	line-height:25px;
+	margin-right:10px;
+}
+.booking-form-right .form1{
+	background:rgb(224, 224, 224);
+	height:325px;
+}
+.toNext{
+	width:400px;
+	height:25px;
+	clear:both;
+	margin:10px 30px 0 25px;
+	background:red;
+	color:white;
+	border:none;
+	border-radius:3px;
+}
+.toBefore{
+	width:170px;
+	float:left;
+	height:25px;
+	background:white;
+	margin-left:25px;
+	border-radius:3px;
+	border:none;
+	margin-right:10px;
+}
+#reselect{
+	float:right;
+	width:170px;
+	height:25px;
+	background:white;
+	cursor:pointer;
+	border-radius:3px;
+	border:none;
+	margin-right:25px;
+
+}
+.table-form2{
+	width:90%;
+	border:none;
+}
+.table-form2 td{
+	border:none;
+}
+.booking-form-right .form2{
+	background:rgb(224, 224, 224);
+	height:325px;
+	padding:10px;
+}
+.booking-form-right .form3{
+	background:rgb(224, 224, 224);
+	height:325px;
+	padding:10px;
+}
+.booking-form-right .form4{
+	background:rgb(224, 224, 224);
+	height:325px;
+	padding:10px;
+}
+.booking-form-left .form4{
+	padding:10px;
+}
+.toBefore2{
+	width:170px;
+	float:left;
+	height:25px;
+	background:white;
+	margin-left:25px;
+	border-radius:3px;
+	border:none;
+	margin-right:10px;
+}
+.toNext2{
+	width:170px;
+	float:left;
+	height:25px;
+	background:red;
+	color:white;
+	margin-left:25px;
+	border-radius:3px;
+	border:none;
+	margin-right:10px;
 }

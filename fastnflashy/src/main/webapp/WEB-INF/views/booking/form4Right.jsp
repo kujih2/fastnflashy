@@ -22,10 +22,10 @@
 				<td id="timeOfMatch">${schedule.schedule_start}</td>
 			</tr>
 			<tr>
-				<td>선택좌석
+				<td style="height:50px; overflow:auto;">선택좌석
 					(<span class="number-of-seat"></span>)매
 				</td>
-				<td class="listOfSeat">
+				<td class="listOfSeat" style="overflow:auto;">
 				</td>
 			</tr>
 			<tr>
@@ -52,7 +52,7 @@
 		</div>
 	</div>
 	<div class="booking-buttons">
-		<input type="button" value="이전단계" class="toForm3">
-		<input type="submit" value="결제하기">
+		<input type="button" value="이전단계" class="toForm3 toBefore2">
+		<input type="submit" value="결제하기" class="toNext2">
 	</div>
 </div>

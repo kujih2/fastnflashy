@@ -17,11 +17,11 @@
 		
 		<div class="content-main">
 			<div>
-			<input type="button" value="전체" onclick=""> 
-			<input type="button" value="축구" onclick=""> 
-			<input type="button" value="야구" onclick=""> 
-			<input type="button" value="배구" onclick=""> 
-			<input type="button" value="농구" onclick="">
+			<input type="button" value="전체" onclick="" class="booking-ctg-btn"> 
+			<input type="button" value="축구" onclick="" class="booking-ctg-btn"> 
+			<input type="button" value="야구" onclick="" class="booking-ctg-btn"> 
+			<input type="button" value="배구" onclick="" class="booking-ctg-btn"> 
+			<input type="button" value="농구" onclick="" class="booking-ctg-btn">
 			</div>
 			<c:if test="${user_auth==9}">
 			<div class="align-right">
@@ -30,7 +30,8 @@
 			</c:if>
 			<div>
 				<c:forEach var="match" items="${list}">
-				<div>
+				<div class="each-match-cover">
+				<div class="each-match">
 					${match.schedule_start}<br>
 					${match.schedule_team1} VS ${match.schedule_team2}<br>
 					<c:choose>
@@ -49,7 +50,10 @@
 					</c:choose>
 					
 				</div>
-				<input type="button" value="예매가능" onclick="location.href='bookingForm.do?schedule_num=${match.schedule_num}'">
+				<div class="each-match-btn-cover">
+				<input class="each-match-btn" type="button" value="예매가능" onclick="location.href='bookingForm.do?schedule_num=${match.schedule_num}'">
+				</div>
+				</div>
 				</c:forEach>
 			</div>
 		</div>

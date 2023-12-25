@@ -15,8 +15,8 @@
 	<div class="my-select">
 		<p>My예매정보></p>
 		<hr
-			style="border: none; height: 3px; background-color: black; width: 80%;">
-		<table>
+			style="border: none; height: 3px; background-color: black; width: 100%;">
+		<table class="table-form2right">
 			<tr>
 				<td>일시</td>
 				<td id="timeOfMatch">${schedule.schedule_start}</td>
@@ -52,7 +52,7 @@
 		</div>
 	</div>
 	<div class="booking-buttons">
-		<input type="button" value="이전단계" class="toForm1">
-		<input type="button" value="다음단계" class="toForm3">
+		<input type="button" value="이전단계" class="toForm1 toBefore2">
+		<input type="button" value="다음단계" class="toForm3 toNext2">
 	</div>
 </div>

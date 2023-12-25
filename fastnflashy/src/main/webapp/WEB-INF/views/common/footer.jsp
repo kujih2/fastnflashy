@@ -2,8 +2,8 @@
     pageEncoding="UTF-8"%>
 
 <div class="footer">
-	<p>fast&amp;</p>
-	<p>flashy</p>
+	<p id="footer_logo1">fast&amp;</p>
+	<p id="footer_logo2">flashy</p>
 	<hr style="border: none; height: 1px; background-color: black; width: 100%;">
 	<p>&copy;2023 패스트 앤 플래시</p>
 	<p>본 컨텐츠의 저작권은 제공처에 있으며, 이를 무단 이용하는 경우 저작권법에 따라 법적 책임을 질 수 있습니다.</p>
