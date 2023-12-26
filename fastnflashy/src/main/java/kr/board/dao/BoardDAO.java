@@ -222,11 +222,15 @@ public class BoardDAO {
 			
 			
 			//SQL문 작성
-			sql = " SELECT a.*, COALESCE((SELECT SUM(CASE WHEN like_status = 1 THEN 1 ELSE 0 END) - "
-					+ " SUM(CASE WHEN like_status = 2 THEN 1 ELSE 0 END) "
-					+ " FROM board_like WHERE board_num = a.board_num), 0) AS net_likes"
-					+ " FROM (SELECT b.*, rownum rnum FROM (SELECT * FROM board JOIN member USING(mem_num)) b) a "
-					+ "WHERE a.rnum >= ? AND a.rnum <= ? ORDER BY net_likes DESC";
+			sql = "SELECT * FROM ("
+					+ "    SELECT a.*,  "
+					+ "        COALESCE((SELECT SUM(CASE WHEN like_status = 1 THEN 1 ELSE 0 END) -  "
+					+ "        SUM(CASE WHEN like_status = 2 THEN 1 ELSE 0 END)"
+					+ "        FROM board_like WHERE board_num = a.board_num), 0) AS net_likes  "
+					+ "    FROM (SELECT b.*, rownum rnum FROM  "
+					+ "        (SELECT * FROM board JOIN member USING(mem_num)) b) a "
+					+ "    ORDER BY net_likes DESC"
+					+ ") WHERE rownum >= ? AND rownum <= ?";
 
 			//PreparedStatement 객체 생성
 			pstmt = conn.prepareStatement(sql);
