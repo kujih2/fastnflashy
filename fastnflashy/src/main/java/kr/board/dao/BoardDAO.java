@@ -114,7 +114,7 @@ public class BoardDAO {
 			if(rs.next()) {
 				count = rs.getInt(1);
 			}
-			System.out.println("count DAO : " + count);
+			
 		}catch(Exception e) {
 			throw new Exception(e);
 		}finally {
