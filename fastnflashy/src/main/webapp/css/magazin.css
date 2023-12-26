@@ -9,6 +9,7 @@
 	padding:2px 10px 20px 10px;
 	height:20px;
 	background-color:#ffffff;
+	font-weight:bold;
 }
 #magazin_nav ul{
 	list-style:none;
@@ -33,12 +34,39 @@
 	width:150px;
 	text-align:left;
 }
+/* 페이지 레이아웃
+------------------------------*/
+.magazin-content-main{
+	margin:20px 350px 20px 350px;
+	padding:30px;
+	background:white;
+}
+.magazin-headline{
+	margin:20px 350px 20px 350px;
+	padding:30px;
+}
+.magazin-headline b{
+	font-size:40px;
+}
+.magazin-mostview{
+	margin:20px 350px 20px 350px;
+	padding:30px;
+	width:400px;
+	background:white;
+	float:left;
+}
+.magazin-search{
+	float:right;
+}
 
-
-
-
-
-
+/* 칼럼 작성
+------------------------------*/
+textarea{
+ 	width: 100%;
+    height: 30em;
+    border: none;
+    resize: none;
+}
 
 
 

@@ -30,14 +30,20 @@ window.onload=function(){
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	<jsp:include page="/WEB-INF/views/magazin/magazinHeader.jsp"/>
 	
-	<div class="content-main">
-		<h2>헤드라인</h2>
+	<div class="magazin-headline">
+		<div class="list-space align-right">
+			<c:if test="${!empty user_num && user_auth == 2}">
+				<input type="button" value="칼럼쓰기"
+					onclick="location.href='magazinWriteForm.do'">
+			</c:if>	
+		</div>
 	    <c:if test="${not empty headlineList}">
         <table>
             <c:forEach var="magazin" items="${headlineList}">
+	    	<h2><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}">${magazin.mg_title}</a></h2>
                     <tr>
-                        <td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><img src="${pageContext.request.contextPath}/upload/magazin/${magazin.mg_photo1}" width="150" height="100"></a></td>
-                        <td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><b>${magazin.mg_title}</b><br><br>${magazin.mg_content}</a></td>
+                        <td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><img src="${pageContext.request.contextPath}/upload/magazin/${magazin.mg_photo1}" width="550" height="300"></a></td>
+                        <td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}">${magazin.mg_content}</a></td>
                     </tr>
                
             </c:forEach>
@@ -45,29 +51,21 @@ window.onload=function(){
     	</c:if>
 	</div>
 	
-	<div class="content-main">
-		<h2>가장많이본 칼럼</h2>
+	<div class="magazin-content-main">
+		<h2>주목받는 칼럼</h2>
         <table>
             <c:forEach var="magazin" items="${getMostHitList}">
                     <tr>
-                        <td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><img src="${pageContext.request.contextPath}/upload/magazin/${magazin.mg_photo1}" width="150" height="100"></a></td>
+                        <td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><img src="${pageContext.request.contextPath}/upload/magazin/${magazin.mg_photo1}" width="200" height="150"></a></td>
                         <td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><b>${magazin.mg_title}</b><br><br>${magazin.mg_content}</a></td>
                     </tr>
             </c:forEach>
         </table>
-		<div class="align-center">${page}</div>
 	</div>
 	
-	<div class="content-main">
-		<div class="list-space align-right">
-		<c:if test="${!empty user_num && user_auth == 2}">
-			<input type="button" value="칼럼쓰기"
-				onclick="location.href='magazinWriteForm.do'">
-		</c:if>	
-	</div>
-		
-		<h4 class="align-left">최신 칼럼</h4>
-		<form id="search_form" action="magazinList.do" method="get">
+	<div class="magazin-content-main">
+		<h2 class="align-left">최신 칼럼</h2>
+		<form id="search_form" action="magazinList.do" method="get" class="magazin-search">
 			<input type="hidden" name="sports_category" value="${param.sports_category}">
 			<ul class="search align-right">
 				<li>
@@ -94,11 +92,11 @@ window.onload=function(){
 		<table>
 			<c:forEach var="magazin" items="${list}">
 			<tr>
-				<td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><img src="${pageContext.request.contextPath}/upload/magazin/${magazin.mg_photo1}" width="150" height="100"></a></td>
+				<td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><img src="${pageContext.request.contextPath}/upload/magazin/${magazin.mg_photo1}" width="200" height="100"></a></td>
 				<td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><b>${magazin.mg_title}</b><br><br>${magazin.mg_content}</a></td>
 			</tr>
 			</c:forEach>
-		</table>
+		</table><br>
 		<div class="align-center">${page}</div>
 		</c:if>
 	</div>

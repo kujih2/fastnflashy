@@ -97,7 +97,7 @@ window.onload=function(){
 			<li>
 				<%-- 칼럼 추천 --%>
 				<img id="output_fav" data-num="${magazin.mg_board_num}" 
-				  src="${pageContext.request.contextPath}/images/fav01.gif" 
+				  src="${pageContext.request.contextPath}/images/like.png" 
 				                                               width="50">
 				이 칼럼을 추천합니다.
 				<span id="output_fcount"></span>                                               

@@ -39,9 +39,9 @@ $(function(){
 	function magazinDisplayFav(param){
 		let output;
 		if(param.status=='yesFav'){//좋아요 선택
-			output = '../images/fav02.gif';
+			output = '../images/liked.png';
 		}else{//좋아요 미선택
-			output = '../images/fav01.gif';
+			output = '../images/like.png';
 		}
 		
 		//문서 객체에 설정
