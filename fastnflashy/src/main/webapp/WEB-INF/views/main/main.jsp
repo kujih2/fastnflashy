@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <title>메인</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/YSCstyle.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/match.css">
 <style>
 
@@ -161,7 +162,7 @@
     	</c:if>
 		
 		</div>
-		<div class="board">
+		<div class="board centered-table">
 			<h3>추천 많은 게시물</h3>
 			<table>
 				<tr>

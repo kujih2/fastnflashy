@@ -86,3 +86,19 @@ input[type="button"]:hover {
 .content-main2 input[type="submit"]:hover {
     background-color: #0056b3;
 }
+
+.centered-table {
+    width: 100%; /* 테이블의 너비를 조정하고 싶다면 이 값을 변경하세요 */
+    border-collapse: collapse; /* 셀 간의 테두리를 하나로 합칩니다 */
+}
+
+.centered-table th, 
+.centered-table td {
+    text-align: center;
+    padding: 8px; /* 셀의 패딩을 조정합니다 */
+}
+
+.centered-table th {
+    background-color: #f0f0f0; /* 테이블 헤더 배경색 */
+}
+
