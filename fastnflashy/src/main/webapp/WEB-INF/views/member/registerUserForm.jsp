@@ -114,9 +114,9 @@ $(function(){
 <body>
 <div class="page-main">
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
-	<div id="choice">
-		<div id="normal_mem" class="align-center">일반 회원</div>
-		<div id="col_mem" class="align-center">칼럼리스트 회원</div>
+	<div id="choice" style="margin:200px;">
+		<div id="normal_mem" class="align-center" style="display: flex;align-items: center;justify-content: center;font-size:40px;">일반 회원</div>
+		<div id="col_mem" class="align-center" style="display: flex;align-items: center;justify-content: center;font-size:40px;">칼럼리스트 회원</div>
 	</div>
 	<div class="content-main">
 		<h2>회원가입</h2>
