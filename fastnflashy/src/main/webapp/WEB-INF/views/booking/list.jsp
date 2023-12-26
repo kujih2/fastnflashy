@@ -15,7 +15,7 @@
 		<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 		<jsp:include page="/WEB-INF/views/booking/bookingHeader.jsp"/>
 		
-		<div class="content-main">
+		<div class="content-main" style="display:table;clear:both;">
 			<div>
 			<input type="button" value="전체" onclick="" class="booking-ctg-btn"> 
 			<input type="button" value="축구" onclick="" class="booking-ctg-btn"> 

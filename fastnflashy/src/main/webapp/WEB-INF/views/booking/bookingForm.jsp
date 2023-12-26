@@ -71,6 +71,7 @@ $(function(){
 		$('.form1').hide();
 		$('.booking-header').show();
 		$('.form2').show();
+		
 	});
 //form2
     $('.ticketSelect').change(function(){
@@ -134,6 +135,9 @@ $(function(){
     });
 //form3
 	$('.toForm2').click(function(){
+		if($('.selected-seat').length==0){
+			return;
+		}
 		$('.form3').hide();
 		$('.form2').show();
 	});
@@ -200,7 +204,7 @@ function updateInputForm(numOfSeat){
 <div class="page-main">
 		<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 		<jsp:include page="/WEB-INF/views/booking/bookingHeader.jsp"/>
-	<div class="content-main">
+	<div class="content-main" style="width:1000px;margin-left:100px;">
 		<div class="booking-main">
 		<form id="booking_form" action="booking.do" method="post">
 			<div id="hidden_area">

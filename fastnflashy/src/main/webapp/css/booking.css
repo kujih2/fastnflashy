@@ -97,6 +97,9 @@ form{
 	border:1px solid black;
 	cursor:pointer;
 }
+.each-match-cover{
+	float:left;
+} 
 .each-match{
 	border:1px solid black;
 	border-radius:3px;
