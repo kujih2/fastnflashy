@@ -50,7 +50,7 @@
 			</div>
 		</c:if>
 		<c:if test="${count > 0}">
-			<table class="centered-table">
+			<table class="centered-table">  
 				<tr>
 					<th>글번호</th>
 					<th>제목</th>

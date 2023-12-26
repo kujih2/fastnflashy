@@ -66,7 +66,7 @@ input[type="button"]:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
-
+  
 .content-main2 input[type="text"],
 .content-main2 input[type="submit"] {
     padding: 10px;

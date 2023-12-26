@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>메인</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">  
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/YSCstyle.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/match.css">
 <style>
