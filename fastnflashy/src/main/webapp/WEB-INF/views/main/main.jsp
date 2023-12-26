@@ -64,7 +64,7 @@
 			<div class="matchMain-content">
 				<c:if test="${!empty scheduleList}">
 					<c:forEach var="schedule" items="${scheduleList}" begin="0" end="3">
-						<div class="matchMain-box">
+						<div class="matchMain-box" onclick="location.href='${pageContext.request.contextPath}/match/detailSchedule.do?num=${schedule.schedule_num}'">
 							<c:if test="${schedule.team_category == 0 }"><h4>축구</h4></c:if>
 							<c:if test="${schedule.team_category == 1 }"><h4>야구</h4></c:if>
 							<c:if test="${schedule.team_category == 2 }"><h4>배구</h4></c:if>

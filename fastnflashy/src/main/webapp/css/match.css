@@ -455,6 +455,7 @@ form[id="cart_order"]{
 	border-radius:10px;
 	text-align:center;
 	margin-left:30px;
+	cursor:pointer;
 }
 .matchMain-box h4{
 	font-size:15px;
