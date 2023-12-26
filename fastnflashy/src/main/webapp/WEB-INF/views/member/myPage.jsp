@@ -119,7 +119,7 @@ $(function(){
 					</c:if>
 				</li>
 				<li>
-					<div class="align-center">
+					<div class="align-left">
 						<input type="button" value="수정" id="photo_btn">
 					</div>
 					<div id="photo_choice" style="display:none;">
