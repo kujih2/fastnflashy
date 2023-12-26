@@ -57,7 +57,7 @@ window.onload=function(){
 			</c:if>
 			<c:if test="${user_auth == 9}">
 			<input type="button" value="[관리자]칼럼삭제" id="delete_but"
-    				onclick="location.href='adminMagazinHeadline.do?mg_headline=${magazin.mg_headline}'">
+    				onclick="location.href='magazinDeleteForm.do?mg_board_num=${magazin.mg_board_num}'">
 			<input type="button" value="[관리자]헤드라인 올리기/내리기" id="headline_but"
 					onclick="location.href='adminHeadline.do?mg_board_num=${magazin.mg_board_num}'">
 			</c:if>
