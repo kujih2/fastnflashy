@@ -39,8 +39,10 @@ $(function(){
 <body>
 <div class="page-main">
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
+		<jsp:include page="/WEB-INF/views/member/memberHeader.jsp"/>
+	
 	<div class="content-main">
-		<h2>회원가입</h2>
+		<h2>연락처수정</h2>
 		<form id="modify_form" action="modifyUser.do" method="post">
 			<ul>
 				<li>
