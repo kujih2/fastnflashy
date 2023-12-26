@@ -113,7 +113,7 @@ $(function(){
 					                  width="200" height="200" class="my-photo">
 					</c:if>
 					<c:if test="${!empty member.mem_photo}">
-					<img src="${pageContext.request.contextPath}/upload/profile/${member.mem_photo}"
+					<img src="${pageContext.request.contextPath}/images/profile/${member.mem_photo}"
 					                  width="200" height="200" class="my-photo">
 					                  
 					</c:if>
