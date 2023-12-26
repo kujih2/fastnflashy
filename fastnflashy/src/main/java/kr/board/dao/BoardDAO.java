@@ -207,6 +207,58 @@ public class BoardDAO {
 		}
 		return list;
 	}
+	//좋아요 상위 글 목록
+	public List<BoardVO> getMostLikedListBoard(int start,int end)throws Exception{
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<BoardVO> list2 = null;
+		String sql = null;
+		
+		try {
+			//커넥션풀로부터 커넥션을 할당
+			conn = DBUtil.getConnection();
+			
+			
+			//SQL문 작성
+			sql = " SELECT a.*, COALESCE((SELECT SUM(CASE WHEN like_status = 1 THEN 1 ELSE 0 END) - "
+					+ " SUM(CASE WHEN like_status = 2 THEN 1 ELSE 0 END) "
+					+ " FROM board_like WHERE board_num = a.board_num), 0) AS net_likes"
+					+ " FROM (SELECT b.*, rownum rnum FROM (SELECT * FROM board JOIN member USING(mem_num)) b) a "
+					+ "WHERE a.rnum >= ? AND a.rnum <= ? ORDER BY net_likes DESC";
+
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			
+			//?에 데이터 바인딩
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, end);
+			  
+			
+			//SQL문 실행
+			rs = pstmt.executeQuery();
+			list2 = new ArrayList<BoardVO>();
+			while(rs.next()) {
+				BoardVO board = new BoardVO();
+				board.setBoard_num(rs.getInt("board_num"));
+				//HTML을 허용하지 않음
+				board.setTitle(StringUtil.useNoHtml(rs.getString("title")));
+				board.setHit(rs.getInt("hit"));
+				board.setReg_date(rs.getDate("reg_date"));
+				board.setMem_id(rs.getString("mem_id"));
+				board.setBoard_category(rs.getInt("board_category"));
+				board.setNet_likes(rs.getInt("net_likes"));
+				
+				list2.add(board);
+			}
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+		return list2;
+	}
 	
 	//글 상세
 	public BoardVO getBoard(int board_num)throws Exception{

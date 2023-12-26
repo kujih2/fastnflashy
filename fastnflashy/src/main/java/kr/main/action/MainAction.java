@@ -7,6 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.board.dao.BoardDAO;
+import kr.board.vo.BoardVO;
 import kr.booking.dao.BookingDAO;
 import kr.controller.Action;
 import kr.schedule.dao.ScheduleDAO;
@@ -37,6 +39,15 @@ public class MainAction implements Action{
 		List<ScheduleVO> list = dao2.getListOfRegistedMatch();
 			
 		request.setAttribute("list",list);
+		
+		
+		//Board
+		BoardDAO dao3 = BoardDAO.getInstance();
+		List<BoardVO> list2 = dao3.getMostLikedListBoard(1, 7);
+		
+		request.setAttribute("list2", list2);
+		
+		
 		
 		//JSP 경로 반환
 		return "/WEB-INF/views/main/main.jsp";

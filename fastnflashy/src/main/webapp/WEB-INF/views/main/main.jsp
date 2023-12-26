@@ -35,7 +35,7 @@
 	height:500px;
 	margin-top:-200px;
 	margin-left:50px;
-	border:1px solid black;
+	border:none;
 }
 .hit-magazine{
 	margin-left:66.5%;
@@ -141,7 +141,33 @@
 		</div>
 		</div>
 		<div class="hit-magazine"></div>
-		<div class="board"></div>
+		<div class="board">
+			<table>
+				<tr>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>조회수</th>
+					<th>추천수</th>
+				</tr>
+				<c:forEach var="board" items="${list2}">
+				<tr>
+				
+					<td><a href="${pageContext.request.contextPath}/board/boardDetail.do?board_num=${board.board_num}">
+					<b>[
+					<c:if test="${board.board_category == 1}">축구</c:if>
+					<c:if test="${board.board_category == 2}">야구</c:if>
+					<c:if test="${board.board_category == 3}">배구</c:if>
+					<c:if test="${board.board_category == 4}">농구</c:if>
+					]</b>
+					${board.title}</a></td>
+				
+					<td>${board.mem_id}</td>
+					<td>${board.hit}</td>
+					<td>${board.net_likes}</td>
+				</tr>
+				</c:forEach>
+			</table>
+		</div>
 		<div class="recommend-magazine"></div>
 	</div>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
