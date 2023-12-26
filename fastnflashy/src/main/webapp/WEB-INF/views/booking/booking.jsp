@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>회원가입완료</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/booking.css">
 
 </head>
 <body>
