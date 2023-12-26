@@ -34,7 +34,7 @@ $(function(){
 	margin-top:20px;
 	margin-left:40px;
 }
-.team-name{
+.teamList-name{
 	font-size:20px;
 }
 #buttons{
@@ -64,7 +64,7 @@ $(function(){
 				 	<div class="team-list">
 				 		<a href="teamDetail.do?team_num=${teamList.team_num}&team_category=${teamList.team_category}">
 				 		<img src="${pageContext.request.contextPath}/images/teams/${teamList.team_photo}" width="270"><br>
-				 		<b class="team-name">${teamList.team_name}</b>
+				 		<b class="teamList-name">${teamList.team_name}</b>
 				 		</a>
 				 	</div>
 		 	</c:forEach>

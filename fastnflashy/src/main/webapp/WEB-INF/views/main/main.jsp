@@ -54,9 +54,7 @@
 	margin-bottom:100px;
 }
 
-.matchMain-content{
-	width:1000px;
-}
+
 
 </style>
 </head>
