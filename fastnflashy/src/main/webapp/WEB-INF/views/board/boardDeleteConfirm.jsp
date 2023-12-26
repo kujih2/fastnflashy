@@ -6,7 +6,7 @@
     int randomNumber = 1000 + random.nextInt(9000); // 1000에서 9999 사이의 난수 생성
     session.setAttribute("randomNumber", randomNumber);
 %>
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/YSCstyle.css">
 <script>
    function validateForm() {
         var confirmationCode = document.forms["deleteForm"]["confirmation_code"].value;
@@ -22,9 +22,9 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath }/css/style.css">
 
-<div class="page-main">
+<div class="page-main2">
 <form action="boardDelete.do" method="post" name="deleteForm" onsubmit="return validateForm();">
-    <div class="content-main">
+    <div class="content-main2">
     <input type="hidden" name="board_num" value="${board_num}">
     <p>삭제 확인 코드: <%= randomNumber %></p>
     <input type="text" name="confirmation_code" placeholder="코드 입력" />

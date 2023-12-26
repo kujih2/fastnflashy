@@ -49,3 +49,40 @@ input[type="button"] {
 input[type="button"]:hover {
     background-color: #45a049; /* 마우스 오버 시 버튼의 배경색 변경 */
 }
+
+
+.page-main2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.content-main2 {
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.content-main2 input[type="text"],
+.content-main2 input[type="submit"] {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 80%;
+}
+
+.content-main2 input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    border: none;
+}
+
+.content-main2 input[type="submit"]:hover {
+    background-color: #0056b3;
+}
