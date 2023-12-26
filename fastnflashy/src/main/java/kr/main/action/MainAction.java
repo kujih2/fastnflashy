@@ -51,7 +51,7 @@ public class MainAction implements Action{
 		
 		//Magazin
 		MagazinDAO dao4 = MagazinDAO.getInstance();
-		List<MagazinVO> list3 = dao4.getMostHit(1, 4);
+		List<MagazinVO> list3 = dao4.getMostHit(1, 3);
 		
 		List<MagazinVO> list4 = dao4.getRandomHeadlineList(1);
 		
