@@ -41,10 +41,32 @@ public class MagazinListAction implements Action{
 		
 		List<MagazinVO> list = null;
 		if(count > 0) {
-			list = dao.getListMagazin(page.getStartRow(), page.getEndRow(), keyfield, keyword,sports_category);
+			list = dao.getListMagazin(page.getStartRow(), page.getEndRow(), keyfield, keyword,sports_category,0);
 		}
+		
+		// 헤드라인 목록 조회
+		List<MagazinVO> headlineList = null;
+		if (count > 0) {
+		    if (Math.random() > 0.5) {
+		        // 랜덤하게 두 가지 방법 중 하나 선택 (예: 50% 확률로 랜덤 목록 표시)
+		        headlineList = dao.getRandomHeadlineList(1);
+		    } else {
+		        headlineList = dao.getListMagazin(1, 1, keyfield, keyword, sports_category, 1);
+		    }
+		}
+		
+		//조회수많은 칼럼 조회
+		PageUtil pageHit = new PageUtil(Integer.parseInt(pageNum),count,4,10,"magazinList.do");
+		
+		List<MagazinVO> getMostHitList = null;
+		if(count > 0) {
+			getMostHitList = dao.getMostHit(pageHit.getStartRow(),pageHit.getEndRow());
+		}
+	    
 		request.setAttribute("count", count);
 		request.setAttribute("list", list);
+		request.setAttribute("headlineList", headlineList);
+		request.setAttribute("getMostHitList", getMostHitList);
 		request.setAttribute("page", page.getPage());
 
 		return "/WEB-INF/views/magazin/magazinList.jsp";

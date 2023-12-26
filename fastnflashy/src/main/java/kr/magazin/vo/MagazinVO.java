@@ -13,8 +13,10 @@ public class MagazinVO {
 	private String mg_photo1; //이미지1
 	private String mg_photo2; //이미지2
 	private String mg_ip; //아이피
+	private int mg_headline; //칼럼 헤드라인 여부
 	private int mem_num; //회원 고유 번호
-	
+
+	private String mem_id;//회원 이름
 	private String mem_name;//회원 이름
 	private String mem_email;//회원 이메일
 	private String mem_photo;//회원 사진
@@ -88,6 +90,12 @@ public class MagazinVO {
 	public void setMg_ip(String mg_ip) {
 		this.mg_ip = mg_ip;
 	}
+	public int getMg_headline() {
+		return mg_headline;
+	}
+	public void setMg_headline(int mg_headline) {
+		this.mg_headline = mg_headline;
+	}
 	public int getMem_num() {
 		return mem_num;
 	}
@@ -96,6 +104,13 @@ public class MagazinVO {
 	}
 	
 	
+	
+	public String getMem_id() {
+		return mem_id;
+	}
+	public void setMem_id(String mem_id) {
+		this.mem_id = mem_id;
+	}
 	public String getMem_name() {
 		return mem_name;
 	}

@@ -29,32 +29,45 @@ window.onload=function(){
 <div class="page-main">
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	<jsp:include page="/WEB-INF/views/magazin/magazinHeader.jsp"/>
+	
+	<div class="content-main">
+		<h2>헤드라인</h2>
+	    <c:if test="${not empty headlineList}">
+        <table>
+            <c:forEach var="magazin" items="${headlineList}">
+                    <tr>
+                        <td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><img src="${pageContext.request.contextPath}/upload/magazin/${magazin.mg_photo1}" width="150" height="100"></a></td>
+                        <td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><b>${magazin.mg_title}</b><br><br>${magazin.mg_content}</a></td>
+                    </tr>
+               
+            </c:forEach>
+        </table>
+    	</c:if>
+	</div>
+	
+	<div class="content-main">
+		<h2>가장많이본 칼럼</h2>
+	    <c:if test="${not empty getMostHitList}">
+        <table>
+            <c:forEach var="magazin" items="${getMostHitList}">
+                    <tr>
+                        <td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><img src="${pageContext.request.contextPath}/upload/magazin/${magazin.mg_photo1}" width="150" height="100"></a></td>
+                        <td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><b>${magazin.mg_title}</b><br><br>${magazin.mg_content}</a></td>
+                    </tr>
+            </c:forEach>
+        </table>
+		<div class="align-center">${page}</div>
+    	</c:if>
+	</div>
+	
 	<div class="content-main">
 		<div class="list-space align-right">
 		<c:if test="${!empty user_num && user_auth == 2}">
 			<input type="button" value="칼럼쓰기"
 				onclick="location.href='magazinWriteForm.do'">
 		</c:if>	
-		</div>
-		<h4 class="align-left">헤드라인</h4>
-		<c:if test="${count == 0}">
-		<div class="result-display">
-			작성된 칼럼이 없습니다.			
-		</div>
-		</c:if>
-		<c:if test="${count > 0}">
-		<table>
-			<c:if test="${a}">
-			<c:forEach var="magazin" items="${list}">
-			<tr>
-				<td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><img src="${pageContext.request.contextPath}/upload/magazin/${magazin.mg_photo1}" width="150" height="100"></a></td>
-				<td><a href="magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><b>${magazin.mg_title}</b><br><br>${magazin.mg_content}</a></td>
-			</tr>
-			</c:forEach>
-			</c:if>
-		</table>
-		<div class="align-center">${page}</div>
-		</c:if>
+	</div>
+		
 		<h4 class="align-left">최신 칼럼</h4>
 		<form id="search_form" action="magazinList.do" method="get">
 			<input type="hidden" name="sports_category" value="${param.sports_category}">

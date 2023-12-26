@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/magazin.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/magazin.reply.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/magazin.fav.js"></script>
 <script type="text/javascript">
 window.onload=function(){
 	let categoryValue = "";
@@ -28,7 +29,8 @@ window.onload=function(){
 	let categoryInfoElements = document.getElementsByClassName("categoryInfo");
 	 	for (let i = 0; i < categoryInfoElements.length; i++) {
 	        categoryInfoElements[i].innerHTML = categoryValue;
-	    	}
+	    }
+	
 };
 </script>
 </head>
@@ -55,9 +57,9 @@ window.onload=function(){
 			</c:if>
 			<c:if test="${user_auth == 9}">
 			<input type="button" value="[관리자]칼럼삭제" id="delete_but"
-					onclick="location.href='magazinDeleteForm.do?mg_board_num=${magazin.mg_board_num}'">
-			<input type="button" value="헤드라인 올리기" id="headline_but"
-					onclick="location.href='magazinAdminHaedLine.do?mg_board_num=${magazin.mg_board_num}'">
+    				onclick="location.href='adminMagazinHeadline.do?mg_headline=${magazin.mg_headline}'">
+			<input type="button" value="[관리자]헤드라인 올리기/내리기" id="headline_but"
+					onclick="location.href='adminHeadline.do?mg_board_num=${magazin.mg_board_num}'">
 			</c:if>
 			</li>
 		</ul>
@@ -91,9 +93,16 @@ window.onload=function(){
 				${magazin.mem_email}
 		</ul>
 		<hr size="1" noshade="noshade" width="100%">
-		<!-- 관심달기 영역 -->
-		
-		<!-- 관심달기 끝 -->
+		<ul class="detail-sub">
+			<li>
+				<%-- 칼럼 추천 --%>
+				<img id="output_fav" data-num="${magazin.mg_board_num}" 
+				  src="${pageContext.request.contextPath}/images/fav01.gif" 
+				                                               width="50">
+				이 칼럼을 추천합니다.
+				<span id="output_fcount"></span>                                               
+			</li>
+		</ul>
 		<hr size="1" noshade="noshade" width="100%">
 		<!-- 댓글 시작 -->
 		<div id="reply_div">
