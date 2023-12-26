@@ -123,6 +123,46 @@ public class MagazinDAO {
 	    }
 	    return list;
 	}
+	//최신칼럼 불러오기
+		public List<MagazinVO> getNewListMagazin(int start, int end) throws Exception {
+		    Connection conn = null;
+		    PreparedStatement pstmt = null;
+		    ResultSet rs = null;
+		    List<MagazinVO> list = null;
+		    String sql = null;
+
+		    try {
+		        conn = DBUtil.getConnection();
+
+
+		        sql = "SELECT * FROM (SELECT a.*, rownum rnum FROM "
+		                + "(SELECT * FROM magazin_board JOIN member_detail USING(mem_num)"
+		                + " ORDER BY mg_reg_date DESC)a) WHERE rnum >= ? AND rnum <= ?";
+		        pstmt = conn.prepareStatement(sql);
+
+		        pstmt.setInt(1, start);
+		        pstmt.setInt(2, end);
+
+		        rs = pstmt.executeQuery();
+		        list = new ArrayList<MagazinVO>();
+		        while (rs.next()) {
+		            MagazinVO magazin = new MagazinVO();
+		            magazin.setMg_board_num(rs.getInt("mg_board_num"));
+		            magazin.setMg_title(StringUtil.useNoHtml(rs.getString("mg_title")));
+		            magazin.setMg_hit(rs.getInt("mg_hit"));
+		            magazin.setMg_content(StringUtil.shortWords(100, StringUtil.useNoHtml(rs.getString("mg_content"))));
+		            magazin.setMg_photo1(rs.getString("mg_photo1"));
+
+		            list.add(magazin);
+		        }
+		    } catch (Exception e) {
+		        throw new Exception(e);
+		    } finally {
+		        DBUtil.executeClose(rs, pstmt, conn);
+		    }
+
+		    return list;
+		}
 
 	
 	

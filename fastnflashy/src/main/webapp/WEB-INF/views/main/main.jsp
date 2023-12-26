@@ -20,7 +20,6 @@
 	width:65%;
 	height:480px;
 	margin-top: 80px;
-	border:1px solid black;
 }
 .booking{
 	margin-left:66.5%;
@@ -42,7 +41,6 @@
 	width:35%;
 	height:500px;
 	margin-top: 20px;
-	border:1px solid black;
 }
 .recommend-magazine{
 
@@ -50,7 +48,6 @@
 	height:500px;
 	margin-left:66.5%; 
 	margin-top: 20px;
-	border:1px solid black;
 	margin-bottom:100px;
 }
 
@@ -106,7 +103,19 @@
 				</c:if>
 			</div>
 		</div>
-		<div class="magazine"></div>
+		<div class="magazine">
+		<h2>헤드라인</h2>
+	    <c:if test="${not empty list4}">
+        <table>
+            <c:forEach var="magazin" items="${list4}">
+                    <tr>
+                        <td><a href="${pageContext.request.contextPath}/magazin/magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><img src="${pageContext.request.contextPath}/upload/magazin/${magazin.mg_photo1}" width="150" height="100"></a></td>
+                        <td><a href="${pageContext.request.contextPath}/magazin/magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><b>${magazin.mg_title}</b><br><br>${magazin.mg_content}</a></td>
+                    </tr>
+            </c:forEach>
+        </table>
+    	</c:if>
+		</div>
 		<div class="booking">
 		<div style="padding:10px;overflow:auto; height:280px;">
 		<c:forEach var="match" items="${list}">
@@ -138,7 +147,20 @@
 		
 		</div>
 		</div>
-		<div class="hit-magazine"></div>
+		<div class="hit-magazine">
+		<h2>가장많이본 칼럼</h2>
+	    <c:if test="${not empty list3}">
+        <table>
+            <c:forEach var="magazin" items="${list3}">
+                    <tr>
+                        <td><a href="${pageContext.request.contextPath}/magazin/magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><img src="${pageContext.request.contextPath}/upload/magazin/${magazin.mg_photo1}" width="150" height="100"></a></td>
+                        <td><a href="${pageContext.request.contextPath}/magazin/magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><b>${magazin.mg_title}</b><br><br>${magazin.mg_content}</a></td>
+                    </tr>
+            </c:forEach>
+        </table>
+    	</c:if>
+		
+		</div>
 		<div class="board">
 			<table>
 				<tr>
@@ -166,7 +188,19 @@
 				</c:forEach>
 			</table>
 		</div>
-		<div class="recommend-magazine"></div>
+		<div class="recommend-magazine">
+		<h2>최신 칼럼</h2>
+	    <c:if test="${not empty list5}">
+        <table>
+            <c:forEach var="magazin" items="${list5}">
+                    <tr>
+                        <td><a href="${pageContext.request.contextPath}/magazin/magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><img src="${pageContext.request.contextPath}/upload/magazin/${magazin.mg_photo1}" width="150" height="100"></a></td>
+                        <td><a href="${pageContext.request.contextPath}/magazin/magazinDetail.do?mg_board_num=${magazin.mg_board_num}"><b>${magazin.mg_title}</b><br><br>${magazin.mg_content}</a></td>
+                    </tr>
+            </c:forEach>
+        </table>
+    	</c:if>
+		</div>
 	</div>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </div>

@@ -11,6 +11,8 @@ import kr.board.dao.BoardDAO;
 import kr.board.vo.BoardVO;
 import kr.booking.dao.BookingDAO;
 import kr.controller.Action;
+import kr.magazin.dao.MagazinDAO;
+import kr.magazin.vo.MagazinVO;
 import kr.schedule.dao.ScheduleDAO;
 import kr.schedule.vo.ScheduleVO;
 
@@ -47,7 +49,17 @@ public class MainAction implements Action{
 		
 		request.setAttribute("list2", list2);
 		
+		//Magazin
+		MagazinDAO dao4 = MagazinDAO.getInstance();
+		List<MagazinVO> list3 = dao4.getMostHit(1, 4);
 		
+		List<MagazinVO> list4 = dao4.getRandomHeadlineList(1);
+		
+		List<MagazinVO> list5 = dao4.getNewListMagazin(1, 4);
+				
+		request.setAttribute("list3", list3);
+		request.setAttribute("list4", list4);
+		request.setAttribute("list5", list5);
 		
 		//JSP 경로 반환
 		return "/WEB-INF/views/main/main.jsp";

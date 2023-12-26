@@ -47,7 +47,6 @@ window.onload=function(){
 	
 	<div class="content-main">
 		<h2>가장많이본 칼럼</h2>
-	    <c:if test="${not empty getMostHitList}">
         <table>
             <c:forEach var="magazin" items="${getMostHitList}">
                     <tr>
@@ -57,7 +56,6 @@ window.onload=function(){
             </c:forEach>
         </table>
 		<div class="align-center">${page}</div>
-    	</c:if>
 	</div>
 	
 	<div class="content-main">
