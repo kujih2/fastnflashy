@@ -162,6 +162,7 @@
 		
 		</div>
 		<div class="board">
+			<h3>추천 많은 게시물</h3>
 			<table>
 				<tr>
 					<th>제목</th>
