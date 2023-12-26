@@ -169,6 +169,34 @@ public class MemberDAO {
 		}		
 	}
 	
+	//프로필 사진 수정
+		public void updateMyPhoto(String photo,int mem_num)throws Exception{
+			
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			String sql = null;
+			
+			try {
+				//커넥션풀로부터 커넥션을 할당
+				conn = DBUtil.getConnection();
+				//SQL문 작성
+				sql = "UPDATE member_detail SET mem_photo=? WHERE mem_num=?";
+				//PreparedStatement 객체 생성
+				pstmt = conn.prepareStatement(sql);
+				//?에 데이터 바인딩
+				pstmt.setString(1, photo);
+				pstmt.setInt(2, mem_num);
+				//SQL문 실행
+				pstmt.executeUpdate();
+				
+			}catch(Exception e) {
+				throw new Exception(e);
+				
+			}finally {
+				DBUtil.executeClose(null, pstmt, conn);
+			}
+		}
+	
 	//회원탈퇴(회원 정보 삭제)
 	public void deleteMember(int mem_num) throws Exception{
 		Connection conn = null;
