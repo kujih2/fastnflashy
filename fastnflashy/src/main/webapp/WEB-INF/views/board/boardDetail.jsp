@@ -19,11 +19,11 @@
 		<h2>${board.title}</h2>
 		<ul class="datail-info">
 			<li>
-				<c:if test="${!empty board.mem_photo }">
-				<img src="${pageContext.request.contextPath }/images/profile/${board.mem_photo}" 
+				<c:if test="${!empty board.photo }">
+				<img src="${pageContext.request.contextPath }/images/profile/${board.photo}" 
 											width="40" height="40" class="my-photo">
 				</c:if>
-				<c:if test="${empty board.mem_photo }">
+				<c:if test="${empty board.photo }">
 				<img src="${pageContext.request.contextPath }/images/face.png" 
 											width="40" height="40" class="my-photo">
 				</c:if>
