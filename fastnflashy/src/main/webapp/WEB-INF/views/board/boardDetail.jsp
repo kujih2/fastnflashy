@@ -63,7 +63,7 @@
 				<span id="dislikecount" class="likecountcontrol"></span>	
 			</li>
 			
-			<li>
+			<li id="modify-date">
 				<c:if test="${!empty board.modify_date}">
 					최근 수정일 : ${board.modify_date}
 				</c:if>

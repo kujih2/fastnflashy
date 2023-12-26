@@ -17,6 +17,11 @@
     justify-content: flex-end;
 }
 
+#modify-date{
+	text-align:left;
+	line-height:250%;
+}
+
 
 
 #likecount, #dislikecount {
