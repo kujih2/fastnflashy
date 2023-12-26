@@ -38,7 +38,7 @@ window.onload=function(){
 <div class="page-main">
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	<jsp:include page="/WEB-INF/views/magazin/magazinHeader.jsp"/>
-	<div class="content-main">
+	<div class="magazin-content-main">
 		<h4>칼럼 : <span class="categoryInfo"></span></h4>
 		<h2>${magazin.mg_title}</h2>
 		<div>${magazin.mem_name} <span class="categoryInfo"></span>칼럼니스트</div>
