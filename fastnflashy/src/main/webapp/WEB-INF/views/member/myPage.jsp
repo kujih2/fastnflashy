@@ -144,11 +144,6 @@ $(function(){
 				<li>가입일 : ${member.mem_regdate}</li>
 			</ul>
 			<h3>
-				비밀번호 수정
-				<input type="button" value="비밀번호 수정"
-				       onclick="location.href='modifyPasswordForm.do'">
-			</h3>
-			<h3>
 				회원탈퇴
 				<input type="button" value="회원탈퇴"
 				      onclick="location.href='deleteUserForm.do'">
