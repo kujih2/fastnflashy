@@ -109,10 +109,11 @@
 			</div>
 		</div>
 		<div class="magazine"></div>
-		<div class="booking" style="padding:10px;">
+		<div class="booking">
+		<div style="padding:10px;overflow:auto; height:280px;">
 		<c:forEach var="match" items="${list}">
-				<div class="each-match-cover" style="padding:10px;border:1px solid black; height:40px;border-radius:3px;">
-				<div class="each-match" style="float:left; font-size:14px;text-align:center;">
+				<div class="each-match-cover" style="padding:5px;border:1px solid black; height:40px;border-radius:3px;margin:10px;">
+				<div class="each-match" style="float:left; font-size:14px;text-align:center;width:65%;">
 					${match.schedule_start} |
 					${match.schedule_team1} VS ${match.schedule_team2}<br>
 					<c:choose>
@@ -131,12 +132,13 @@
 					</c:choose>
 					
 				</div>
-				<div class="each-match-btn-cover" style="float:right;">
+				<div class="each-match-btn-cover" style="float:right;width:30%;">
 				<input class="each-match-btn" style="background:skyblue;border:none;border-radius:3px;"type="button" value="예매가능" onclick="location.href='${pageContext.request.contextPath}/booking/bookingForm.do?schedule_num=${match.schedule_num}'">
 				</div>
 				</div>
 				</c:forEach>
 		
+		</div>
 		</div>
 		<div class="hit-magazine"></div>
 		<div class="board"></div>
